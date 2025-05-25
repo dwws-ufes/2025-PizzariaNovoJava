@@ -1,0 +1,106 @@
+button.button-action {
+  background-color: var(--cor-tema-2);
+  border: var(--cor-tema-2);
+}
+
+p-card.card-item-menu .p-card-content {
+  padding: 0;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  align-items: center;
+  height: 15vh;
+  width: 190px;
+}
+
+p-card.card-item-menu .p-card-body {
+  background-color: var(--cor-tema-3);
+}
+
+//app-titulo-list > p-dialog > div > div {
+//  min-width: 50%;
+//}
+
+p-dialog-header {
+  cursor: none;
+}
+
+//app-cliente-list > div > p-tabview > div > div.p-tabview-panels {
+//  padding: 0 !important;
+//}
+
+body > app-root > div > div > div > div > p-card > div {
+  height: 85vh;
+}
+
+//app-locacao-list > p-dialog > div > div {
+//  min-width: 55%;
+//}
+
+//app-titulo-list > p-dialog > div > div {
+//  min-width: 60%;
+//}
+
+body > app-root > div > div > div > div > {
+  app-usuario-list,
+  app-produto-list,
+  app-insumo-list,
+  app-self-service-list,
+  app-chope-list,
+  app-cliente-list,
+  app-chope-view,
+  app-painel-cliente{
+    width: 100%;
+  }
+}
+
+.p-tabview .p-tabview-nav {
+
+  li .p-tabview-nav-link {
+    color: var(--cor-tema-4);;
+  }
+
+  li.p-highlight .p-tabview-nav-link {
+    border-color: var(--cor-tema-4);
+    color: var(--cor-tema-4);
+  }
+}
+
+
+//.p-button {
+//  background: var(--cor-tema-5);
+//  border: 1px solid var(--cor-tema-5);
+//}
+.p-datatable .p-datatable-thead > tr > th {
+  color: var(--cor-tema-5);
+}
+
+app-cliente-list > p-dialog > div > div {
+  width: fit-content !important;
+}
+
+div.repo > div.botao-repor > button {
+  background-color: var(--cor-tema-6);
+}
+
+app-self-service > custom-dialog > p-dialog > div > div {
+  width: 25vw !important;
+}
+
+app-chope-view > custom-dialog > p-dialog > div > div {
+  width: 35vw !important;
+}
+
+div.buy-button > button {
+  &.empty-background, &.empty-background:hover, &:enabled:not(:focus):hover {
+    background-color: #00000000;
+    box-shadow: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+div.buy-button > button > span {
+  font-size: 20pt;
+}

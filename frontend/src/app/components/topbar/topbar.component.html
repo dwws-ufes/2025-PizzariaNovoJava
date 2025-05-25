@@ -1,0 +1,11 @@
+<div class="topbar">
+    <div class="inicio-topbar">
+        <button pButton pRipple type="button" icon="icon bi bi-house-door" class="p-button-rounded button-action"
+                (click)="alternarVisibilidadeMenuLateral()">
+        </button>
+        <span class="titulo">CSSP</span>
+    </div>
+    <button pButton pRipple type="button" [innerText]="nomeUsuarioLogado()" class="button-action"
+            (click)="fazerLogout()">
+    </button>
+</div>

@@ -1,0 +1,15 @@
+<div class="sidemenu" [ngClass]="{'invisivel': !estaVisivel() }">
+  <div class="menu pt-4">
+    <div class="opcao-menu flex justify-content-center" *ngFor="let opcao of opcoesControleAverco">
+      <button class="button-action-side"
+              pButton
+              pRipple
+              type="button"
+              [icon]="opcao.icone"
+              [pTooltip]="opcao.tooltip"
+              tooltipPosition="right"
+              (click)="opcao.aoClicar()">
+      </button>
+    </div>
+  </div>
+</div>

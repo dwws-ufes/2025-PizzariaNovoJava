@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+
+
+    <changeSet id="20250525-3" author="layla.couto">
+        <insert tableName="perfil" schemaName="">
+            <column name="id" valueSequenceNext="seq_perfil"/>
+            <column name="descricao" value="Garçom"/>
+            <column name="ativo" valueBoolean="true"/>
+        </insert>
+        <insert tableName="perfil" schemaName="">
+            <column name="id" valueSequenceNext="seq_perfil"/>
+            <column name="descricao" value="Caixa"/>
+            <column name="ativo" valueBoolean="true"/>
+        </insert>
+        <insert tableName="perfil" schemaName="">
+            <column name="id" valueSequenceNext="seq_perfil"/>
+            <column name="descricao" value="Pizzaiolo"/>
+            <column name="ativo" valueBoolean="true"/>
+        </insert>
+        <insert tableName="perfil" schemaName="">
+            <column name="id" valueSequenceNext="seq_perfil"/>
+            <column name="descricao" value="Barman"/>
+            <column name="ativo" valueBoolean="true"/>
+        </insert>
+        <insert tableName="perfil" schemaName="">
+            <column name="id" valueSequenceNext="seq_perfil"/>
+            <column name="descricao" value="Administrador"/>
+            <column name="ativo" valueBoolean="true"/>
+        </insert>
+        <insert tableName="perfil" schemaName="">
+            <column name="id" valueSequenceNext="seq_perfil"/>
+            <column name="descricao" value="Cliente"/>
+            <column name="ativo" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

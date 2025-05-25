@@ -1,0 +1,126 @@
+<div class="item-pagina tabela">
+  <p-table [columns]="colunas"
+           [value]="dados.content"
+           [paginator]="paginator"
+           [rows]="rows"
+           [responsive]="true"
+           sortMode="multiple">
+    <ng-template pTemplate="header" let-colunas>
+      <tr>
+        <th id="titulo-colunas" *ngFor="let col of colunas" [pSortableColumn]="col.field"
+            [style]="'width:'+ col.columnWidth">
+          {{col.header}}
+          <ng-container>
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+          </ng-container>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-colunas="columns">
+      <tr>
+        <td *ngFor="let col of colunas">
+          <ng-container *ngIf="col.type !== 'date' &&
+                                         col.type !== 'price' &&
+                                         col.type !== 'cpf' &&
+                                         col.type !== 'notRequired' &&
+                                         col.type !== 'rfid'">
+            {{rowData[col.field]}}
+          </ng-container>
+          <ng-container *ngIf="col.type === 'date'">
+            <div class="flex icone w100">
+              {{rowData[col.field] | date: "dd/MM/yyyy"}}
+            </div>
+          </ng-container>
+          <ng-container *ngIf="col.type === 'price'">
+            <div class="flex icone w100">
+              {{rowData[col.field] | currency: 'BRL'}}
+            </div>
+          </ng-container>
+          <ng-container *ngIf="col.type === 'cpf'">
+            <div class="flex icone w100">
+              {{rowData[col.field] | cpf}}
+            </div>
+          </ng-container>
+          <ng-container *ngIf="col.type === 'notRequired'">
+            <div class="flex icone w100">
+              {{rowData[col.field] ? rowData[col.field] : '-'}}
+            </div>
+          </ng-container>
+          <ng-container *ngIf="col.type === 'rfid'">
+            <div class="flex icone w100">
+              {{rowData[col.field] ? rowData[col.field] : 'Cartão Não Atribuído'}}
+            </div>
+          </ng-container>
+          <ng-container *ngIf="col.field === 'acoes' ">
+            <div class="flex justify-content-center p-0">
+              <button *ngIf="visualizarDado"
+                      pButton
+                      icon="pi pi-eye"
+                      class="button-action botao-secundario button-view sem-fundo flex align-items-center justify-content-center m-1"
+                      iconPos="left"
+                      (click)="this.abrirModalVisualizar.emit(rowData.id)">
+              </button>
+              <button *ngIf="editarDado"
+                      pButton
+                      pTooltip="Editar"
+                      tooltipPosition="top"
+                      icon="pi pi-pencil"
+                      class="button-action botao-secundario button-view flex align-items-center justify-content-center m-1"
+                      iconPos="left"
+                      (click)="this.abrirModalHabilitado.emit(rowData.id)">
+              </button>
+              <button *ngIf="repor" pButton
+                      icon="bi bi-chat-square-dots"
+                      pTooltip="Solicitar Reposição"
+                      tooltipPosition="top"
+                      class="button-action botao-secundario button-view flex align-items-center justify-content-center m-1"
+                      iconPos="left"
+                      (click)="this.solicitarReposicao.emit(rowData)">
+              </button>
+              <button *ngIf="entradaCliente"
+                      [disabled]="!!rowData.numCartaoRFID"
+                      pButton
+                      pTooltip="Entrada"
+                      tooltipPosition="top"
+                      icon="bi bi-clipboard-check"
+                      class="button-action botao-secundario button-view flex align-items-center justify-content-center m-1"
+                      (click)="this.abrirModalEntrada.emit(rowData.id)">
+              </button>
+              <button *ngIf="saidaCliente"
+                      pButton
+                      pTooltip="Saída"
+                      tooltipPosition="top"
+                      icon="bi bi-clipboard-x"
+                      class="button-action botao-secundario button-view sem-fundo flex align-items-center justify-content-center m-1"
+                      (click)="this.abrirModalSaida.emit(rowData)">
+              </button>
+              <button *ngIf="desativarDado"
+                      pButton
+                      pTooltip="Excluir"
+                      tooltipPosition="top"
+                      icon="pi pi-trash"
+                      class="button-action botao-secundario button-view sem-fundo flex align-items-center justify-content-center m-1"
+                      (click)="this.deletarDado.emit(rowData)">
+              </button>
+              <button *ngIf="changePassword"
+                      pButton
+                      pTooltip="Alterar Senha"
+                      tooltipPosition="top"
+                      icon="pi pi-lock"
+                      class="button-action botao-secundario button-view sem-fundo flex align-items-center justify-content-center m-1"
+                      (click)="this.abrirModalChangePassword.emit(rowData)">
+              </button>
+            </div>
+          </ng-container>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td *ngIf="!dados.content">
+          Nenhum dado encontrado.
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

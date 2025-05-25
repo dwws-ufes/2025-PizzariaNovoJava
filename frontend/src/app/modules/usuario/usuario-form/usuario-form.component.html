@@ -1,0 +1,48 @@
+<div class="form p-fluid p-grid">
+  <form [formGroup]="formGroup">
+
+    <div class="field pt-2">
+      <span class="item-form">
+        <label class="campo" for="nome">Nome</label>
+        <input type="text" id="nome" pInputText formControlName="nome">
+      </span>
+    </div>
+
+    <div class="area-field flex">
+      <div class="item-field col-6">
+        <span class="item-form">
+          <label class="campo">Perfil</label>
+          <p-dropdown formControlName="idPerfil" [filter]="true"
+                      [options]="typeProfile"
+                      placeholder="Selecione"
+                      appendTo="body">
+          </p-dropdown>
+        </span>
+      </div>
+
+      <div class="item-field col-6">
+        <span class="item-form">
+          <label class="campo" for="usuario">Usuário</label>
+          <input type="text" id="usuario" pInputText formControlName="usuario">
+        </span>
+      </div>
+    </div>
+
+    <div class="field pt-2">
+        <span class="item-form">
+          <label class="campo">Senha</label>
+          <p-password formControlName="senha" [feedback]="false"></p-password>
+        </span>
+
+<!--      <div class="item-field col-6">-->
+<!--        <span class="item-form">-->
+<!--          <label class="campo">Confirmar Senha</label>-->
+<!--          <p-password formControlName="senha" [feedback]="false"></p-password>-->
+<!--        </span>-->
+<!--      </div>-->
+    </div>
+
+  </form>
+</div>
+<ng-content></ng-content>
+

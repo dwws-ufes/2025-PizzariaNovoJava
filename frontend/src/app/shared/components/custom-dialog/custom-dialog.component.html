@@ -1,0 +1,18 @@
+<p-dialog [(visible)]="display" class="dialod"
+		  [modal]="true"
+		  [resizable]="false"
+		  (onHide)="close()"
+		  [draggable]="false"
+		  [header]="header">
+	<ng-content></ng-content>
+	<p-footer>
+		<div class="rodape">
+			<p-button (onClick)="close()" label='Cancelar'
+					  class="ui-g-12 ui-md-2" icon="bi bi-x-lg">
+			</p-button>
+			<p-button (onClick)="buttonAction()" label='Salvar' [disabled]="disableButton"
+					  class="ui-g-12 ui-md-2" icon="bi bi-check-lg">
+			</p-button>
+		</div>
+	</p-footer>
+</p-dialog>

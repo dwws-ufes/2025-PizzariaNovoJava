@@ -1,0 +1,52 @@
+application:
+  appName: schoperia-self-service
+
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: laylamscouto@gmail.com
+    password: fpkxhuxqvisdxcrs
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+          socketFactory:
+            port: 465
+            class: javax.net.ssl.SSLSocketFactory
+  application:
+    name: choperia-self-service
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: admin
+    password: admin
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+  jackson:
+    date-format: yyyy-MM-dd
+    deserialization:
+      fail-on-unknown-properties: false
+  jpa:
+    #        database-platform: io.github.jhipster.domain.util.FixedPostgreSQL95Dialect
+    database: POSTGRESQL
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate.id.new_generator_mappings: true
+      hibernate.connection.provider_disables_autocommit: true
+      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: false
+  liquibase:
+    change-log: classpath:/db/master.xml
+  #       drop-first: true
+  server:
+    port: 8080
+

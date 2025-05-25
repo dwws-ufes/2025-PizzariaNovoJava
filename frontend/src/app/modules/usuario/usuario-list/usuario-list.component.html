@@ -1,0 +1,38 @@
+<div class="pagina flex flex-column col-12">
+  <div class="item-pagina col-12">
+    <span class="titulo">Usuários</span>
+  </div>
+
+  <div class="item-pagina pt-3">
+    <button pButton type="button"
+            icon="pi pi-plus"
+            class="button-action ui-button-success button-save-new"
+            iconPos="left"
+            label="Novo Usuário"
+            (click)="newUser()">
+    </button>
+  </div>
+
+  <custom-table [colunas]="columns"
+                [dados]="usersList"
+                [paginator]="true"
+                [rows]="12"
+                [editarDado]="true" [desativarDado]="true" [changePassword]="true"
+                (abrirModalHabilitado)="editUser($event)" (deletarDado)="confirmAction($event)" (abrirModalChangePassword)="changePassword($event)">
+  </custom-table>
+
+
+</div>
+
+<custom-dialog [display]="display"
+               [header]="titleDialog"
+               (answerForm)="onSave()"
+               (closeDialog)="onClose()">
+  <app-usuario-form></app-usuario-form>
+</custom-dialog>
+<custom-dialog [display]="displayChangePassword"
+               [header]="titleDialog"
+               (answerForm)="onSaveNewPassword()"
+               (closeDialog)="onCloseModalChangePassword()">
+  <app-changePassword-form></app-changePassword-form>
+</custom-dialog>
