@@ -1,1 +1,30 @@
-/* You can add global styles to this file, and also import other style files */
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+
+@import "assets/css/variaveis-globais.css";
+@import "assets/fonts/Kreon/font-kreon.css";
+@import "assets/fonts/Reem_Kufi/font-reem-kufi.css";
+@import "assets/css/sobrescritas-primeng";
+@import "assets/css/estilizacoes-globais";
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100vh;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

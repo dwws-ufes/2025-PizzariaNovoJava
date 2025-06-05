@@ -1,4 +1,4 @@
-button.button-action {
+button.button-action,  p-button > button{
   background-color: var(--cor-tema-2);
   border: var(--cor-tema-2);
 }
@@ -72,7 +72,7 @@ body > app-root > div > div > div > div > {
 //  border: 1px solid var(--cor-tema-5);
 //}
 .p-datatable .p-datatable-thead > tr > th {
-  color: var(--cor-tema-5);
+  color: var(--cor-tema-7);
 }
 
 app-cliente-list > p-dialog > div > div {

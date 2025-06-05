@@ -8,4 +8,5 @@
     <include file="db/changelog/202505251804-create_table_perfil.xml"/>
     <include file="db/changelog/202505251805-insert_into_table_perfil.xml"/>
     <include file="db/changelog/202505251806-create_table_usuario.xml"/>
+    <include file="db/changelog/202505280823-inset-into-table-usuario.xml"/>
 </databaseChangeLog>

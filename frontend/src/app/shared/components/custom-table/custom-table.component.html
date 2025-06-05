@@ -7,7 +7,7 @@
            sortMode="multiple">
     <ng-template pTemplate="header" let-colunas>
       <tr>
-        <th id="titulo-colunas" *ngFor="let col of colunas" [pSortableColumn]="col.field"
+        <th class="titulo-colunas" id="titulo-colunas" *ngFor="let col of colunas" [pSortableColumn]="col.field"
             [style]="'width:'+ col.columnWidth">
           {{col.header}}
           <ng-container>

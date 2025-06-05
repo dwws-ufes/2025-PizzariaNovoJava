@@ -1,7 +1,7 @@
 version: '2'
 services:
-  cssp-postgresql:
+  dwss-postgresql:
     extends:
       file: postgresql.yml
-      service: cssp-postgresql
-    container_name: cssp-postgresql
+      service: dwss-postgresql
+    container_name: dwss-postgresql

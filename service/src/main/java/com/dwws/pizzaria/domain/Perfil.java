@@ -1,9 +1,7 @@
 package com.dwws.pizzaria.domain;
 
-import com.dwws.pizzaria.domain.enums.TipoPerfil;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,10 +26,6 @@ public class Perfil implements Serializable {
 
     @Column(name = "descricao", nullable = false)
     private String descricao;
-
-    @Enumerated
-    @Column(name = "tipo_perfil")
-    private TipoPerfil tipoPerfil;
 
     @Column(name = "ativo", nullable = false)
     private Boolean ativo;

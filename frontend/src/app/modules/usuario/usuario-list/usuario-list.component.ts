@@ -2,7 +2,6 @@ import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ColumnUtil} from "../../../shared/util/columnUtil";
 import {UsuarioListModel} from "../../../model/list/usuario-list.model";
 import {UsuarioModel} from "../../../model/usuario.model";
-import {BlockUI, NgBlockUI} from "ng-block-ui";
 import {UsuarioFormComponent} from "../usuario-form/usuario-form.component";
 import {UsuarioService} from "../../../shared/service/usuario.service";
 import {MensagensConfirmacao} from "../../../shared/util/msgConfirmacaoDialog.util";
@@ -14,6 +13,7 @@ import {UsuarioColumnUtil} from "../util/usuario-column.util";
 import {MensagensUsuarioUtil} from "../util/mensagens-usuario.util";
 import {MensagensProntasUtil} from "../../../shared/util/messages/MensagensProntas.util";
 import {ChangePasswordComponet} from "../cahngePassword-form/changePassword-form.component";
+import {BlockUI, NgBlockUI} from "ng-block-ui";
 
 @Component({
   selector: 'app-usuario-list',
@@ -74,7 +74,7 @@ export class UsuarioListComponent implements OnInit {
     this.onClose();
   }
 
-  onSaveNewPassword(): void{
+  onSaveNewPassword(): void {
     this.changePasswordComponent.changePassword();
     //this.onCloseModalChangePassword();
   }
@@ -85,7 +85,7 @@ export class UsuarioListComponent implements OnInit {
     this.userFormComponent.editUser(id);
   }
 
-  changePassword(id: number): void{
+  changePassword(id: number): void {
     this.titleDialog = TituloModalUsuarioUtil.setTitulo(TituloModalUsuarioUtil.CHANGE_PASSWORD.index).header;
     this.displayChangePassword = true;
     this.changePasswordComponent.user = id;
@@ -108,7 +108,7 @@ export class UsuarioListComponent implements OnInit {
     this.userFormComponent.formGroup.reset();
   }
 
-  onCloseModalChangePassword(){
+  onCloseModalChangePassword() {
     this.updateList();
     this.changePasswordComponent.formGroup.reset();
     this.displayChangePassword = false;

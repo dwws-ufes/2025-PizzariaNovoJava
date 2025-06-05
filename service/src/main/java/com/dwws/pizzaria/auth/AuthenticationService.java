@@ -4,11 +4,11 @@ import com.dwws.pizzaria.config.JwtService;
 import com.dwws.pizzaria.domain.Perfil;
 import com.dwws.pizzaria.domain.Usuario;
 import com.dwws.pizzaria.repository.UsuarioRepository;
-import com.dwws.pizzaria.service.dto.LoginDTO;
-import com.dwws.pizzaria.service.dto.UsuarioDTO;
+import com.dwws.pizzaria.service.dto.UsuarioLoginDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,53 +18,75 @@ public class AuthenticationService {
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
-
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationResponse register(UsuarioDTO usuario) {
+    public AuthenticationResponse register(RegisterRequest request) {
         Perfil perfilUser = new Perfil();
-        Usuario user = Usuario.builder()
-                .login(usuario.getLogin())
-                .nome(usuario.getNome())
-                .senha(passwordEncoder.encode(usuario.getSenha()))
+        perfilUser.setDescricao("ROLE_USER");
+
+        var user = Usuario.builder()
+                .nome(request.getName())
+                .login(request.getUsername())
+                .senha(passwordEncoder.encode(request.getPassword()))
                 .perfil(perfilUser)
                 .ativo(true)
                 .build();
+
         usuarioRepository.save(user);
 
-        String jwtToken = jwtService.generateToken(user);
+        var jwtToken = jwtService.generateToken(user);
+        var refreshToken = jwtService.generateRefreshToken(user);
 
         return AuthenticationResponse.builder()
-                .token(jwtToken)
+                .accessToken(jwtToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 
-    public LoginDTO authenticate(AuthenticationRequest authenticationRequest) {
+    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+
+        var user = usuarioRepository.findByLogin(request.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        authenticationRequest.getUsername(),
-                        authenticationRequest.getPassword()
+                        request.getUsername(),
+                        request.getPassword()
                 )
         );
 
-        var usuario = usuarioRepository.findByUsuario(authenticationRequest.getUsername());
-        //.orElseThrow(() -> new UsernameNotFoundException("Usuario nao encontrado"));
+        var jwtToken = jwtService.generateToken(user);
+        var refreshToken = jwtService.generateRefreshToken(user);
 
-        LoginDTO loginData = new LoginDTO(
-                usuario.getLogin(),
-                usuario.getNome(),
-                usuario.getPerfil().getDescricao(),
-                usuario.getPerfil().getId()
+        UsuarioLoginDTO loginData = new UsuarioLoginDTO(
+                user.getId(),
+                user.getLogin(),
+                user.getNome(),
+                user.getPerfil().getDescricao(),
+                user.getPerfil().getId()
         );
 
-        String jwtToken = jwtService.generateToken(usuario);
+        return AuthenticationResponse.builder()
+                .usuario(loginData)
+                .accessToken(jwtToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
 
-//        return AuthenticationResponse.builder()
-//                .token(jwtToken)
-//                .build();
+    public AuthenticationResponse refreshToken(RefreshTokenRequest request) {
+        String username = jwtService.extractUsername(request.getRefreshToken());
+        var user = usuarioRepository.findByLogin(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
-        return loginData;
+        if (jwtService.isTokenValid(request.getRefreshToken(), user)) {
+            var accessToken = jwtService.generateToken(user);
+
+            return AuthenticationResponse.builder()
+                    .accessToken(accessToken)
+                    .refreshToken(request.getRefreshToken())
+                    .build();
+        }
+        throw new RuntimeException("Refresh token inválido");
     }
 }

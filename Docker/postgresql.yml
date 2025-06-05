@@ -1,6 +1,6 @@
 version: '2'
 services:
-  cssp-postgresql:
+  dwss-postgresql:
     image: postgres:11.5
     # volumes:
     #     - ~/volumes/jhipster/srsservice/postgresql/:/var/lib/postgresql/data/

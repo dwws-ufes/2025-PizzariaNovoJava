@@ -15,7 +15,6 @@
             <column name="descricao" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="tipo_perfil" type="VARCHAR(255)"/>
             <column name="ativo" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
