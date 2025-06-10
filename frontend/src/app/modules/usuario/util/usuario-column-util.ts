@@ -1,4 +1,4 @@
-import {ColumnUtil} from "../../../shared/util/columnUtil";
+import {ColumnUtil} from "../../../shared/util/column-util";
 
 export class UsuarioColumnUtil {
 
@@ -12,9 +12,14 @@ export class UsuarioColumnUtil {
 			field: 'nome',
 		},
 		{
-			header: 'Usuário',
-			field: 'usuario',
+			header: 'Login Usuário',
+			field: 'login',
 		},
+    {
+      header: 'CPF',
+      field: 'cpf',
+      type: 'cpf'
+    },
 		{
 			header: 'Perfil',
 			field: 'descPerfil'

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ConfirmationService, MessageService} from "primeng/api";
-import {EntidadeUtil} from "./entidade.util";
+import {EntidadeUtil} from "./entidade-util";
 
 @Injectable()
 export class MensagensConfirmacao {

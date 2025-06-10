@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     @Query( " SELECT NEW com.dwws.pizzaria.service.dto.UsuarioListDTO(u.id, " +
-            " u.login, u.nome, u.perfil.id, u.perfil.descricao, u.ativo) " +
+            " u.login, u.cpf, u.nome, u.perfil.id, u.perfil.descricao, u.ativo) " +
             " FROM Usuario u WHERE u.ativo = true " )
     Page<UsuarioListDTO> listAll(Pageable pageable);
 

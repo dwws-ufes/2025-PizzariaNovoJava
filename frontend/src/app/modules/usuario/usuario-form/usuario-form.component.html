@@ -12,34 +12,42 @@
       <div class="item-field col-6">
         <span class="item-form">
           <label class="campo">Perfil</label>
-          <p-dropdown formControlName="idPerfil" [filter]="true"
-                      [options]="typeProfile"
-                      placeholder="Selecione"
-                      appendTo="body">
+          <p-dropdown formControlName="idPerfil" placeholder="Selecione" appendTo="body"
+                      [filter]="true"
+                      [options]="typeProfile">
           </p-dropdown>
         </span>
       </div>
 
       <div class="item-field col-6">
         <span class="item-form">
-          <label class="campo" for="usuario">Usuário</label>
-          <input type="text" id="usuario" pInputText formControlName="usuario">
+          <label class="campo" for="login">Login Usuário</label>
+          <input type="text" id="login" pInputText formControlName="login">
         </span>
       </div>
     </div>
 
-    <div class="field pt-2">
+    <div class="area-field flex">
+      <div class="item-field col-6">
         <span class="item-form">
-          <label class="campo">Senha</label>
-          <p-password formControlName="senha" [feedback]="false"></p-password>
+          <label class="campo" for="cpf">CPF</label>
+          <p-inputMask id="cpf" mask="999.999.999-99" formControlName="cpf"></p-inputMask>
         </span>
+      </div>
 
-<!--      <div class="item-field col-6">-->
-<!--        <span class="item-form">-->
-<!--          <label class="campo">Confirmar Senha</label>-->
-<!--          <p-password formControlName="senha" [feedback]="false"></p-password>-->
-<!--        </span>-->
-<!--      </div>-->
+      <div class="item-field col-6">
+        <span class="item-form">
+          <label class="campo" for="email">E-mail</label>
+          <input type="email" id="email" pInputText formControlName="email">
+        </span>
+      </div>
+    </div>
+
+    <div class="field pt-2" *ngIf="userModel?.id != null">
+      <span class="item-form">
+        <label class="campo">Senha</label>
+        <p-password formControlName="senha" [feedback]="false"></p-password>
+      </span>
     </div>
 
   </form>

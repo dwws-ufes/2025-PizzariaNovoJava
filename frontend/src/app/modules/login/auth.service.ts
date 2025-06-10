@@ -6,7 +6,7 @@ import {Observable} from "rxjs";
 import {environment} from "../../../environments/environment";
 import {UsuarioAutenticacaoModel} from "../../model/usuario-autenticacao.model";
 import {MensagensProntasUtil} from "../../shared/util/messages/MensagensProntas.util";
-import {MensagensConfirmacao} from "../../shared/util/msgConfirmacaoDialog.util";
+import {MensagensConfirmacao} from "../../shared/util/msg-confirmacao-dialog-util";
 import {AuthenticationModel} from "../../model/authentication.model";
 
 @Injectable({

@@ -18,10 +18,10 @@
                 [paginator]="true"
                 [rows]="12"
                 [editarDado]="true" [desativarDado]="true" [changePassword]="true"
-                (abrirModalHabilitado)="editUser($event)" (deletarDado)="confirmAction($event)" (abrirModalChangePassword)="changePassword($event)">
+                (abrirModalHabilitado)="editUser($event)"
+                (deletarDado)="confirmAction($event)"
+                (abrirModalChangePassword)="changePassword($event)">
   </custom-table>
-
-
 </div>
 
 <custom-dialog [display]="display"

@@ -7,7 +7,7 @@ import {TopbarComponent} from "./components/topbar/topbar.component";
 import {SidemenuComponent} from "./components/sidemenu/sidemenu.component";
 import {SharedModule} from "./shared/shared.module";
 import {ConfirmationService, MessageService} from "primeng/api";
-import {MensagensConfirmacao} from "./shared/util/msgConfirmacaoDialog.util";
+import {MensagensConfirmacao} from "./shared/util/msg-confirmacao-dialog-util";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {AuthService} from "./modules/login/auth.service";
 import {LoginViewComponent} from "./modules/login/login-view/login-view.component";

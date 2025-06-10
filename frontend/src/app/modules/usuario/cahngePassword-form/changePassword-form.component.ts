@@ -1,11 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output, Renderer2} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UsuarioModel} from "../../../model/usuario.model";
 import {SelectItem} from "primeng/api";
 import {UsuarioService} from "../../../shared/service/usuario.service";
-import {MensagensConfirmacao} from "../../../shared/util/msgConfirmacaoDialog.util";
+import {MensagensConfirmacao} from "../../../shared/util/msg-confirmacao-dialog-util";
 import {PerfilService} from "../../../shared/service/perfil.service";
-import {MensagensUsuarioUtil} from "../util/mensagens-usuario.util";
+import {MensagensUsuarioUtil} from "../util/mensagens-usuario-util";
 
 @Component({
   selector: 'app-changePassword-form',
@@ -24,6 +24,7 @@ export class ChangePasswordComponet implements OnInit {
   typeProfile: SelectItem[];
   list: boolean = false;
   user: any;
+
   constructor(private builder: FormBuilder,
               private userService: UsuarioService,
               private profileService: PerfilService,
@@ -47,18 +48,15 @@ export class ChangePasswordComponet implements OnInit {
     });
   }
 
-  changePassword(): void{
+  changePassword(): void {
     let senha = this.formGroup.getRawValue()
     const newPasswordDto = {
       id: this.user.id,
       senha: senha.senha
     }
-    console.log(newPasswordDto)
-
 
     this.userService.updtSenha(newPasswordDto).subscribe({
         next: (response) => {
-          console.log("OK");
         },
       }
     );

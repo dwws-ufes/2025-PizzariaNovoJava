@@ -3,9 +3,10 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UsuarioModel} from "../../../model/usuario.model";
 import {SelectItem} from "primeng/api";
 import {UsuarioService} from "../../../shared/service/usuario.service";
-import {MensagensConfirmacao} from "../../../shared/util/msgConfirmacaoDialog.util";
+import {MensagensConfirmacao} from "../../../shared/util/msg-confirmacao-dialog-util";
 import {PerfilService} from "../../../shared/service/perfil.service";
-import {MensagensUsuarioUtil} from "../util/mensagens-usuario.util";
+import {MensagensUsuarioUtil} from "../util/mensagens-usuario-util";
+import {CpfValidator} from "../../../shared/util/validator/cpf-validator-util";
 
 @Component({
   selector: 'app-usuario-form',
@@ -45,7 +46,9 @@ export class UsuarioFormComponent implements OnInit {
     this.formGroup = this.builder.group({
       id: [null],
       nome: [null, [Validators.required]],
-      usuario: [null, [Validators.required]],
+      cpf: [null, [Validators.required, CpfValidator.isValid]],
+      email: [null, [Validators.required, Validators.email]],
+      login: [null, [Validators.required]],
       senha: [null, [Validators.required]],
       confirmSenha: [null, [Validators.required]],
       idPerfil: [null, [Validators.required]]

@@ -5,14 +5,16 @@ import { CustomDialogComponent } from './custom-dialog/custom-dialog.component';
 import { PRIMENG_IMPORTS } from "../imports/primeng.imports";
 import { CustomTableComponent } from "./custom-table/custom-table.component";
 import { CPFPipe } from "../util/pipes/cpf.pipe";
-import { SimpleTableComponent } from "./simple-table/simple-table.component";
+import { ValidationMessageComponent } from './validation-message/validation-message.component';
+import {CpfPrivadoPipe} from "../util/pipes/cpf-privado.pipe";
 
 @NgModule({
   declarations: [
     CustomDialogComponent,
     CustomTableComponent,
     CPFPipe,
-    SimpleTableComponent
+    CpfPrivadoPipe,
+    ValidationMessageComponent,
   ],
   imports: [
     CommonModule,
@@ -24,7 +26,7 @@ import { SimpleTableComponent } from "./simple-table/simple-table.component";
     CustomDialogComponent,
     CustomTableComponent,
     CPFPipe,
-    SimpleTableComponent
+    CpfPrivadoPipe,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA] // ✅ Only needed if using custom elements (e.g., Web Components)
 })
