@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="20250114-1004" author="layla.couto">
+        <createSequence incrementBy="1" sequenceName="seq_pagamento" startValue="1"/>
+        <createTable tableName="pagamento">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_pagamento"/>
+            </column>
+            <column name="pedido_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="valor_total" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="forma_pagamento" type="SMALLINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_hora" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ativo" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint columnNames="pedido_id" constraintName="uc_pagamento_pedido" tableName="pagamento"/>
+        <addForeignKeyConstraint baseColumnNames="pedido_id" baseTableName="pagamento"
+                                 constraintName="FK_PAGAMENTO_ON_PEDIDO" referencedColumnNames="id"
+                                 referencedTableName="pedido"/>
+    </changeSet>
+</databaseChangeLog>

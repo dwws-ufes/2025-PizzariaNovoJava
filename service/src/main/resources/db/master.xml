@@ -9,4 +9,10 @@
     <include file="db/changelog/202505251805-insert_into_table_perfil.xml"/>
     <include file="db/changelog/202505251806-create_table_usuario.xml"/>
     <include file="db/changelog/202505280823-inset-into-table-usuario.xml"/>
+    <include file="db/changelog/202501141000-create_table_cliente.xml"/>
+    <include file="db/changelog/202501141001-create_table_produto.xml"/>
+    <include file="db/changelog/202501141002-create_table_pedido.xml"/>
+    <include file="db/changelog/202501141003-create_table_item_pedido.xml"/>
+    <include file="db/changelog/202501141004-create_table_pagamento.xml"/>
+    <include file="db/changelog/202501141005-create_table_notificacoes.xml"/>
 </databaseChangeLog>

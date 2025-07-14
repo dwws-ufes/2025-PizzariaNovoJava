@@ -91,4 +91,8 @@ public class Usuario implements Serializable, UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public Usuario(Long id) {
+        this.id = id;
+    }
 }

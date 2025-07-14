@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="20250114-1005" author="layla.couto">
+        <createSequence incrementBy="1" sequenceName="seq_notificacao_bar" startValue="1"/>
+        <createTable tableName="notificacao_bar">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_notificacao_bar"/>
+            </column>
+            <column name="pedido_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="SMALLINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_hora" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ativo" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="pedido_id" baseTableName="notificacao_bar"
+                                 constraintName="FK_NOTIFICACAO_BAR_ON_PEDIDO" referencedColumnNames="id"
+                                 referencedTableName="pedido"/>
+
+
+
+        <createSequence incrementBy="1" sequenceName="seq_notificacao_cozinha" startValue="1"/>
+        <createTable tableName="notificacao_cozinha">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_notificacao_cozinha"/>
+            </column>
+            <column name="pedido_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="SMALLINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_hora" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ativo" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="pedido_id" baseTableName="notificacao_cozinha"
+                                 constraintName="FK_NOTIFICACAO_COZINHA_ON_PEDIDO" referencedColumnNames="id"
+                                 referencedTableName="pedido"/>
+    </changeSet>
+</databaseChangeLog>

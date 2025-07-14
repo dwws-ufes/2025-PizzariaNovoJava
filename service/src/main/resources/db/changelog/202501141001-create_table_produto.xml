@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+
+    <changeSet id="20250114-1001" author="layla.couto">
+        <createSequence incrementBy="1" sequenceName="seq_produto" startValue="1"/>
+
+        <createTable tableName="produto">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_produto"/>
+            </column>
+            <column name="nome" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="descricao" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="preco_venda" type="DOUBLE"/>
+            <column name="tipo_produto" type="SMALLINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ativo" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+
+        <createSequence incrementBy="1" sequenceName="seq_produto" startValue="1"/>
+        <createTable tableName="pizza">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_pizza"/>
+            </column>
+            <column name="tamanho" type="SMALLINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="qtd_fatias" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="pizza" constraintName="FK_PIZZA_ON_ID"
+                                 referencedColumnNames="id" referencedTableName="produto"/>
+
+
+        <createSequence incrementBy="1" sequenceName="seq_produto" startValue="1"/>
+        <createTable tableName="bebida">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_bebida"/>
+            </column>
+            <column name="volume" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fabricante" type="VARCHAR(255)"/>
+            <column name="tipo_bebida" type="SMALLINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="bebida" constraintName="FK_BEBIDA_ON_ID"
+                                 referencedColumnNames="id" referencedTableName="produto"/>
+        <createSequence incrementBy="1" sequenceName="seq_produto" startValue="1"/>
+    </changeSet>
+</databaseChangeLog>

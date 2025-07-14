@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="20250114-1003" author="layla.couto">
+        <createSequence incrementBy="1" sequenceName="seq_item_pedido" startValue="1"/>
+        <createTable tableName="item_pedido">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_item_pedido"/>
+            </column>
+            <column name="pedido_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="produto_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantidade" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="valor_item" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ativo" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="pedido_id" baseTableName="item_pedido"
+                                 constraintName="FK_ITEM_PEDIDO_ON_PEDIDO" referencedColumnNames="id"
+                                 referencedTableName="pedido"/>
+        <addForeignKeyConstraint baseColumnNames="produto_id" baseTableName="item_pedido"
+                                 constraintName="FK_ITEM_PEDIDO_ON_PRODUTO" referencedColumnNames="id"
+                                 referencedTableName="produto"/>
+    </changeSet>
+
+</databaseChangeLog>
