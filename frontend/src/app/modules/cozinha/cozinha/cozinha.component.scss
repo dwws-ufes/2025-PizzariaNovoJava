@@ -1,0 +1,44 @@
+div.item-pagina-list {
+  justify-content: center;
+  display: flex;
+  padding: 3rem 3rem;
+}
+
+div.list-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5rem;
+  justify-content: center;
+
+  .item {
+    width: 30rem;
+    display: flex;
+    background: var(--cor-tema-3);
+    color: #FFF;
+    height: 8rem;
+    align-items: center;
+    border-radius: 2rem;
+    flex-direction: column;
+
+    .body-card {
+      display: flex;
+      padding: 2rem 4rem 1rem;
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: end;
+      width: 100%;
+      padding-right: 20px;
+    }
+  }
+
+  span.status, .msg {
+    color: var(--cor-tema-5);
+    font-weight: 500;
+    font-family: 'Kreon', Verdana, sans-serif;
+  }
+
+}
