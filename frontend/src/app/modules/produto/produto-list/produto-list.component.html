@@ -1,1 +1,20 @@
-<p>produto-list works!</p>
+<div class="pagina flex flex-column col-12">
+  <div class="item-pagina col-12">
+    <span class="titulo">Produtos</span>
+  </div>
+
+
+  <p-tabView>
+    <p-tabPanel header="Pizza">
+      <app-pizza-list></app-pizza-list>
+    </p-tabPanel>
+
+    <p-tabPanel header="Bebidas">
+      <app-bebida-list></app-bebida-list>
+    </p-tabPanel>
+
+    <p-tabPanel header="Sobremesas">
+      <app-sobremesa-list></app-sobremesa-list>
+    </p-tabPanel>
+  </p-tabView>
+</div>

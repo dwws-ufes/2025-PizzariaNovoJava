@@ -1,1 +1,28 @@
-<p>bebida-list works!</p>
+<div class="pagina flex flex-column col-12">
+  <div class="item-pagina botoes">
+    <button pButton type="button"
+            icon="pi pi-plus"
+            class="button-action ui-button-success button-save-new"
+            iconPos="left"
+            label="Cadastrar Bebida"
+            (click)="registerBebida()">
+    </button>
+  </div>
+
+  <custom-table [colunas]="columns"
+                [dados]="bebidasList"
+                [paginator]="true"
+                [rows]="12"
+                [editarDado]="true"
+                [desativarDado]="true"
+                (abrirModalHabilitado)="editBebida($event)"
+                (deletarDado)="confirmAction($event)">
+  </custom-table>
+</div>
+
+<custom-dialog [display]="display"
+               [header]="titleDialog"
+               (answerForm)="onSave()"
+               (closeDialog)="onClose()">
+  <app-bebida-form></app-bebida-form>
+</custom-dialog>

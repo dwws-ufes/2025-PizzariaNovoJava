@@ -1,40 +1,38 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {SobremesaModel} from 'src/app/model/sobremesa.model';
 import {MensagensConfirmacao} from "../../../../shared/util/msg-confirmacao-dialog-util";
-import {BebidaModel} from "../../../../model/bebida.model";
-import {TipoBebidaEnum} from "../../../../shared/util/enum/tipo-bebida-enum";
 import {TipoProdutoEnum} from "../../../../shared/util/enum/tipo-produto-enum";
 import {EntidadeUtil} from "../../../../shared/util/entidade-util";
 
 @Component({
-  selector: 'app-bebida-form',
-  templateUrl: './bebida-form.component.html',
-  styleUrls: ['./bebida-form.component.scss']
+  selector: 'app-sobremesa-form',
+  templateUrl: './sobremesa-form.component.html',
+  styleUrls: ['./sobremesa-form.component.scss']
 })
-export class BebidaFormComponent implements OnInit {
+export class SobremesaFormComponent implements OnInit {
 
-  @Input() bebida: BebidaModel;
+  @Input() sobremesa: SobremesaModel;
   @Output() onClose: EventEmitter<void> = new EventEmitter();
-  @Output() onSave: EventEmitter<BebidaModel> = new EventEmitter();
+  @Output() onSave: EventEmitter<SobremesaModel> = new EventEmitter();
 
   formGroup: FormGroup;
 
-  entidade = EntidadeUtil.BEBIDA;
-  tiposBebida = TipoBebidaEnum.values;
+  entidade = EntidadeUtil.SOBREMESA;
 
   list: boolean = false;
 
   constructor(
     private fb: FormBuilder,
-    // private bebidaService: BebidaService,
+    // private sobremesaService: SobremesaService,
     private message: MensagensConfirmacao
   ) {
   }
 
   ngOnInit(): void {
     this.initForm();
-    if (this.bebida) {
-      this.loadBebidaData();
+    if (this.sobremesa) {
+      this.loadSobremesaData();
     }
   }
 
@@ -44,22 +42,16 @@ export class BebidaFormComponent implements OnInit {
       nome: [null, [Validators.required, Validators.maxLength(100)]],
       descricao: [null, [Validators.required, Validators.maxLength(255)]],
       precoVenda: [null, [Validators.required, Validators.min(0.01)]],
-      volume: [null, [Validators.required, Validators.min(0.01)]],
-      fabricante: [null, [Validators.required]],
-      tipoBebida: [null, [Validators.required]],
-      tipoProdutoId: [TipoProdutoEnum.BEBIDA.index]
+      tipoProdutoId: [TipoProdutoEnum.SOBREMESA.index]
     });
   }
 
-  loadBebidaData(): void {
+  loadSobremesaData(): void {
     this.formGroup.patchValue({
-      id: this.bebida.id,
-      nome: this.bebida.nome,
-      descricao: this.bebida.descricao,
-      precoVenda: this.bebida.precoVenda,
-      volume: this.bebida.volume,
-      fabricante: this.bebida.fabricante,
-      tipoBebida: this.bebida.tipoBebidaId,
+      id: this.sobremesa.id,
+      nome: this.sobremesa.nome,
+      descricao: this.sobremesa.descricao,
+      precoVenda: this.sobremesa.precoVenda,
     });
   }
 
@@ -69,17 +61,17 @@ export class BebidaFormComponent implements OnInit {
       return;
     }
 
-    const bebidaData = this.formGroup.value as BebidaModel;
+    const sobremesaData = this.formGroup.value as SobremesaModel;
 
-    if (bebidaData.id) {
-      this.updateBebida(bebidaData);
+    if (sobremesaData.id) {
+      this.updateSobremesa(sobremesaData);
     } else {
-      this.createBebida(bebidaData);
+      this.createSobremesa(sobremesaData);
     }
   }
 
-  createBebida(bebida: BebidaModel): void {
-    // this.bebidaService.create(bebida).subscribe({
+  createSobremesa(sobremesa: SobremesaModel): void {
+    // this.sobremesaService.create(sobremesa).subscribe({
     //   next: (response) => {
     //     this.message.showSuccess(MensagensProdutoUtil.SUCCESS_CREATED(this.entidade.descricao));
     //     this.onSave.emit(response);
@@ -91,8 +83,8 @@ export class BebidaFormComponent implements OnInit {
     // });
   }
 
-  updateBebida(bebida: BebidaModel): void {
-    // this.bebidaService.update(bebida.id, bebida).subscribe({
+  updateSobremesa(sobremesa: SobremesaModel): void {
+    // this.sobremesaService.update(sobremesa.id, sobremesa).subscribe({
     //   next: (response) => {
     //     this.message.showSuccess(MensagensProdutoUtil.UPDATE_SUCCESSFUL(this.entidade.descricao));
     //     this.onSave.emit(response);

@@ -1,1 +1,28 @@
-<p>pizza-list works!</p>
+<div class="pagina flex flex-column col-12">
+  <div class="item-pagina botoes">
+    <button pButton type="button"
+            icon="pi pi-plus"
+            class="button-action ui-button-success button-save-new"
+            iconPos="left"
+            label="Cadastrar Pizza"
+            (click)="registerPizza()">
+    </button>
+  </div>
+
+  <custom-table [colunas]="columns"
+                [dados]="pizzasList"
+                [paginator]="true"
+                [rows]="12"
+                [editarDado]="true"
+                [desativarDado]="true"
+                (abrirModalHabilitado)="editPizza($event)"
+                (deletarDado)="confirmAction($event)">
+  </custom-table>
+</div>
+
+<custom-dialog [display]="display"
+               [header]="titleDialog"
+               (answerForm)="onSave()"
+               (closeDialog)="onClose()">
+  <app-pizza-form></app-pizza-form>
+</custom-dialog>
