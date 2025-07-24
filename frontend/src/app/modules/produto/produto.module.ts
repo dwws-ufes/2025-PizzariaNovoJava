@@ -2,18 +2,24 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ProdutoRoutingModule } from './produto-routing.module';
-import { PizzaComponent } from './pizza/pizza.component';
-import { BebidaComponent } from './bebida/bebida.component';
-import { SobremesaComponent } from './sobremesa/sobremesa.component';
+import { PizzaFormComponent } from './pizza/pizza-form/pizza-form.component';
+import { BebidaFormComponent } from './bebida/bebida-form/bebida-form.component';
+import { SobremesaComponent } from './sobremesa/sobremesa-form/sobremesa.component';
 import { ProdutoListComponent } from './produto-list/produto-list.component';
+import { BebidaListComponent } from './bebida/bebida-list/bebida-list.component';
+import { PizzaListComponent } from './pizza/pizza-list/pizza-list.component';
+import { SobremesaListComponent } from './sobremesa/sobremesa-list/sobremesa-list.component';
 
 
 @NgModule({
   declarations: [
-    PizzaComponent,
-    BebidaComponent,
+    PizzaFormComponent,
+    BebidaFormComponent,
     SobremesaComponent,
-    ProdutoListComponent
+    ProdutoListComponent,
+    BebidaListComponent,
+    PizzaListComponent,
+    SobremesaListComponent
   ],
   imports: [
     CommonModule,
