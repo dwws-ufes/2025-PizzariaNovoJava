@@ -1,133 +1,64 @@
 import {ColumnUtil} from "../../../shared/util/column-util";
 
 export class ProdutoColumnUtil {
-
-  static INPUT_COLUMNS: ColumnUtil[] = [
+  // Colunas genéricas para produtos
+  static BASE_PRODUCT_COLUMNS: ColumnUtil[] = [
     {
-      header: 'Código de Barras',
-      field: 'codigoBarras'
+      header: 'Nome',
+      field: 'nome'
     },
     {
       header: 'Descrição',
-      field: 'descricao',
+      field: 'descricao'
     },
     {
-      header: 'Qtde. Estoque',
-      field: 'qtdeEstoque',
-    },
-    {
-      header: 'Preço Compra',
-      field: 'precoCompra',
-      type: 'price',
-      pipe: 'currency',
-    },
-    {
-      header: 'Unidade',
-      field: 'unidade'
-    },
-    {
-      header: 'Ponto de Encomenda',
-      field: 'pontoEncomenda'
-    },
-    {
-      header: 'Ações',
-      field: 'acoes',
-      columnWidth: '132px'
-    },
-  ];
-
-  static DRAFT_BEER_COLUMNS: ColumnUtil[] = [
-    {
-      header: 'RFID',
-      field: 'etiquetaRFID'
-    },
-    {
-      header: 'Descrição',
-      field: 'descricao',
-    },
-    {
-      header: 'Qtde. Estoque',
-      field: 'qtdeEstoque',
-    },
-    {
-      header: 'Total Litros',
-      field: 'litro_chope',
-      type: 'litro'
-    },
-    {
-      header: 'Preço Compra',
-      field: 'precoCompra',
-      type: 'price',
-      pipe: 'currency',
-    },
-    {
-      header: 'Unidade',
-      field: 'unidade'
-    },
-    {
-      header: 'Ponto de Encomenda',
-      field: 'pontoEncomenda'
-    },
-    {
-      header: 'Preço de Venda',
+      header: 'Preço Venda',
       field: 'precoVenda',
       type: 'price',
-      pipe: 'currency',
+      pipe: 'currency'
+    },
+    {
+      header: 'Tipo',
+      field: 'tipoProduto'
     },
     {
       header: 'Ações',
       field: 'acoes',
       columnWidth: '132px'
-    },
-  ];
-
-  static ENTRY_PRODUCTS_COLUMNS: ColumnUtil[] = [
-    {
-      header: 'Código de Barras',
-      field: 'codigoBarras'
-    },
-    {
-      header: 'Descrição',
-      field: 'descricao',
-    },
-    {
-      header: 'Qtde. Estoque',
-      field: 'qtdeEstoque',
     }
   ];
 
-  static WITHDRAW_PRODUCTS_COLUMNS: ColumnUtil[] = [
+  static BEBIDA_COLUMNS: ColumnUtil[] = [
+    ...this.BASE_PRODUCT_COLUMNS,
     {
-      header: 'Código de Barras',
-      field: 'codigoBarras'
+      header: 'Volume (ml)',
+      field: 'volume',
+      type: 'number'
     },
     {
-      header: 'Descrição',
-      field: 'descricao',
+      header: 'Fabricante',
+      field: 'fabricante'
     },
     {
-      header: 'Qtde. Estoque',
-      field: 'qtdeEstoque',
+      header: 'Tipo Bebida',
+      field: 'tipoBebida'
     }
   ];
 
-  static ENTRY_DRAFF_BEER_COLUMNS: ColumnUtil[] = [
+  static PIZZA_COLUMNS: ColumnUtil[] = [
+    ...this.BASE_PRODUCT_COLUMNS,
     {
-      header: 'Etiqueta RFID',
-      field: 'etiquetaRFID'
+      header: 'Tamanho',
+      field: 'tamanho'
     },
     {
-      header: 'Descrição',
-      field: 'descricao',
-    },
-    {
-      header: 'Quantidade',
-      field: 'qtdeEstoque',
-    },
-    {
-      header: 'Total Litros',
-      field: 'litro_chope',
+      header: 'Fatias',
+      field: 'qtdFatias',
+      type: 'number'
     }
   ];
 
+  static SOBREMESA_COLUMNS: ColumnUtil[] = [
+    ...this.BASE_PRODUCT_COLUMNS
+  ];
 }

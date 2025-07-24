@@ -4,7 +4,7 @@
     <div class="area-field flex pt-2 col-12">
       <div class="item-field col-12">
         <span class="item-form">
-          <label class="campo" for="nome">Nome da Bebida</label>
+          <label class="campo" for="nome">Nome da Sobremesa</label>
           <input type="text" id="nome" pInputText formControlName="nome" [class.invalid]="isFieldInvalid('nome')">
           <small *ngIf="isFieldInvalid('nome')" class="p-error">Nome é obrigatório</small>
         </span>
@@ -29,35 +29,6 @@
           <p-inputNumber formControlName="precoVenda" mode="currency" locale="pt-BR" currency="BRL" [min]="0.01"
                          [class.invalid]="isFieldInvalid('precoVenda')"></p-inputNumber>
           <small *ngIf="isFieldInvalid('precoVenda')" class="p-error">Preço deve ser maior que zero</small>
-        </span>
-      </div>
-
-      <div class="item-field col-6">
-        <span class="item-form">
-          <label class="campo">Volume (ml)</label>
-          <p-inputNumber formControlName="volume" [min]="0.01" [maxFractionDigits]="2"
-                         [class.invalid]="isFieldInvalid('volume')"></p-inputNumber>
-          <small *ngIf="isFieldInvalid('volume')" class="p-error">Volume deve ser maior que zero</small>
-        </span>
-      </div>
-    </div>
-
-    <div class="area-field flex col-12">
-      <div class="item-field col-6">
-        <span class="item-form">
-          <label class="campo">Fabricante</label>
-          <input type="text" pInputText formControlName="fabricante"
-                 [class.invalid]="isFieldInvalid('fabricante')">
-          <small *ngIf="isFieldInvalid('fabricante')" class="p-error">Fabricante é obrigatório</small>
-        </span>
-      </div>
-
-      <div class="item-field col-6">
-        <span class="item-form">
-          <label class="campo">Tipo de Bebida</label>
-          <p-dropdown [options]="tiposBebida" formControlName="tipoBebida" optionLabel="label" optionValue="value"
-                      [class.invalid]="isFieldInvalid('tipoBebida')"></p-dropdown>
-          <small *ngIf="isFieldInvalid('tipoBebida')" class="p-error">Tipo de bebida é obrigatório</small>
         </span>
       </div>
     </div>

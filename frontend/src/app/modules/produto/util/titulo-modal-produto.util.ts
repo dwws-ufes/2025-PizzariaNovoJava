@@ -33,3 +33,11 @@ export class TituloModalProdutoUtil {
     return titulo;
   }
 }
+
+export class TipoTituloModalProdutoUtil {
+  static readonly NEW = 0;
+  static readonly VIEW = 1;
+  static readonly EDIT = 2;
+  static readonly DELETE = 3;
+  static readonly ENTRY = 4;
+}

@@ -9,7 +9,7 @@ public enum TamanhoPizza {
     P(0, "Pequena"),
     M(1, "Média"),
     G(2, "Grande"),
-    GG(3, "Família"),
+    GG(3, "Gigante"),
     FATIA(4, "Fatia");
 
     private final Integer id;
