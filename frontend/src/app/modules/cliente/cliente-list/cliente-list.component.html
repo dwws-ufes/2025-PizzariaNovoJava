@@ -1,0 +1,30 @@
+<div class="pagina flex flex-column col-12">
+  <div class="item-pagina col-12">
+    <span class="titulo">Clientes</span>
+  </div>
+
+  <div class="item-pagina-botoes pt-3">
+    <button pButton type="button"
+            icon="pi pi-plus"
+            class="button-action ui-button-success button-save-new"
+            iconPos="left"
+            label="Cadastrar Cliente"
+            (click)="newCustomer()">
+    </button>
+  </div>
+
+  <custom-table [colunas]="columns"
+                [dados]="customersList"
+                [paginator]="true"
+                [rows]="12"
+                [editarDado]="true" [desativarDado]="true" [entradaCliente]="true" [saidaCliente]="true"
+                (abrirModalHabilitado)="editCustomer($event)" (deletarDado)="confirmAction($event)">
+  </custom-table>
+</div>
+
+<custom-dialog [display]="display"
+               [header]="titleDialog"
+               (answerForm)="onSave()"
+               (closeDialog)="onClose()">
+  <app-cliente-form></app-cliente-form>
+</custom-dialog>

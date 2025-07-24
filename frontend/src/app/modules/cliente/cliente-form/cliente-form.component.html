@@ -1,0 +1,37 @@
+<div class="form p-fluid p-grid">
+  <form [formGroup]="formGroup">
+
+    <div class="field pt-2">
+      <span class="item-form">
+        <label class="campo" for="nome">Nome</label>
+        <input type="text" id="nome" pInputText formControlName="nome">
+      </span>
+    </div>
+
+    <div class="area-field flex col-12">
+      <div class="item-field col-4">
+        <span class="item-form">
+          <label class="campo" for="cpf">CPF</label>
+          <p-inputMask id="cpf" mask="999.999.999-99" formControlName="cpf"></p-inputMask>
+        </span>
+      </div>
+
+      <div class="item-field col-4">
+        <span class="item-form">
+          <label class="campo" for="telefone">Telefone</label>
+          <p-inputMask id="telefone" mask="(99) 99999-9999" formControlName="telefone"></p-inputMask>
+        </span>
+      </div>
+
+      <div class="item-field col-4">
+      <span class="item-form">
+        <label class="campo" for="email">Email</label>
+        <input type="text" id="email" pInputText formControlName="email">
+      </span>
+      </div>
+
+    </div>
+  </form>
+</div>
+<ng-content></ng-content>
+
