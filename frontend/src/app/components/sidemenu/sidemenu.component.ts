@@ -24,6 +24,8 @@ export class SidemenuComponent {
       () => this.router.navigateByUrl('/caixa')),
     new OpcaoMenuModel('icon bi bi-fire', 'Cozinha',
       () => this.router.navigateByUrl('/cozinha')),
+    new OpcaoMenuModel('bi bi-glass-mug', 'Bar',
+      () => this.router.navigateByUrl('/cozinha')),
     new OpcaoMenuModel('bi bi-shop-window', 'Painel',
       () => this.router.navigateByUrl('/painel')),
   ];
