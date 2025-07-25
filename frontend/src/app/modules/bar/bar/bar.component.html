@@ -1,1 +1,60 @@
-<p>bar works!</p>
+<div class="pagina flex flex-column col-12">
+  <div class="item-pagina-list col-12">
+    <span class="titulo">Bar - Bebidas Pedidas</span>
+  </div>
+
+  <div class="list-card">
+    <div *ngFor="let item of bebidasList">
+      <div class="item">
+        <div class="body-card">
+          <div class="info-pedido">
+            <span class="pedido-numero">Pedido #{{ item.pedidoId }}</span>
+            <span class="cliente-nome">{{ item.nomeCliente }}</span>
+          </div>
+          <div class="info-bebida">
+            <span>{{ item.nomeBebida }} ({{ item.volume }}ml)</span>
+            <span class="quantidade">x{{ item.quantidade }}</span>
+          </div>
+          <span class="status" [ngClass]="{
+            'status-pendente': item.statusPratoId === StatusPedido.PENDENTE.index,
+            'status-preparando': item.statusPratoId === StatusPedido.EM_PREPARO.index,
+            'status-pronto': item.statusPratoId === StatusPedido.PRONTO.index,
+            'status-entregue': item.statusPratoId === StatusPedido.ENTREGUE.index,
+            'status-cancelado': item.statusPratoId === StatusPedido.CANCELADO.index
+          }">
+            {{ getStatusDescricao(item.statusPratoId) }}
+          </span>
+        </div>
+        <div class="card-footer">
+          <button pButton type="button"
+                  class="button-action ui-button-primary"
+                  icon="pi pi-cog"
+                  label="Alterar Status"
+                  (click)="abrirModalStatus(item)">
+          </button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="bebidasList.length == 0" class="msg">
+      <span>Nenhuma bebida pendente</span>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Status -->
+<p-dialog header="Alterar Status do Pedido" [(visible)]="displayModalStatus"
+          [style]="{width: '450px'}" [modal]="true" [draggable]="false" [resizable]="false">
+  <div class="p-fluid">
+    <div class="p-field">
+      <label for="status">Novo Status</label>
+      <p-dropdown [options]="opcoesStatus" [(ngModel)]="statusSelecionado" optionLabel="label"
+                  optionValue="value" [style]="{width: '100%'}"></p-dropdown>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <button pButton type="button" label="Cancelar" icon="pi pi-times"
+            class="p-button-text" (click)="fecharModalStatus()"></button>
+    <button pButton type="button" label="Confirmar" icon="pi pi-check"
+            class="p-button-primary" (click)="confirmarAlteracaoStatus()"></button>
+  </ng-template>
+</p-dialog>

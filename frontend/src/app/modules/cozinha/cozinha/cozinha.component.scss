@@ -1,3 +1,16 @@
+/* Estilos para o modal */
+.p-dialog {
+  .p-field {
+    margin-bottom: 1rem;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+  }
+}
+
 div.item-pagina-list {
   justify-content: center;
   display: flex;
@@ -41,4 +54,107 @@ div.list-card {
     font-family: 'Kreon', Verdana, sans-serif;
   }
 
+}
+
+
+/* Estilo para o botão de ação único */
+.button-action.ui-button-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+
+  &:hover {
+    background-color: var(--primary-color-dark);
+    border-color: var(--primary-color-dark);
+  }
+}
+
+/* Ajustes nos cards */
+.list-card {
+  .item {
+    .card-footer {
+      justify-content: center;
+      padding: 1rem 0 0;
+    }
+  }
+}
+
+/* Estilos para o modal */
+.p-dialog {
+  .p-field {
+    margin-bottom: 1rem;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+  }
+}
+
+/* Estilo para o botão de ação único */
+.button-action.ui-button-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+
+  &:hover {
+    background-color: var(--primary-color-dark);
+    border-color: var(--primary-color-dark);
+  }
+}
+
+/* Ajustes nos cards */
+.list-card {
+  .item {
+    .card-footer {
+      justify-content: center;
+      padding: 1rem 0 0;
+    }
+  }
+}
+
+/* Estilos para as abas */
+.tabs {
+  width: 100%;
+
+  ::ng-deep .p-tabview-nav {
+    justify-content: center;
+  }
+
+  ::ng-deep .p-tabview-panels {
+    padding: 1rem 0;
+  }
+}
+
+/* Estilos para os status */
+.status {
+  padding: 0.3rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  align-self: flex-end;
+
+  &.status-pendente {
+    background-color: #FFA500;
+    color: #000;
+  }
+
+  &.status-preparando {
+    background-color: #2196F3;
+    color: #FFF;
+  }
+
+  &.status-pronto {
+    background-color: #4CAF50;
+    color: #FFF;
+  }
+
+  &.status-entregue {
+    background-color: #9E9E9E;
+    color: #FFF;
+  }
+
+  &.status-cancelado {
+    background-color: #F44336;
+    color: #FFF;
+  }
 }
