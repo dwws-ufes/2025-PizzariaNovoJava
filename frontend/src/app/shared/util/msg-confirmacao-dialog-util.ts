@@ -49,6 +49,15 @@ export class MensagensConfirmacao {
     });
   }
 
+  public confirmUpdateDish(id: number, alterarSituacao: () => void): void {
+    this.confirmMessage.confirm({
+      header: 'Confirmação',
+      message: 'Deseja atualizar o status do pedido' + ' - ' + id + '?',
+      acceptLabel: 'Sim',
+      rejectLabel: 'Cancelar',
+      accept: alterarSituacao
+    });
+  }
 
   showSuccess(message: string) {
     this.messageService.add({severity: 'success', summary: 'Success', detail: message});

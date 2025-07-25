@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { CozinhaRoutingModule } from './cozinha-routing.module';
 import { CozinhaComponent } from './cozinha/cozinha.component';
+import {SharedModule} from "../../shared/shared.module";
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { CozinhaComponent } from './cozinha/cozinha.component';
   ],
   imports: [
     CommonModule,
-    CozinhaRoutingModule
+    CozinhaRoutingModule,
+    SharedModule
   ]
 })
 export class CozinhaModule { }
