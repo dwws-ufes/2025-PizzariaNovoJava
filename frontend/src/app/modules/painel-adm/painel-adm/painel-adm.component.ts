@@ -21,4 +21,6 @@ export class PainelAdmComponent implements OnInit {
     this.cardComponent = MenuEnum.setClasse(idTipoAtendimento).titulo;
     this.router.navigate(['/' + this.cardComponent]);
   }
+
+  protected readonly MenuEnum = MenuEnum;
 }

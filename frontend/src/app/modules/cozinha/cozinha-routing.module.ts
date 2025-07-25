@@ -1,10 +1,14 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {CozinhaComponent} from "./cozinha/cozinha.component";
 
-const routes: Routes = [];
+const routes: Routes = [
+  {path: '', component: CozinhaComponent},
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class CozinhaRoutingModule { }
+export class CozinhaRoutingModule {
+}
