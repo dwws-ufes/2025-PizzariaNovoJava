@@ -8,6 +8,7 @@ export class EntidadeUtil {
   static readonly SOBREMESA = new EntidadeUtil(6, 'Sobremesa');
   static readonly PIZZA = new EntidadeUtil(7, 'Pizza');
   static readonly BEBIDA = new EntidadeUtil(8, 'Bebida');
+  static readonly BAR = new EntidadeUtil(9, 'Bar');
 
   static values = [
     EntidadeUtil.USUARIO,
@@ -18,6 +19,7 @@ export class EntidadeUtil {
     EntidadeUtil.SOBREMESA,
     EntidadeUtil.PIZZA,
     EntidadeUtil.BEBIDA,
+    EntidadeUtil.BAR
   ];
 
   constructor(

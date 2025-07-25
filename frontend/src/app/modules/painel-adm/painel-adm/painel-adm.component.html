@@ -5,41 +5,50 @@
   </div>
 
   <div class="col-12 flex">
+    <!-- Primeira Linha -->
     <div class="container menu col-4">
-      <p-card class="card-item-menu" (click)="mudarRota(0)">
+      <p-card class="card-item-menu" (click)="mudarRota(MenuEnum.USUARIO.index)">
         <em class="icon bi bi-person-vcard"></em>
         <span class="label-button">Usuários</span>
       </p-card>
     </div>
 
-<!--    <div class="container menu col-4">-->
-<!--      <p-card class="card-item-menu" (click)="mudarRota(2)">-->
-<!--        <em class="icon bi bi-grid"></em>-->
-<!--        <span class="label-button">Produtos</span>-->
-<!--      </p-card>-->
-<!--    </div>-->
+    <div class="container menu col-4">
+      <p-card class="card-item-menu" (click)="mudarRota(MenuEnum.PRODUTO.index)">
+        <em class="icon bi bi-grid"></em>
+        <span class="label-button">Produtos</span>
+      </p-card>
+    </div>
+
+    <div class="container menu col-4">
+      <p-card class="card-item-menu" (click)="mudarRota(MenuEnum.CLIENTE.index)">
+        <em class="icon bi-people-fill"></em>
+        <span class="label-button">Clientes</span>
+      </p-card>
+    </div>
   </div>
 
-<!--  <div class="col-12 flex">-->
-<!--    <div class="container menu col-4">-->
-<!--      <p-card class="card-item-menu" (click)="mudarRota(3)">-->
-<!--        <em class="icon bi-people-fill"></em>-->
-<!--        <span class="label-button">Clientes</span>-->
-<!--      </p-card>-->
-<!--    </div>-->
+  <div class="col-12 flex">
+    <!-- Segunda Linha -->
+    <div class="container menu col-4">
+      <p-card class="card-item-menu" (click)="mudarRota(MenuEnum.CAIXA.index)">
+        <em class="icon bi bi-cash-coin"></em>
+        <span class="label-button">Caixa</span>
+      </p-card>
+    </div>
 
-<!--    <div class="container menu col-4">-->
-<!--      <p-card class="card-item-menu" (click)="mudarRota(4)">-->
-<!--        <em class="icon bi bi-cart"></em>-->
-<!--        <span class="label-button">Caixa</span>-->
-<!--      </p-card>-->
-<!--    </div>-->
+    <div class="container menu col-4">
+      <p-card class="card-item-menu" (click)="mudarRota(MenuEnum.COZINHA.index)">
+        <em class="icon bi bi-fire"></em>
+        <span class="label-button">Cozinha</span>
+      </p-card>
+    </div>
 
-<!--    <div class="container menu col-4">-->
-<!--      <p-card class="card-item-menu" (click)="mudarRota(5)">-->
-<!--        <em class="icon bi bi-fire"></em>-->
-<!--        <span class="label-button">Cozinha</span>-->
-<!--      </p-card>-->
-<!--    </div>-->
-<!--  </div>-->
+    <div class="container menu col-4">
+      <p-card class="card-item-menu" (click)="mudarRota(MenuEnum.BAR.index)">
+        <em class="icon bi bi-cup-straw"></em>
+        <span class="label-button">Bar</span>
+      </p-card>
+    </div>
+  </div>
 </div>
