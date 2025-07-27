@@ -4,17 +4,18 @@
   </div>
 
 
-  <p-tabView>
+  <p-tabView (onChange)="onTabChange($event)">
     <p-tabPanel header="Pizza">
-      <app-pizza-list></app-pizza-list>
+      <app-pizza-list #pizzaList></app-pizza-list>
     </p-tabPanel>
 
     <p-tabPanel header="Bebidas">
-      <app-bebida-list></app-bebida-list>
+      <app-bebida-list #bebidaList></app-bebida-list>
     </p-tabPanel>
 
     <p-tabPanel header="Sobremesas">
-      <app-sobremesa-list></app-sobremesa-list>
+      <app-sobremesa-list #sobremesaList></app-sobremesa-list>
     </p-tabPanel>
   </p-tabView>
+
 </div>

@@ -12,9 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 
     @Query("SELECT NEW com.dwws.pizzaria.service.dto.PedidoListDTO(" +
-            "p.id, c.nome, u.nome, p.status, p.dataHora, " +
-            "COALESCE(SUM(i.valorItem * i.quantidade), 0.0), " +
-            "COALESCE(COUNT(i.id), 0L).intValue()) " +
+            "p.id, c.nome, u.nome, p.status, p.dataHora) " +
             "FROM Pedido p " +
             "LEFT JOIN p.cliente c " +
             "LEFT JOIN p.atendente u " +

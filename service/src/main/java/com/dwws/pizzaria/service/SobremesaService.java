@@ -1,6 +1,7 @@
 package com.dwws.pizzaria.service;
 
 import com.dwws.pizzaria.domain.Produto;
+import com.dwws.pizzaria.domain.enums.TipoProduto;
 import com.dwws.pizzaria.repository.ProdutoRepository;
 import com.dwws.pizzaria.service.dto.ProdutoDTO;
 import com.dwws.pizzaria.service.dto.ProdutoListDTO;
@@ -18,27 +19,36 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class ProdutoService {
+public class SobremesaService {
 
     private final ProdutoRepository repository;
     private final ProdutoMapper mapper;
 
     private Produto findEntity(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(MensagemProdutoUtil.ENTITY_NOT_FOUND));
+        return repository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(MensagemProdutoUtil.ENTITY_NOT_FOUND));
     }
 
     public ProdutoDTO findByID(Long id) {
-        return mapper.toDto(findEntity(id));
+        Produto sobremesa = findEntity(id);
+        ProdutoDTO sobremesaDTO = mapper.toDto(sobremesa);
+        sobremesaDTO.setTipoProdutoId(sobremesa.getTipoProduto().getId());
+        return sobremesaDTO;
     }
 
-    @Transactional(readOnly = true)
+    public ProdutoDTO save(ProdutoDTO sobremesaDTO) {
+        Produto sobremesa = mapper.toEntity(sobremesaDTO);
+        sobremesa.setTipoProduto(TipoProduto.SOBREMESA);
+        return mapper.toDto(repository.save(sobremesa));
+    }
+
     public Page<ProdutoListDTO> findAll(Pageable pageable) {
         return repository.listAll(pageable);
     }
 
-    @Transactional(readOnly = true)
-    public Page<ProdutoListDTO> findByFiltro(String filtro, Pageable pageable) {
-        return repository.findByFiltro(filtro, pageable);
+    public void delete(Long id) {
+        Produto sobremesa = findEntity(id);
+        sobremesa.setAtivo(Boolean.FALSE);
+        repository.save(sobremesa);
     }
 }

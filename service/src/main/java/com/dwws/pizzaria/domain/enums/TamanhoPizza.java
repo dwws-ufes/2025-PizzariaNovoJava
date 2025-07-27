@@ -14,4 +14,13 @@ public enum TamanhoPizza {
 
     private final Integer id;
     private final String value;
+
+    public static TamanhoPizza fromId(Integer id) {
+        for (TamanhoPizza tamanho : values()) {
+            if (tamanho.getId().equals(id)) {
+                return tamanho;
+            }
+        }
+        throw new IllegalArgumentException("Tamanho inválido: " + id);
+    }
 }

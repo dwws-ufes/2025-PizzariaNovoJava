@@ -10,11 +10,11 @@ import com.dwws.pizzaria.domain.Produto;
 import com.dwws.pizzaria.domain.enums.StatusPedido;
 import com.dwws.pizzaria.repository.NotificacaoBarRepository;
 import com.dwws.pizzaria.repository.NotificacaoCozinhaRepository;
+import com.dwws.pizzaria.repository.PedidoRepository;
 import com.dwws.pizzaria.service.dto.NotificacaoBarDTO;
 import com.dwws.pizzaria.service.dto.NotificacaoBarListDTO;
 import com.dwws.pizzaria.service.dto.NotificacaoCozinhaDTO;
 import com.dwws.pizzaria.service.dto.NotificacaoCozinhaListDTO;
-import com.dwws.pizzaria.service.dto.PedidoDTO;
 import com.dwws.pizzaria.service.exception.BusinessRuleException;
 import com.dwws.pizzaria.service.exception.EntityNotFoundException;
 import com.dwws.pizzaria.service.mapper.NotificacaoBarMapper;
@@ -25,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,14 +32,14 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional
+
 public class NotificacaoService {
 
     private final NotificacaoCozinhaRepository notificacaoCozinhaRepository;
     private final NotificacaoCozinhaMapper notificacaoCozinhaMapper;
     private final NotificacaoBarRepository notificacaoBarRepository;
     private final NotificacaoBarMapper notificacaoBarMapper;
-    private final PedidoService pedidoService;
+    private final PedidoRepository pedidoRepository; // Usar repository diretamente
 
     // ==================== MÉTODOS PARA COZINHA ====================
     private NotificacaoCozinha findEntityCozinha(Long id) {
@@ -53,14 +52,39 @@ public class NotificacaoService {
     }
 
     public NotificacaoCozinhaDTO saveCozinha(NotificacaoCozinhaDTO notificacaoCozinhaDTO) {
-        PedidoDTO pedido = validarPedido(notificacaoCozinhaDTO.getPedidoId());
+        Pedido pedido = validarPedido(notificacaoCozinhaDTO.getPedidoId());
 
         NotificacaoCozinha notificacaoCozinha = notificacaoCozinhaMapper.toEntity(notificacaoCozinhaDTO);
-        notificacaoCozinha.setPedido(new Pedido(pedido.getId()));
-        notificacaoCozinha.setDataHora(LocalDateTime.now());
+        notificacaoCozinha.setPedido(pedido);
+
+        if (notificacaoCozinha.getDataHora() == null) {
+            notificacaoCozinha.setDataHora(LocalDateTime.now());
+        }
 
         notificacaoCozinha = notificacaoCozinhaRepository.save(notificacaoCozinha);
 
+        log.info(MensagemNotificacaoUtil.LOG_NOTIFICACAO_CRIADA, "Cozinha", pedido.getId());
+        return notificacaoCozinhaMapper.toDto(notificacaoCozinha);
+    }
+
+    public NotificacaoCozinhaDTO updateCozinha(NotificacaoCozinhaDTO notificacaoCozinhaDTO) {
+        log.debug("Request to update NotificacaoCozinha : {}", notificacaoCozinhaDTO);
+
+        if (notificacaoCozinhaDTO.getId() == null) {
+            throw new BusinessRuleException("ID da notificação é obrigatório para atualização");
+        }
+
+        NotificacaoCozinha notificacaoExistente = findEntityCozinha(notificacaoCozinhaDTO.getId());
+        validarNotificacaoAtiva(notificacaoExistente.getAtivo());
+
+        Pedido pedido = validarPedido(notificacaoCozinhaDTO.getPedidoId());
+
+        NotificacaoCozinha notificacaoCozinha = notificacaoCozinhaMapper.toEntity(notificacaoCozinhaDTO);
+        notificacaoCozinha.setPedido(pedido);
+
+        notificacaoCozinha = notificacaoCozinhaRepository.save(notificacaoCozinha);
+
+        log.info(MensagemNotificacaoUtil.LOG_NOTIFICACAO_ATUALIZADA, "Cozinha", notificacaoCozinha.getStatus());
         return notificacaoCozinhaMapper.toDto(notificacaoCozinha);
     }
 
@@ -68,10 +92,32 @@ public class NotificacaoService {
         return notificacaoCozinhaRepository.listAll(pageable);
     }
 
+
+    public Page<NotificacaoCozinhaListDTO> findCozinhaByStatus(StatusPedido status, Pageable pageable) {
+        log.debug("Request to get NotificacoesCozinha by status : {}", status);
+        return notificacaoCozinhaRepository.findByStatus(status, pageable);
+    }
+
+
+    public List<NotificacaoCozinhaDTO> findCozinhaByPedidoId(Long pedidoId) {
+        log.debug("Request to get NotificacoesCozinha by pedido : {}", pedidoId);
+        List<NotificacaoCozinha> notificacoes = notificacaoCozinhaRepository.findByPedidoIdAndAtivoTrue(pedidoId);
+        return notificacaoCozinhaMapper.toDto(notificacoes);
+    }
+
+
+    public List<NotificacaoCozinhaDTO> findCozinhaByStatusAtivas(StatusPedido status) {
+        log.debug("Request to get NotificacoesCozinha ativas by status : {}", status);
+        List<NotificacaoCozinha> notificacoes = notificacaoCozinhaRepository.findByStatusAndAtivoTrueOrderByDataHoraAsc(status);
+        return notificacaoCozinhaMapper.toDto(notificacoes);
+    }
+
     public void deleteCozinha(Long id) {
         NotificacaoCozinha notificacaoCozinha = findEntityCozinha(id);
         notificacaoCozinha.setAtivo(false);
         notificacaoCozinhaRepository.save(notificacaoCozinha);
+
+        log.info("NotificacaoCozinha {} desativada", id);
     }
 
     // ==================== MÉTODOS PARA BAR ====================
@@ -85,13 +131,39 @@ public class NotificacaoService {
     }
 
     public NotificacaoBarDTO saveBar(NotificacaoBarDTO notificacaoBarDTO) {
-        PedidoDTO pedido = validarPedido(notificacaoBarDTO.getPedidoId());
+        Pedido pedido = validarPedido(notificacaoBarDTO.getPedidoId());
 
         NotificacaoBar notificacaoBar = notificacaoBarMapper.toEntity(notificacaoBarDTO);
-        notificacaoBar.setPedido(new Pedido(pedido.getId()));
+        notificacaoBar.setPedido(pedido);
+
+        if (notificacaoBar.getDataHora() == null) {
+            notificacaoBar.setDataHora(LocalDateTime.now());
+        }
 
         notificacaoBar = notificacaoBarRepository.save(notificacaoBar);
 
+        log.info(MensagemNotificacaoUtil.LOG_NOTIFICACAO_CRIADA, "Bar", pedido.getId());
+        return notificacaoBarMapper.toDto(notificacaoBar);
+    }
+
+    public NotificacaoBarDTO updateBar(NotificacaoBarDTO notificacaoBarDTO) {
+        log.debug("Request to update NotificacaoBar : {}", notificacaoBarDTO);
+
+        if (notificacaoBarDTO.getId() == null) {
+            throw new BusinessRuleException("ID da notificação é obrigatório para atualização");
+        }
+
+        NotificacaoBar notificacaoExistente = findEntityBar(notificacaoBarDTO.getId());
+        validarNotificacaoAtiva(notificacaoExistente.getAtivo());
+
+        Pedido pedido = validarPedido(notificacaoBarDTO.getPedidoId());
+
+        NotificacaoBar notificacaoBar = notificacaoBarMapper.toEntity(notificacaoBarDTO);
+        notificacaoBar.setPedido(pedido);
+
+        notificacaoBar = notificacaoBarRepository.save(notificacaoBar);
+
+        log.info(MensagemNotificacaoUtil.LOG_NOTIFICACAO_ATUALIZADA, "Bar", notificacaoBar.getStatus());
         return notificacaoBarMapper.toDto(notificacaoBar);
     }
 
@@ -99,18 +171,38 @@ public class NotificacaoService {
         return notificacaoBarRepository.listAll(pageable);
     }
 
+
+    public Page<NotificacaoBarListDTO> findBarByStatus(StatusPedido status, Pageable pageable) {
+        log.debug("Request to get NotificacoesBar by status : {}", status);
+        return notificacaoBarRepository.findByStatus(status, pageable);
+    }
+
+
+    public List<NotificacaoBarDTO> findBarByPedidoId(Long pedidoId) {
+        log.debug("Request to get NotificacoesBar by pedido : {}", pedidoId);
+        List<NotificacaoBar> notificacoes = notificacaoBarRepository.findByPedidoIdAndAtivoTrue(pedidoId);
+        return notificacaoBarMapper.toDto(notificacoes);
+    }
+
+
+    public List<NotificacaoBarDTO> findBarByStatusAtivas(StatusPedido status) {
+        log.debug("Request to get NotificacoesBar ativas by status : {}", status);
+        List<NotificacaoBar> notificacoes = notificacaoBarRepository.findByStatusAndAtivoTrueOrderByDataHoraAsc(status);
+        return notificacaoBarMapper.toDto(notificacoes);
+    }
+
     public void deleteBar(Long id) {
         NotificacaoBar notificacaoBar = findEntityBar(id);
         notificacaoBar.setAtivo(false);
         notificacaoBarRepository.save(notificacaoBar);
+
+        log.info("NotificacaoBar {} desativada", id);
     }
 
     // ==================== MÉTODOS DE CONTROLE DE STATUS ====================
 
     public NotificacaoCozinhaDTO marcarCozinhaComoProcessada(Long id) {
-        NotificacaoCozinha notificacaoCozinha = notificacaoCozinhaRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(MensagemNotificacaoUtil.ENTITY_NOT_FOUND_COZINHA));
-
+        NotificacaoCozinha notificacaoCozinha = findEntityCozinha(id);
         validarNotificacaoAtiva(notificacaoCozinha.getAtivo());
 
         notificacaoCozinha.setStatus(StatusPedido.EM_PREPARO);
@@ -118,6 +210,7 @@ public class NotificacaoService {
 
         notificacaoCozinha = notificacaoCozinhaRepository.save(notificacaoCozinha);
 
+        log.info("NotificacaoCozinha {} marcada como processada", id);
         return notificacaoCozinhaMapper.toDto(notificacaoCozinha);
     }
 
@@ -130,6 +223,7 @@ public class NotificacaoService {
 
         notificacaoCozinha = notificacaoCozinhaRepository.save(notificacaoCozinha);
 
+        log.info("NotificacaoCozinha {} marcada como pronta", id);
         return notificacaoCozinhaMapper.toDto(notificacaoCozinha);
     }
 
@@ -142,6 +236,7 @@ public class NotificacaoService {
 
         notificacaoBar = notificacaoBarRepository.save(notificacaoBar);
 
+        log.info("NotificacaoBar {} marcada como processada", id);
         return notificacaoBarMapper.toDto(notificacaoBar);
     }
 
@@ -154,12 +249,14 @@ public class NotificacaoService {
 
         notificacaoBar = notificacaoBarRepository.save(notificacaoBar);
 
+        log.info("NotificacaoBar {} marcada como pronta", id);
         return notificacaoBarMapper.toDto(notificacaoBar);
     }
 
-
     // ==================== MÉTODOS PARA CRIAÇÃO AUTOMÁTICA ====================
     public void criarNotificacoesPorTipoProduto(Pedido pedido) {
+        log.debug("Criando notificações para pedido : {}", pedido.getId());
+
         boolean temPizza = false;
         boolean temBebida = false;
         boolean temSobremesa = false;
@@ -271,8 +368,9 @@ public class NotificacaoService {
 
     // ==================== MÉTODOS DE VALIDAÇÃO ====================
 
-    private PedidoDTO validarPedido(Long pedidoId) {
-        return pedidoService.findByID(pedidoId);
+    private Pedido validarPedido(Long pedidoId) {
+        return pedidoRepository.findById(pedidoId)
+                .orElseThrow(() -> new BusinessRuleException(MensagemNotificacaoUtil.PEDIDO_NOT_FOUND));
     }
 
     private void validarNotificacaoAtiva(Boolean ativo) {
@@ -283,22 +381,22 @@ public class NotificacaoService {
 
     // ==================== MÉTODOS DE RELATÓRIO ====================
 
-    @Transactional(readOnly = true)
+
     public Long countNotificacoesPendentesCozinha() {
         return (long) notificacaoCozinhaRepository.findByStatusAndAtivoTrueOrderByDataHoraAsc(StatusPedido.PENDENTE).size();
     }
 
-    @Transactional(readOnly = true)
+
     public Long countNotificacoesPendentesBar() {
         return (long) notificacaoBarRepository.findByStatusAndAtivoTrueOrderByDataHoraAsc(StatusPedido.PENDENTE).size();
     }
 
-    @Transactional(readOnly = true)
+
     public Long countNotificacoesEmPreparoCozinha() {
         return (long) notificacaoCozinhaRepository.findByStatusAndAtivoTrueOrderByDataHoraAsc(StatusPedido.EM_PREPARO).size();
     }
 
-    @Transactional(readOnly = true)
+
     public Long countNotificacoesEmPreparoBar() {
         return (long) notificacaoBarRepository.findByStatusAndAtivoTrueOrderByDataHoraAsc(StatusPedido.EM_PREPARO).size();
     }

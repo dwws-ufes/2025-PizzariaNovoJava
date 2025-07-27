@@ -8,6 +8,9 @@ import {Page} from "../../../../shared/util/page-util";
 import {MensagensConfirmacao} from "../../../../shared/util/msg-confirmacao-dialog-util";
 import {TipoTituloModalProdutoUtil, TituloModalProdutoUtil} from "../../util/titulo-modal-produto.util";
 import {EntidadeUtil} from "../../../../shared/util/entidade-util";
+import {BebidaService} from "../../../../shared/service/bebida.service";
+import {MensagensProntasUtil} from "../../../../shared/util/messages/MensagensProntas.util";
+import {finalize} from "rxjs";
 
 @Component({
   selector: 'app-bebida-list',
@@ -30,8 +33,7 @@ export class BebidaListComponent implements OnInit {
 
 
   constructor(
-    // private bebidaService: BebidaService,
-    // private produtoService: ProdutoService,
+    private bebidaService: BebidaService,
     private message: MensagensConfirmacao
   ) {
   }
@@ -41,17 +43,17 @@ export class BebidaListComponent implements OnInit {
   }
 
   findAllBebidas(): void {
-    // this.blockUI.start();
-    // this.bebidaService.findAll()
-    //   .pipe(finalize(() => this.blockUI.stop()))
-    //   .subscribe({
-    //     next: (result) => {
-    //       this.resultRequestList(result);
-    //     },
-    //     error: () => {
-    //       this.message.showInfo(MensagensProntasUtil.SUB_MESSAGE_ERROR, MensagensProntasUtil.ERROR);
-    //     }
-    //   });
+    this.blockUI.start();
+    this.bebidaService.findAll()
+      .pipe(finalize(() => this.blockUI.stop()))
+      .subscribe({
+        next: (result) => {
+          this.resultRequestList(result);
+        },
+        error: () => {
+          this.message.showInfo(MensagensProntasUtil.SUB_MESSAGE_ERROR, MensagensProntasUtil.ERROR);
+        }
+      });
   }
 
   registerBebida(): void {
@@ -68,11 +70,11 @@ export class BebidaListComponent implements OnInit {
   editBebida(id: number): void {
     this.titleDialog = TituloModalProdutoUtil.setTitulo(this.titulosModal, TipoTituloModalProdutoUtil.EDIT).header;
     this.display = true;
-    // this.bebidaFormComponent.editBebida(id);
+    this.bebidaFormComponent.editBebida(id);
   }
 
   deactivateBebida(id: number): void {
-    // this.produtoService.delete(id).subscribe(() => this.findAllBebidas());
+    this.bebidaService.delete(id).subscribe(() => this.findAllBebidas());
   }
 
   confirmAction(bebida: any): void {
@@ -85,24 +87,22 @@ export class BebidaListComponent implements OnInit {
   }
 
   onClose(): void {
-    this.updateListAfterCreate();
+    this.updateList();
     this.bebidaFormComponent.formGroup.reset();
-    this.display = false;
   }
 
-  private listAllBebidas(): void {
-    // this.bebidaService.findAll().subscribe((resp) => {
-    //   this.resultRequestList(resp);
-    // });
+  listAllBebidas(): void {
+    this.bebidaService.findAll().subscribe((resp) => {
+      this.resultRequestList(resp);
+    });
   }
 
   private resultRequestList(result: Page<BebidaListModel[]>): void {
     result.content ? this.bebidasList = result : this.bebidasList = [];
   }
 
-  private updateListAfterCreate(): void {
-    if (this.bebidaFormComponent.list) {
-      this.listAllBebidas();
-    }
+  private updateList(): void {
+    this.listAllBebidas();
+    this.display = false;
   }
 }

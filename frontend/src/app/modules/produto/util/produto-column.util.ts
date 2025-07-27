@@ -17,15 +17,6 @@ export class ProdutoColumnUtil {
       type: 'price',
       pipe: 'currency'
     },
-    {
-      header: 'Tipo',
-      field: 'tipoProduto'
-    },
-    {
-      header: 'Ações',
-      field: 'acoes',
-      columnWidth: '132px'
-    }
   ];
 
   static BEBIDA_COLUMNS: ColumnUtil[] = [
@@ -42,6 +33,11 @@ export class ProdutoColumnUtil {
     {
       header: 'Tipo Bebida',
       field: 'tipoBebida'
+    },
+    {
+      header: 'Ações',
+      field: 'acoes',
+      columnWidth: '132px'
     }
   ];
 
@@ -55,10 +51,20 @@ export class ProdutoColumnUtil {
       header: 'Fatias',
       field: 'qtdFatias',
       type: 'number'
+    },
+    {
+      header: 'Ações',
+      field: 'acoes',
+      columnWidth: '132px'
     }
   ];
 
   static SOBREMESA_COLUMNS: ColumnUtil[] = [
-    ...this.BASE_PRODUCT_COLUMNS
+    ...this.BASE_PRODUCT_COLUMNS,
+    {
+      header: 'Ações',
+      field: 'acoes',
+      columnWidth: '132px'
+    }
   ];
 }

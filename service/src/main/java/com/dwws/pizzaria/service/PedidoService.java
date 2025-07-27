@@ -31,10 +31,8 @@ public class PedidoService {
 
     private final PedidoRepository repository;
     private final PedidoMapper pedidoMapper;
-
     private final ClienteService clienteService;
     private final UsuarioService usuarioService;
-    private final ProdutoService produtoService;
     private final NotificacaoService notificacaoService;
 
     private Pedido findEntity(Long id) {
@@ -46,14 +44,18 @@ public class PedidoService {
         return pedidoMapper.toDto(findEntity(id));
     }
 
-    @Transactional(readOnly = true)
     public Page<PedidoListDTO> findAll(Pageable pageable) {
         return repository.listAll(pageable);
     }
 
+
     public PedidoDTO save(PedidoDTO pedidoDTO) {
+        log.debug("Request to save Pedido : {}", pedidoDTO);
+
+        // Validar cliente
         ClienteDTO cliente = clienteService.findByID(pedidoDTO.getClienteId());
 
+        // Validar atendente (se informado)
         UsuarioDTO atendente = null;
         if (Objects.nonNull(pedidoDTO.getAtendenteId())) {
             atendente = usuarioService.findByID(pedidoDTO.getAtendenteId());
@@ -61,27 +63,71 @@ public class PedidoService {
 
         Pedido pedido = pedidoMapper.toEntity(pedidoDTO);
         pedido.setCliente(new Cliente(cliente.getId()));
-        pedido.setAtendente(new Usuario(atendente.getId()));
-        pedido.setDataHora(LocalDateTime.now());
+
+        if (atendente != null) {
+            pedido.setAtendente(new Usuario(atendente.getId()));
+        }
+
+        if (pedido.getDataHora() == null) {
+            pedido.setDataHora(LocalDateTime.now());
+        }
 
         pedido = repository.save(pedido);
 
+        // Criar notificações baseadas nos produtos do pedido
         notificacaoService.criarNotificacoesPorTipoProduto(pedido);
 
         return pedidoMapper.toDto(pedido);
     }
 
+    public PedidoDTO update(PedidoDTO pedidoDTO) {
+        log.debug("Request to update Pedido : {}", pedidoDTO);
+
+        if (pedidoDTO.getId() == null) {
+            throw new BusinessRuleException("ID do pedido é obrigatório para atualização");
+        }
+
+        Pedido pedidoExistente = findEntity(pedidoDTO.getId());
+
+        // Validar cliente
+        ClienteDTO cliente = clienteService.findByID(pedidoDTO.getClienteId());
+
+        // Validar atendente (se informado)
+        UsuarioDTO atendente = null;
+        if (Objects.nonNull(pedidoDTO.getAtendenteId())) {
+            atendente = usuarioService.findByID(pedidoDTO.getAtendenteId());
+        }
+
+        Pedido pedido = pedidoMapper.toEntity(pedidoDTO);
+        pedido.setCliente(new Cliente(cliente.getId()));
+
+        if (atendente != null) {
+            pedido.setAtendente(new Usuario(atendente.getId()));
+        }
+
+        // Se o status mudou, atualizar notificações
+        if (!pedidoExistente.getStatus().equals(pedido.getStatus())) {
+            notificacaoService.atualizarNotificacoesPorStatus(pedido);
+        }
+
+        pedido = repository.save(pedido);
+        return pedidoMapper.toDto(pedido);
+    }
+
     public void delete(Long id) {
+        log.debug("Request to delete Pedido : {}", id);
+
         Pedido pedido = findEntity(id);
 
+        // Só permite cancelar pedidos que ainda não foram entregues
         if (pedido.getStatus() == StatusPedido.ENTREGUE) {
             throw new BusinessRuleException("Não é possível cancelar um pedido já entregue");
         }
 
         pedido.setStatus(StatusPedido.CANCELADO);
         repository.save(pedido);
+
+        // Desativar notificações relacionadas
+        notificacaoService.desativarNotificacoesPedido(pedido);
     }
-
-
 }
-

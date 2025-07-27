@@ -31,5 +31,8 @@ public class ProdutoDTO implements Serializable {
     @DecimalMin(value = "0.01", message = "Preço deve ser maior que zero")
     private Double precoVenda;
 
+    @NotNull()
+    private Integer tipoProdutoId;
+
     private Boolean ativo = true;
 }

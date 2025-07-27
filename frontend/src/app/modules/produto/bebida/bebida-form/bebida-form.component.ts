@@ -1,10 +1,13 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MensagensConfirmacao} from "../../../../shared/util/msg-confirmacao-dialog-util";
 import {BebidaModel} from "../../../../model/bebida.model";
 import {TipoBebidaEnum} from "../../../../shared/util/enum/tipo-bebida-enum";
 import {TipoProdutoEnum} from "../../../../shared/util/enum/tipo-produto-enum";
 import {EntidadeUtil} from "../../../../shared/util/entidade-util";
+import {BebidaService} from "../../../../shared/service/bebida.service";
+import {MensagensProdutoUtil} from "../../util/mensagens-produto.util";
+import {SelectItem} from "primeng/api";
 
 @Component({
   selector: 'app-bebida-form',
@@ -13,29 +16,31 @@ import {EntidadeUtil} from "../../../../shared/util/entidade-util";
 })
 export class BebidaFormComponent implements OnInit {
 
-  @Input() bebida: BebidaModel;
-  @Output() onClose: EventEmitter<void> = new EventEmitter();
-  @Output() onSave: EventEmitter<BebidaModel> = new EventEmitter();
+  @Output() answerForm: EventEmitter<boolean> = new EventEmitter();
+  @Output() list: EventEmitter<boolean> = new EventEmitter();
 
   formGroup: FormGroup;
-
+  newBebida: BebidaModel;
   entidade = EntidadeUtil.BEBIDA;
-  tiposBebida = TipoBebidaEnum.values;
-
-  list: boolean = false;
+  tiposBebida: SelectItem[];
 
   constructor(
     private fb: FormBuilder,
-    // private bebidaService: BebidaService,
+    private bebidaService: BebidaService,
     private message: MensagensConfirmacao
   ) {
   }
 
   ngOnInit(): void {
     this.initForm();
-    if (this.bebida) {
-      this.loadBebidaData();
-    }
+    this.initDropdown();
+  }
+
+  initDropdown(): void {
+    this.tiposBebida = TipoBebidaEnum.values.map(item => ({
+      label: item.titulo,
+      value: item.index
+    }));
   }
 
   initForm(): void {
@@ -46,71 +51,53 @@ export class BebidaFormComponent implements OnInit {
       precoVenda: [null, [Validators.required, Validators.min(0.01)]],
       volume: [null, [Validators.required, Validators.min(0.01)]],
       fabricante: [null, [Validators.required]],
-      tipoBebida: [null, [Validators.required]],
+      tipoBebidaId: [null, [Validators.required]],
       tipoProdutoId: [TipoProdutoEnum.BEBIDA.index]
     });
   }
 
-  loadBebidaData(): void {
-    this.formGroup.patchValue({
-      id: this.bebida.id,
-      nome: this.bebida.nome,
-      descricao: this.bebida.descricao,
-      precoVenda: this.bebida.precoVenda,
-      volume: this.bebida.volume,
-      fabricante: this.bebida.fabricante,
-      tipoBebida: this.bebida.tipoBebidaId,
-    });
-  }
-
   saveForm(): void {
-    if (this.formGroup.invalid) {
-      this.formGroup.markAllAsTouched();
-      return;
-    }
-
-    const bebidaData = this.formGroup.value as BebidaModel;
-
-    if (bebidaData.id) {
-      this.updateBebida(bebidaData);
-    } else {
-      this.createBebida(bebidaData);
-    }
+    this.newBebida = this.formGroup.getRawValue();
+    this.bebidaService.save(this.newBebida)
+      .subscribe({
+        next: () => {
+          this.showSuccessMsgAccordingToId(this.newBebida.id);
+          this.closeForm();
+          this.list.emit(true);
+        },
+        error: (error) => {
+          this.showErrorMsgAccordingToId(this.newBebida.id, error.message);
+          this.list.emit(true);
+        }
+      });
   }
 
-  createBebida(bebida: BebidaModel): void {
-    // this.bebidaService.create(bebida).subscribe({
-    //   next: (response) => {
-    //     this.message.showSuccess(MensagensProdutoUtil.SUCCESS_CREATED(this.entidade.descricao));
-    //     this.onSave.emit(response);
-    //     this.closeForm();
-    //   },
-    //   error: (error) => {
-    //     this.message.showError(MensagensProdutoUtil.ERROR_CREATED(this.entidade.descricao), error.message);
-    //   }
-    // });
-  }
-
-  updateBebida(bebida: BebidaModel): void {
-    // this.bebidaService.update(bebida.id, bebida).subscribe({
-    //   next: (response) => {
-    //     this.message.showSuccess(MensagensProdutoUtil.UPDATE_SUCCESSFUL(this.entidade.descricao));
-    //     this.onSave.emit(response);
-    //     this.closeForm();
-    //   },
-    //   error: (error) => {
-    //     this.message.showError(MensagensProdutoUtil.ERROR_UPDATE(this.entidade.descricao), error.message);
-    //   }
-    // });
+  editBebida(id: number): void {
+    this.bebidaService.findById(id).subscribe({
+        next: (response) => {
+          this.formGroup.patchValue(response);
+        },
+      }
+    );
   }
 
   closeForm(): void {
     this.formGroup.reset();
-    this.onClose.emit();
+    this.answerForm.emit();
   }
 
   isFieldInvalid(field: string): boolean {
     const control = this.formGroup.get(field);
     return control != null && control.invalid && (control.dirty || control.touched);
+  }
+
+  private showSuccessMsgAccordingToId(idCustomer: number | undefined): void {
+    idCustomer ? this.message.showSuccess(MensagensProdutoUtil.UPDATE_SUCCESSFUL(this.entidade.descricao))
+      : this.message.showSuccess(MensagensProdutoUtil.SUCCESS_CREATED(this.entidade.descricao));
+  }
+
+  private showErrorMsgAccordingToId(idCustomer: number | undefined, errorMsg: string): void {
+    idCustomer ? this.message.showError(MensagensProdutoUtil.ERROR_UPDATE(this.entidade.descricao), errorMsg)
+      : this.message.showError(MensagensProdutoUtil.ERROR_CREATED(this.entidade.descricao), errorMsg);
   }
 }

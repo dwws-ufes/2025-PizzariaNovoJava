@@ -2,10 +2,11 @@ package com.dwws.pizzaria.service;
 
 import com.dwws.pizzaria.domain.Pagamento;
 import com.dwws.pizzaria.domain.Pedido;
+import com.dwws.pizzaria.domain.enums.FormaPagamento;
 import com.dwws.pizzaria.repository.PagamentoRepository;
+import com.dwws.pizzaria.repository.PedidoRepository;
 import com.dwws.pizzaria.service.dto.PagamentoDTO;
 import com.dwws.pizzaria.service.dto.PagamentoListDTO;
-import com.dwws.pizzaria.service.dto.PedidoDTO;
 import com.dwws.pizzaria.service.exception.BusinessRuleException;
 import com.dwws.pizzaria.service.exception.EntityNotFoundException;
 import com.dwws.pizzaria.service.mapper.PagamentoMapper;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -28,7 +30,7 @@ public class PagamentoService {
 
     private final PagamentoMapper mapper;
     private final PagamentoRepository repository;
-    private final PedidoService pedidoService;
+    private final PedidoRepository pedidoRepository; // Usar repository diretamente
 
     protected Pagamento findEntity(Long id) {
         return repository.findById(id)
@@ -36,34 +38,87 @@ public class PagamentoService {
     }
 
     public PagamentoDTO findByID(Long id) {
+        log.debug("Request to get Pagamento : {}", id);
         return mapper.toDto(findEntity(id));
     }
 
     public PagamentoDTO save(PagamentoDTO pagamentoDTO) {
-        PedidoDTO pedido = pedidoService.findByID(pagamentoDTO.getPedidoId());
+        log.debug("Request to save Pagamento : {}", pagamentoDTO);
 
+        // Validar pedido
+        Pedido pedido = pedidoRepository.findById(pagamentoDTO.getPedidoId())
+                .orElseThrow(() -> new BusinessRuleException("Pedido não encontrado"));
+
+        // Verificar se já existe pagamento para este pedido
         Optional<Pagamento> pagamentoExistente = repository.findByPedidoId(pagamentoDTO.getPedidoId());
-
         if (pagamentoExistente.isPresent()) {
             throw new BusinessRuleException("Já existe um pagamento para este pedido");
         }
 
         Pagamento pagamento = mapper.toEntity(pagamentoDTO);
-        pagamento.setPedido(new Pedido(pedido.getId()));
-        pagamento.setDataHora(LocalDateTime.now());
+        pagamento.setPedido(pedido);
+
+        if (pagamento.getDataHora() == null) {
+            pagamento.setDataHora(LocalDateTime.now());
+        }
 
         pagamento = repository.save(pagamento);
         return mapper.toDto(pagamento);
     }
 
+    public PagamentoDTO update(PagamentoDTO pagamentoDTO) {
+        log.debug("Request to update Pagamento : {}", pagamentoDTO);
+
+        if (pagamentoDTO.getId() == null) {
+            throw new BusinessRuleException("ID do pagamento é obrigatório para atualização");
+        }
+
+        // Validar pedido
+        Pedido pedido = pedidoRepository.findById(pagamentoDTO.getPedidoId())
+                .orElseThrow(() -> new BusinessRuleException("Pedido não encontrado"));
+
+        Pagamento pagamento = mapper.toEntity(pagamentoDTO);
+        pagamento.setPedido(pedido);
+
+        pagamento = repository.save(pagamento);
+        return mapper.toDto(pagamento);
+    }
+
+    @Transactional(readOnly = true)
     public Page<PagamentoListDTO> findAll(Pageable pageable) {
+        log.debug("Request to get all Pagamentos");
         return repository.listAll(pageable);
     }
 
+    @Transactional(readOnly = true)
+    public Optional<PagamentoDTO> findByPedidoId(Long pedidoId) {
+        log.debug("Request to get Pagamento by pedido : {}", pedidoId);
+        return repository.findByPedidoId(pedidoId)
+                .map(mapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
+    public List<PagamentoDTO> findByFormaPagamentoAndPeriodo(FormaPagamento formaPagamento,
+                                                             LocalDateTime dataInicio,
+                                                             LocalDateTime dataFim) {
+        log.debug("Request to get Pagamentos by forma pagamento and periodo : {} - {} to {}",
+                formaPagamento, dataInicio, dataFim);
+        List<Pagamento> pagamentos = repository.findByFormaPagamentoAndDataHoraBetween(
+                formaPagamento, dataInicio, dataFim);
+        return mapper.toDto(pagamentos);
+    }
+
+    @Transactional(readOnly = true)
+    public Double calcularReceitaPorPeriodo(LocalDateTime dataInicio, LocalDateTime dataFim) {
+        log.debug("Request to calculate receita by periodo : {} to {}", dataInicio, dataFim);
+        Double receita = repository.calcularReceitaPorPeriodo(dataInicio, dataFim);
+        return receita != null ? receita : 0.0;
+    }
+
     public void delete(Long id) {
+        log.debug("Request to delete Pagamento : {}", id);
+
         Pagamento pagamento = findEntity(id);
-        pagamento.setAtivo(Boolean.FALSE);
         repository.delete(pagamento);
     }
 }
-

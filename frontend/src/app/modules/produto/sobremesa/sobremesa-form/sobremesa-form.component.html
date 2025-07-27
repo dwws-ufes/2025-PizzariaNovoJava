@@ -32,12 +32,6 @@
         </span>
       </div>
     </div>
-
-    <div class="area-field flex justify-content-end gap-2 mt-3 col-12">
-      <button pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-secondary"
-              (click)="closeForm()"></button>
-      <button pButton type="button" label="Salvar" icon="pi pi-check" class="p-button-primary"
-              (click)="saveForm()" [disabled]="formGroup.invalid"></button>
-    </div>
   </form>
 </div>
+<ng-content></ng-content>

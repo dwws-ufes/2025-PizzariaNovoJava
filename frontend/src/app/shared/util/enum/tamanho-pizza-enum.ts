@@ -1,9 +1,9 @@
 export class TamanhoPizzaEnum {
-  static readonly P = new TamanhoPizzaEnum(0, "Pequena");
-  static readonly M = new TamanhoPizzaEnum(1, "Média");
-  static readonly G = new TamanhoPizzaEnum(2, "Grande");
-  static readonly GG = new TamanhoPizzaEnum(3, "Gigante");
-  static readonly FATIA = new TamanhoPizzaEnum(4, "Fatia");
+  static readonly P = new TamanhoPizzaEnum(0, "Pequena", 4);
+  static readonly M = new TamanhoPizzaEnum(1, "Média", 6);
+  static readonly G = new TamanhoPizzaEnum(2, "Grande", 8);
+  static readonly GG = new TamanhoPizzaEnum(3, "Gigante", 10);
+  static readonly FATIA = new TamanhoPizzaEnum(4, "Fatia", 1);
 
   static values = [
     TamanhoPizzaEnum.P,
@@ -15,9 +15,9 @@ export class TamanhoPizzaEnum {
 
   constructor(
     public index: number,
-    public titulo: string
-  ) {
-  }
+    public titulo: string,
+    public fatias: number
+  ) {}
 
   static obterPorIndex(index: number): TamanhoPizzaEnum | any {
     return TamanhoPizzaEnum.values.find(prod => prod.index === index);

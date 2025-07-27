@@ -17,13 +17,13 @@ export class UsuarioFormComponent implements OnInit {
 
   @Input() userModel: UsuarioModel;
   @Output() answerForm: EventEmitter<boolean> = new EventEmitter();
+  @Output() list: EventEmitter<boolean> = new EventEmitter();
 
   formGroup: FormGroup;
 
   newUser: UsuarioModel;
 
   typeProfile: SelectItem[];
-  list: boolean = false;
 
   constructor(private builder: FormBuilder,
               private userService: UsuarioService,
@@ -62,11 +62,12 @@ export class UsuarioFormComponent implements OnInit {
         next: () => {
           this.showSuccessMsgAccordingToId(this.newUser.id);
           this.closeForm();
-          this.list = true;
+          this.list.emit(true);
         },
         error: (error) => {
+          this.list.emit(true);
           this.showErrorMsgAccordingToId(this.newUser.id, error.message);
-        }
+        },
       });
   }
 

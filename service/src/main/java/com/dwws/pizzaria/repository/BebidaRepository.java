@@ -11,9 +11,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BebidaRepository extends JpaRepository<Bebida, Long> {
 
-    @Query("SELECT NEW com.dwws.pizzaria.service.dto.BebidaListDTO(" +
-            "b.id, b.nome, b.precoVenda, b.descricao, " +
-            "b.tipoProduto, b.fabricante, b.tipoBebida, b.volume) " +
-            "FROM Bebida b WHERE b.ativo = true")
+    @Query("SELECT new com.dwws.pizzaria.service.dto.BebidaListDTO(" +
+            "b.id, b.nome, b.precoVenda, b.descricao," +
+            "b.volume, b.fabricante, b.tipoBebida) " +
+            "FROM Bebida b WHERE b.ativo = true ")
     Page<BebidaListDTO> listAll(Pageable pageable);
 }

@@ -10,6 +10,7 @@ import {MensagensConfirmacao} from "../../../../shared/util/msg-confirmacao-dial
 import {MensagensProntasUtil} from "../../../../shared/util/messages/MensagensProntas.util";
 import {TipoTituloModalProdutoUtil, TituloModalProdutoUtil} from "../../util/titulo-modal-produto.util";
 import {EntidadeUtil} from "../../../../shared/util/entidade-util";
+import {SobremesaService} from "../../../../shared/service/sobremesa.service";
 
 @Component({
   selector: 'app-sobremesa-list',
@@ -22,18 +23,16 @@ export class SobremesaListComponent implements OnInit {
   sobremesasList: Page<SobremesaListModel[]> | any = new Page<SobremesaListModel[]>();
 
   titleDialog: string;
-  entidade = EntidadeUtil.SOBREMESA;
-  titulosModal = TituloModalProdutoUtil.criarTitulos(this.entidade.descricao);
 
   @BlockUI() blockUI: NgBlockUI;
   @ViewChild(SobremesaFormComponent) sobremesaFormComponent: SobremesaFormComponent;
 
   display = false;
-  displayEntry = false;
+  entidade = EntidadeUtil.SOBREMESA;
+  titulosModal = TituloModalProdutoUtil.criarTitulos(this.entidade.descricao);
 
   constructor(
-    // private sobremesaService: SobremesaService,
-    // private produtoService: ProdutoService,
+    private sobremesaService: SobremesaService,
     private message: MensagensConfirmacao
   ) {
   }
@@ -43,17 +42,17 @@ export class SobremesaListComponent implements OnInit {
   }
 
   findAllSobremesas(): void {
-    // this.blockUI.start();
-    // this.sobremesaService.findAll()
-    //   .pipe(finalize(() => this.blockUI.stop()))
-    //   .subscribe({
-    //     next: (result) => {
-    //       this.resultRequestList(result);
-    //     },
-    //     error: () => {
-    //       this.message.showInfo(MensagensProntasUtil.SUB_MESSAGE_ERROR, MensagensProntasUtil.ERROR);
-    //     }
-    //   });
+    this.blockUI.start();
+    this.sobremesaService.findAll()
+      .pipe(finalize(() => this.blockUI.stop()))
+      .subscribe({
+        next: (result) => {
+          this.resultRequestList(result);
+        },
+        error: () => {
+          this.message.showInfo(MensagensProntasUtil.SUB_MESSAGE_ERROR, MensagensProntasUtil.ERROR);
+        }
+      });
   }
 
   registerSobremesa(): void {
@@ -70,11 +69,11 @@ export class SobremesaListComponent implements OnInit {
   editSobremesa(id: number): void {
     this.titleDialog = TituloModalProdutoUtil.setTitulo(this.titulosModal, TipoTituloModalProdutoUtil.EDIT).header;
     this.display = true;
-    // this.sobremesaFormComponent.editSobremesa(id);
+    this.sobremesaFormComponent.editSobremesa(id);
   }
 
   deactivateSobremesa(id: number): void {
-    // this.produtoService.delete(id).subscribe(() => this.findAllSobremesas());
+    this.sobremesaService.delete(id).subscribe(() => this.findAllSobremesas());
   }
 
   confirmAction(sobremesa: any): void {
@@ -92,10 +91,10 @@ export class SobremesaListComponent implements OnInit {
     this.display = false;
   }
 
-  private listAllSobremesas(): void {
-    // this.sobremesaService.findAll().subscribe((resp) => {
-    //   this.resultRequestList(resp);
-    // });
+  listAllSobremesas(): void {
+    this.sobremesaService.findAll().subscribe((resp) => {
+      this.resultRequestList(resp);
+    });
   }
 
   private resultRequestList(result: Page<SobremesaListModel[]>): void {
