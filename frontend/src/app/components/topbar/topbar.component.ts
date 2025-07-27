@@ -1,41 +1,42 @@
-import {Component, EventEmitter, Input} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {SidemenuModel} from "../../shared/models/sidemenu.model";
 import {AuthService} from "../../modules/login/auth.service";
 
 @Component({
-    selector: 'app-topbar',
-    templateUrl: './topbar.component.html',
-    styleUrls: ['./topbar.component.scss']
+  selector: 'app-topbar',
+  templateUrl: './topbar.component.html',
+  styleUrls: ['./topbar.component.scss']
 })
 export class TopbarComponent {
 
-    @Input() public configuracaoMenuLateral?: SidemenuModel;
-    constructor(private authService: AuthService) {
-    }
+  @Input() public configuracaoMenuLateral?: SidemenuModel;
 
-    ngOnInit(): void {
-    }
-
-    public alternarVisibilidadeMenuLateral(): void {
-        if (this.configuracaoMenuLateral) {
-          this.configuracaoMenuLateral.visivel = !this.configuracaoMenuLateral.visivel;
-        }
-    }
-
-  public fazerLogout(): void{
-      localStorage.setItem("roleDescription", '');
-      localStorage.setItem("userName", '');
-      location.replace("Login");
-     // location.reload();
+  constructor(private authService: AuthService) {
   }
 
-  public nomeUsuarioLogado(){
-      return localStorage.getItem("userName")
+  ngOnInit(): void {
   }
 
-    public fecharMenuLateral(): void {
-        if (this.configuracaoMenuLateral) {
-            this.configuracaoMenuLateral.visivel = !this.configuracaoMenuLateral.visivel;
-        }
+  public alternarVisibilidadeMenuLateral(): void {
+    if (this.configuracaoMenuLateral) {
+      this.configuracaoMenuLateral.visivel = !this.configuracaoMenuLateral.visivel;
     }
+  }
+
+  public fazerLogout(): void {
+    localStorage.setItem("roleDescription", '');
+    localStorage.setItem("userName", '');
+    location.replace("Login");
+    // location.reload();
+  }
+
+  public nomeUsuarioLogado() {
+    return localStorage.getItem("userName")?.toUpperCase();
+  }
+
+  public fecharMenuLateral(): void {
+    if (this.configuracaoMenuLateral) {
+      this.configuracaoMenuLateral.visivel = !this.configuracaoMenuLateral.visivel;
+    }
+  }
 }

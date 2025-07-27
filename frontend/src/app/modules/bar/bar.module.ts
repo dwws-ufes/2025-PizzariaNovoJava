@@ -7,13 +7,16 @@ import {SharedModule} from "../../shared/shared.module";
 
 
 @NgModule({
-  declarations: [
-    BarComponent
-  ],
-  imports: [
-    CommonModule,
-    BarRoutingModule,
-    SharedModule
-  ]
+    declarations: [
+        BarComponent
+    ],
+    exports: [
+        BarComponent
+    ],
+    imports: [
+        CommonModule,
+        BarRoutingModule,
+        SharedModule
+    ]
 })
 export class BarModule { }

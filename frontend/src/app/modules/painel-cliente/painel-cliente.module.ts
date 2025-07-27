@@ -9,15 +9,18 @@ import { SobremesaPainelComponent } from './sobremesa-painel/sobremesa-painel.co
 
 
 @NgModule({
-  declarations: [
-    PainelClienteComponent,
-    PizzaPainelComponent,
-    BebidaPainelComponent,
-    SobremesaPainelComponent
-  ],
-  imports: [
-    CommonModule,
-    PainelClienteRoutingModule
-  ]
+    declarations: [
+        PainelClienteComponent,
+        PizzaPainelComponent,
+        BebidaPainelComponent,
+        SobremesaPainelComponent
+    ],
+    exports: [
+        PainelClienteComponent
+    ],
+    imports: [
+        CommonModule,
+        PainelClienteRoutingModule
+    ]
 })
 export class PainelClienteModule { }
