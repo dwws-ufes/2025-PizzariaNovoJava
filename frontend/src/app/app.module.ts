@@ -13,6 +13,8 @@ import {AuthService} from "./modules/login/auth.service";
 import {LoginViewComponent} from "./modules/login/login-view/login-view.component";
 import ptBr from '@angular/common/locales/pt';
 import {registerLocaleData} from "@angular/common";
+import {CozinhaModule} from "./modules/cozinha/cozinha.module";
+import {BarModule} from "./modules/bar/bar.module";
 
 registerLocaleData(ptBr);
 
@@ -28,6 +30,8 @@ registerLocaleData(ptBr);
     AppRoutingModule,
     SharedModule,
     BrowserAnimationsModule,
+    CozinhaModule,
+    BarModule,
   ],
   providers: [
     MessageService, ConfirmationService, MensagensConfirmacao, AuthService, {provide: LOCALE_ID, useValue: 'pt'}

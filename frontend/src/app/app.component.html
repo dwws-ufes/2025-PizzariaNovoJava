@@ -1,5 +1,5 @@
 <div class="aplicacao" *ngIf="role === 'Administrador'">
-<!--<div class="aplicacao">-->
+  <!--<div class="aplicacao">-->
   <app-topbar [configuracaoMenuLateral]="configuracaoMenuLateral"></app-topbar>
   <div class="corpo-aplicacao">
     <app-sidemenu [configuracaoMenuLateral]="configuracaoMenuLateral"></app-sidemenu>
@@ -23,6 +23,19 @@
   <app-topbar [configuracaoMenuLateral]="configuracaoMenuLateral"></app-topbar>
   <div class="corpo-aplicacao">
     <div class="conteudo-principal">
+      <div class="container list col-12" *ngIf="role === 'Garçom'">
+
+      </div>
+      <div class="container list col-12" *ngIf="role === 'Caixa'">
+      </div>
+      <div class="container list col-12" *ngIf="role === 'Pizzaiolo'">
+        <app-cozinha></app-cozinha>
+      </div>
+      <div class="container list col-12" *ngIf="role === 'Barman'">
+        <app-bar></app-bar>
+      </div>
+      <div class="container list col-12" *ngIf="role === 'Cliente'">
+      </div>
     </div>
   </div>
 </div>

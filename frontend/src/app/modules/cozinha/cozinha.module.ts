@@ -7,13 +7,16 @@ import {SharedModule} from "../../shared/shared.module";
 
 
 @NgModule({
-  declarations: [
-    CozinhaComponent
-  ],
-  imports: [
-    CommonModule,
-    CozinhaRoutingModule,
-    SharedModule
-  ]
+    declarations: [
+        CozinhaComponent
+    ],
+    exports: [
+        CozinhaComponent
+    ],
+    imports: [
+        CommonModule,
+        CozinhaRoutingModule,
+        SharedModule
+    ]
 })
 export class CozinhaModule { }
