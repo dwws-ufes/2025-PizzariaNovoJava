@@ -66,7 +66,6 @@ export class ClienteListComponent implements OnInit {
 
   onSave(): void {
     this.customerFormComponent.saveForm();
-    this.findAllCustomers();
     this.onClose();
   }
 
@@ -96,9 +95,7 @@ export class ClienteListComponent implements OnInit {
   }
 
   private updateList() {
-    if (this.customerFormComponent.list) {
-      this.listAllClients();
-    }
+    this.listAllClients();
     this.display = false;
   }
 

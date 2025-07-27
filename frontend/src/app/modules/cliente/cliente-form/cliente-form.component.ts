@@ -14,12 +14,12 @@ import {FuncoesUtil} from "../../../shared/util/funcoes-util";
 export class ClienteFormComponent implements OnInit {
 
   @Output() answerForm: EventEmitter<boolean> = new EventEmitter();
+  @Output() list: EventEmitter<boolean> = new EventEmitter();
 
   formGroup: FormGroup;
 
   newCustomer: ClienteModel;
 
-  list: boolean = false;
 
   constructor(private builder: FormBuilder,
               private customerService: ClienteService,
@@ -48,10 +48,11 @@ export class ClienteFormComponent implements OnInit {
         next: () => {
           this.showSuccessMsgAccordingToId(this.newCustomer.id);
           this.closeForm();
-          this.list = true;
+          this.list.emit(true);
         },
         error: (error) => {
           this.showErrorMsgAccordingToId(this.newCustomer.id, error.message);
+          this.list.emit(true);
         }
       });
   }

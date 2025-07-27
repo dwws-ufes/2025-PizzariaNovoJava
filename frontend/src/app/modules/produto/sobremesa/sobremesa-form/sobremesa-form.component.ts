@@ -1,9 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {SobremesaModel} from 'src/app/model/sobremesa.model';
 import {MensagensConfirmacao} from "../../../../shared/util/msg-confirmacao-dialog-util";
 import {TipoProdutoEnum} from "../../../../shared/util/enum/tipo-produto-enum";
 import {EntidadeUtil} from "../../../../shared/util/entidade-util";
+import {SobremesaService} from "../../../../shared/service/sobremesa.service";
+import {MensagensProdutoUtil} from "../../util/mensagens-produto.util";
 
 @Component({
   selector: 'app-sobremesa-form',
@@ -12,28 +14,22 @@ import {EntidadeUtil} from "../../../../shared/util/entidade-util";
 })
 export class SobremesaFormComponent implements OnInit {
 
-  @Input() sobremesa: SobremesaModel;
-  @Output() onClose: EventEmitter<void> = new EventEmitter();
-  @Output() onSave: EventEmitter<SobremesaModel> = new EventEmitter();
+  @Output() answerForm: EventEmitter<boolean> = new EventEmitter();
+  @Output() list: EventEmitter<boolean> = new EventEmitter();
 
   formGroup: FormGroup;
-
+  newSobremesa: SobremesaModel;
   entidade = EntidadeUtil.SOBREMESA;
-
-  list: boolean = false;
 
   constructor(
     private fb: FormBuilder,
-    // private sobremesaService: SobremesaService,
+    private sobremesaService: SobremesaService,
     private message: MensagensConfirmacao
   ) {
   }
 
   ngOnInit(): void {
     this.initForm();
-    if (this.sobremesa) {
-      this.loadSobremesaData();
-    }
   }
 
   initForm(): void {
@@ -46,63 +42,49 @@ export class SobremesaFormComponent implements OnInit {
     });
   }
 
-  loadSobremesaData(): void {
-    this.formGroup.patchValue({
-      id: this.sobremesa.id,
-      nome: this.sobremesa.nome,
-      descricao: this.sobremesa.descricao,
-      precoVenda: this.sobremesa.precoVenda,
-    });
-  }
-
   saveForm(): void {
-    if (this.formGroup.invalid) {
-      this.formGroup.markAllAsTouched();
-      return;
-    }
-
-    const sobremesaData = this.formGroup.value as SobremesaModel;
-
-    if (sobremesaData.id) {
-      this.updateSobremesa(sobremesaData);
-    } else {
-      this.createSobremesa(sobremesaData);
-    }
+    this.newSobremesa = this.formGroup.getRawValue();
+    this.sobremesaService.save(this.newSobremesa)
+      .subscribe({
+        next: () => {
+          this.showSuccessMsgAccordingToId(this.newSobremesa.id);
+          this.closeForm();
+          this.list.emit(true);
+        },
+        error: (error) => {
+          this.showErrorMsgAccordingToId(this.newSobremesa.id, error.message);
+          this.list.emit(true);
+        }
+      });
   }
 
-  createSobremesa(sobremesa: SobremesaModel): void {
-    // this.sobremesaService.create(sobremesa).subscribe({
-    //   next: (response) => {
-    //     this.message.showSuccess(MensagensProdutoUtil.SUCCESS_CREATED(this.entidade.descricao));
-    //     this.onSave.emit(response);
-    //     this.closeForm();
-    //   },
-    //   error: (error) => {
-    //     this.message.showError(MensagensProdutoUtil.ERROR_CREATED(this.entidade.descricao), error.message);
-    //   }
-    // });
+  editSobremesa(id: number): void {
+    this.sobremesaService.findById(id).subscribe({
+        next: (response) => {
+          this.formGroup.patchValue(response);
+        },
+      }
+    );
   }
 
-  updateSobremesa(sobremesa: SobremesaModel): void {
-    // this.sobremesaService.update(sobremesa.id, sobremesa).subscribe({
-    //   next: (response) => {
-    //     this.message.showSuccess(MensagensProdutoUtil.UPDATE_SUCCESSFUL(this.entidade.descricao));
-    //     this.onSave.emit(response);
-    //     this.closeForm();
-    //   },
-    //   error: (error) => {
-    //     this.message.showError(MensagensProdutoUtil.ERROR_UPDATE(this.entidade.descricao), error.message);
-    //   }
-    // });
-  }
 
   closeForm(): void {
     this.formGroup.reset();
-    this.onClose.emit();
+    this.answerForm.emit();
   }
 
   isFieldInvalid(field: string): boolean {
     const control = this.formGroup.get(field);
     return control != null && control.invalid && (control.dirty || control.touched);
+  }
+
+  private showSuccessMsgAccordingToId(idCustomer: number | undefined): void {
+    idCustomer ? this.message.showSuccess(MensagensProdutoUtil.UPDATE_SUCCESSFUL(this.entidade.descricao))
+      : this.message.showSuccess(MensagensProdutoUtil.SUCCESS_CREATED(this.entidade.descricao));
+  }
+
+  private showErrorMsgAccordingToId(idCustomer: number | undefined, errorMsg: string): void {
+    idCustomer ? this.message.showError(MensagensProdutoUtil.ERROR_UPDATE(this.entidade.descricao), errorMsg)
+      : this.message.showError(MensagensProdutoUtil.ERROR_CREATED(this.entidade.descricao), errorMsg);
   }
 }

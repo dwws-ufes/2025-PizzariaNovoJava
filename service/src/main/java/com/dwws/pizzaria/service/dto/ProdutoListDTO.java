@@ -17,13 +17,21 @@ public class ProdutoListDTO implements Serializable {
     private String descricao;
     private Double precoVenda;
     private Boolean ativo;
+    private Integer tipoProdutoId;
     private String tipoProduto;
 
-    public ProdutoListDTO(Long id, String nome, Double precoVenda, String descricao, String tipoProduto) {
+    public ProdutoListDTO(Long id, String nome, Double precoVenda, String descricao, Integer tipoProduto) {
         this.id = id;
         this.nome = nome;
         this.precoVenda = precoVenda;
         this.descricao = descricao;
-        this.tipoProduto = tipoProduto;
+        this.tipoProdutoId = tipoProduto;
+    }
+
+    public ProdutoListDTO(Long id, String nome, Double precoVenda, String descricao) {
+        this.descricao = descricao;
+        this.id = id;
+        this.nome = nome;
+        this.precoVenda = precoVenda;
     }
 }

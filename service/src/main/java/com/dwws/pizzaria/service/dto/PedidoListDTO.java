@@ -22,4 +22,12 @@ public class PedidoListDTO implements Serializable {
     private LocalDateTime dataHora;
     private Double valorTotal;
     private Integer quantidadeItens;
+
+    public PedidoListDTO(Long id, String nomeAtendente, String nomeCliente, StatusPedido status, LocalDateTime dataHora) {
+        this.id = id;
+        this.nomeAtendente = nomeAtendente;
+        this.nomeCliente = nomeCliente;
+        this.status = status;
+        this.dataHora = dataHora;
+    }
 }

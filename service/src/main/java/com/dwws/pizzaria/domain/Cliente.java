@@ -34,7 +34,7 @@ public class Cliente implements Serializable {
     @Column(name = "telefone", nullable = false)
     private String telefone;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email")
     private String email;
 
     @Column(name = "cpf", nullable = false)

@@ -1,6 +1,5 @@
 package com.dwws.pizzaria.service.dto;
 
-import com.dwws.pizzaria.domain.enums.TamanhoPizza;
 import com.dwws.pizzaria.service.util.MensagemProdutoUtil;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
@@ -36,7 +35,10 @@ public class PizzaDTO implements Serializable {
     private Boolean ativo = true;
 
     @NotNull(message = "Tamanho da Pizza Não Pode Ser Nulo")
-    private TamanhoPizza tamanho;
+    private Integer tamanhoId;
+
+    @NotNull()
+    private Integer tipoProdutoId;
 
     @NotNull(message = "Quantidade de Fatias Não Pode Ser Nula")
     @Min(value = 1, message = "Quantidade de fatias deve ser maior que zero")

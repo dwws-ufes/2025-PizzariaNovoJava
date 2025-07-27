@@ -43,6 +43,12 @@ public class Pagamento implements Serializable {
     @Column(name = "valor_total", nullable = false)
     private Double valorTotal;
 
+    @Column(name = "desconto")
+    private Double desconto;
+
+    @Column(name = "valor_final", nullable = false)
+    private Double valorFinal;
+
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "forma_pagamento", nullable = false)
     private FormaPagamento formaPagamento;

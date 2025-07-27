@@ -16,4 +16,13 @@ public enum TipoBebida {
 
     private final Integer id;
     private final String value;
+
+    public static TipoBebida fromId(Integer id) {
+        for (TipoBebida tamanho : values()) {
+            if (tamanho.getId().equals(id)) {
+                return tamanho;
+            }
+        }
+        throw new IllegalArgumentException("Tamanho inválido: " + id);
+    }
 }

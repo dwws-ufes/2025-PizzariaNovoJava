@@ -1,6 +1,5 @@
 package com.dwws.pizzaria.service.dto;
 
-import com.dwws.pizzaria.domain.enums.TipoBebida;
 import com.dwws.pizzaria.service.util.MensagemProdutoUtil;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotEmpty;
@@ -41,6 +40,9 @@ public class BebidaDTO implements Serializable {
     private String fabricante;
 
     @NotNull(message = "Tipo de Bebida Não Pode Ser Nulo")
-    private TipoBebida tipoBebida;
+    private Integer tipoBebidaId;
+
+    @NotNull()
+    private Integer tipoProdutoId;
 }
 

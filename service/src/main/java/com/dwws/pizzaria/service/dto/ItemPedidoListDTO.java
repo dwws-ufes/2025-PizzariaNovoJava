@@ -17,5 +17,17 @@ public class ItemPedidoListDTO implements Serializable {
     private String nomeProduto;
     private Integer quantidade;
     private Double valorItem;
-    private Double valorTotal; // quantidade * valorItem
+    private Double valorTotal;
+
+    public ItemPedidoListDTO(Long id, String nomeProduto, Integer quantidade, Double valorItem) {
+        this.id = id;
+        this.nomeProduto = nomeProduto;
+        this.quantidade = quantidade;
+        this.valorItem = valorItem;
+        this.valorTotal = getValorTotal();
+    }
+
+    public Double getValorTotal() {
+        return quantidade * valorItem;
+    }
 }

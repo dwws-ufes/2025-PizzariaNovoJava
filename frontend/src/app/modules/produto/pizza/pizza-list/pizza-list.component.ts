@@ -8,6 +8,9 @@ import {EntidadeUtil} from "../../../../shared/util/entidade-util";
 import {PizzaListModel} from "../../../../model/list/pizza-list.model";
 import {PizzaFormComponent} from "../pizza-form/pizza-form.component";
 import {TipoTituloModalProdutoUtil, TituloModalProdutoUtil} from "../../util/titulo-modal-produto.util";
+import {PizzaService} from "../../../../shared/service/pizza.service";
+import {MensagensProntasUtil} from "../../../../shared/util/messages/MensagensProntas.util";
+import {finalize} from "rxjs";
 
 @Component({
   selector: 'app-pizza-list',
@@ -29,8 +32,7 @@ export class PizzaListComponent implements OnInit {
   titulosModal = TituloModalProdutoUtil.criarTitulos(this.entidade.descricao);
 
   constructor(
-    // private pizzaService: PizzaService,
-    // private produtoService: ProdutoService,
+    private pizzaService: PizzaService,
     private message: MensagensConfirmacao
   ) {
   }
@@ -40,17 +42,17 @@ export class PizzaListComponent implements OnInit {
   }
 
   findAllPizzas(): void {
-    // this.blockUI.start();
-    // this.pizzaService.findAll()
-    //   .pipe(finalize(() => this.blockUI.stop()))
-    //   .subscribe({
-    //     next: (result) => {
-    //       this.resultRequestList(result);
-    //     },
-    //     error: () => {
-    //       this.message.showInfo(MensagensProntasUtil.SUB_MESSAGE_ERROR, MensagensProntasUtil.ERROR);
-    //     }
-    //   });
+    this.blockUI.start();
+    this.pizzaService.findAll()
+      .pipe(finalize(() => this.blockUI.stop()))
+      .subscribe({
+        next: (result) => {
+          this.resultRequestList(result);
+        },
+        error: () => {
+          this.message.showInfo(MensagensProntasUtil.SUB_MESSAGE_ERROR, MensagensProntasUtil.ERROR);
+        }
+      });
   }
 
   registerPizza(): void {
@@ -67,11 +69,11 @@ export class PizzaListComponent implements OnInit {
   editPizza(id: number): void {
     this.titleDialog = TituloModalProdutoUtil.setTitulo(this.titulosModal, TipoTituloModalProdutoUtil.EDIT).header;
     this.display = true;
-    // this.pizzaFormComponent.editPizza(id);
+    this.pizzaFormComponent.editPizza(id);
   }
 
   deactivatePizza(id: number): void {
-    // this.produtoService.delete(id).subscribe(() => this.findAllPizzas());
+    this.pizzaService.delete(id).subscribe(() => this.findAllPizzas());
   }
 
   confirmAction(pizza: any): void {
@@ -86,13 +88,12 @@ export class PizzaListComponent implements OnInit {
   onClose(): void {
     this.updateListAfterCreate();
     this.pizzaFormComponent.formGroup.reset();
-    this.display = false;
   }
 
-  private listAllPizzas(): void {
-    // this.pizzaService.findAll().subscribe((resp) => {
-    //   this.resultRequestList(resp);
-    // });
+  listAllPizzas(): void {
+    this.pizzaService.findAll().subscribe((resp) => {
+      this.resultRequestList(resp);
+    });
   }
 
   private resultRequestList(result: Page<PizzaListModel[]>): void {
@@ -100,9 +101,8 @@ export class PizzaListComponent implements OnInit {
   }
 
   private updateListAfterCreate(): void {
-    if (this.pizzaFormComponent.list) {
-      this.listAllPizzas();
-    }
+    this.listAllPizzas();
+    this.display = false;
   }
 
 }

@@ -1,29 +1,25 @@
 <div class="form p-fluid p-grid">
   <form [formGroup]="formGroup">
 
-    <div class="area-field flex pt-2 col-12">
-      <div class="item-field col-12">
+    <div class="field pt-2">
         <span class="item-form">
           <label class="campo" for="nome">Nome da Pizza</label>
           <input type="text" id="nome" pInputText formControlName="nome" [class.invalid]="isFieldInvalid('nome')">
           <small *ngIf="isFieldInvalid('nome')" class="p-error">Nome é obrigatório</small>
         </span>
-      </div>
     </div>
 
-    <div class="area-field flex col-12">
-      <div class="item-field col-12">
+    <div class="field pt-2">
         <span class="item-form">
           <label class="campo" for="descricao">Descrição</label>
           <textarea id="descricao" pInputTextarea formControlName="descricao" rows="3"
                     [class.invalid]="isFieldInvalid('descricao')"></textarea>
           <small *ngIf="isFieldInvalid('descricao')" class="p-error">Descrição é obrigatória</small>
         </span>
-      </div>
     </div>
 
     <div class="area-field flex col-12">
-      <div class="item-field col-6">
+      <div class="item-field col-4">
         <span class="item-form">
           <label class="campo">Preço de Venda R$</label>
           <p-inputNumber formControlName="precoVenda" mode="currency" locale="pt-BR" currency="BRL" [min]="0.01"
@@ -32,33 +28,29 @@
         </span>
       </div>
 
-      <div class="item-field col-6">
+      <div class="item-field col-4">
         <span class="item-form">
           <label class="campo">Tamanho</label>
-          <p-dropdown [options]="tamanhosPizza" formControlName="tamanho" optionLabel="label" optionValue="value"
-                      [class.invalid]="isFieldInvalid('tamanho')"></p-dropdown>
+          <p-dropdown [options]="tamanhosPizza" formControlName="tamanhoId" appendTo="body"
+                      optionLabel="label" optionValue="value"
+                      [class.invalid]="isFieldInvalid('tamanho')" (onChange)="atribuirQtdeFatia($event.value)">
+
+          </p-dropdown>
           <small *ngIf="isFieldInvalid('tamanho')" class="p-error">Tamanho é obrigatório</small>
         </span>
       </div>
-    </div>
 
-    <div class="area-field flex col-12">
-      <div class="item-field col-6">
+      <div class="item-field col-4">
         <span class="item-form">
           <label class="campo">Quantidade de Fatias</label>
           <p-inputNumber formControlName="qtdFatias" [min]="1" [max]="12"
-                         [class.invalid]="isFieldInvalid('qtdFatias')"></p-inputNumber>
-          <small *ngIf="isFieldInvalid('qtdFatias')" class="p-error">Deve ser entre 1 e 12 fatias</small>
+                         [disabled]="true" [class.invalid]="isFieldInvalid('qtdFatias')"></p-inputNumber>
+          <small *ngIf="isFieldInvalid('qtdFatias')"
+                 class="p-error">Quantidade de fatias é definida pelo tamanho</small>
         </span>
       </div>
-
     </div>
 
-    <div class="area-field flex justify-content-end gap-2 mt-3 col-12">
-      <button pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-secondary"
-              (click)="closeForm()"></button>
-      <button pButton type="button" label="Salvar" icon="pi pi-check" class="p-button-primary"
-              (click)="saveForm()" [disabled]="formGroup.invalid"></button>
-    </div>
   </form>
 </div>
+<ng-content></ng-content>

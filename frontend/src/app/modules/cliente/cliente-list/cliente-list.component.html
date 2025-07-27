@@ -17,8 +17,9 @@
                 [dados]="customersList"
                 [paginator]="true"
                 [rows]="12"
-                [editarDado]="true" [desativarDado]="true" [entradaCliente]="true" [saidaCliente]="true"
-                (abrirModalHabilitado)="editCustomer($event)" (deletarDado)="confirmAction($event)">
+                [editarDado]="true" [desativarDado]="true"
+                (abrirModalHabilitado)="editCustomer($event)"
+                (deletarDado)="confirmAction($event)">
   </custom-table>
 </div>
 

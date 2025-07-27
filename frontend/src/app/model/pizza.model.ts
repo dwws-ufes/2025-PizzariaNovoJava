@@ -6,4 +6,5 @@ export class PizzaModel {
   ativo: boolean = true;
   tamanhoId: number;
   qtdFatias: number;
+  tipoProdutoId: number;
 }

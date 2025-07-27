@@ -115,9 +115,7 @@ export class UsuarioListComponent implements OnInit {
   }
 
   private updateList() {
-    if (this.userFormComponent.list) {
-      this.listAllUsers();
-    }
+    this.listAllUsers();
     this.display = false;
   }
 

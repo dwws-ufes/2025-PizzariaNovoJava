@@ -1,11 +1,11 @@
 export class MenuEnum {
-  static readonly USUARIO = new MenuEnum(0, 'Usuarios');
-  static readonly PRODUTO = new MenuEnum(1, 'Produtos');
-  static readonly CLIENTE = new MenuEnum(2, 'Clientes');
-  static readonly CAIXA = new MenuEnum(3, 'Caixa');
-  static readonly COZINHA = new MenuEnum(4, 'Cozinha');
-  static readonly BAR = new MenuEnum(5, 'Bar');
-  static readonly PAINEL = new MenuEnum(6, 'Painel');
+  static readonly USUARIO = new MenuEnum(0, 'usuarios');
+  static readonly PRODUTO = new MenuEnum(1, 'produtos');
+  static readonly CLIENTE = new MenuEnum(2, 'clientes');
+  static readonly CAIXA = new MenuEnum(3, 'caixa');
+  static readonly COZINHA = new MenuEnum(4, 'cozinha');
+  static readonly BAR = new MenuEnum(5, 'bar');
+  static readonly PAINEL = new MenuEnum(6, 'painel');
 
   static values = [
     MenuEnum.USUARIO,

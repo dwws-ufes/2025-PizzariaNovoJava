@@ -8,5 +8,6 @@ export class PizzaListModel {
   volume: number;
   fabricante: string;
   tamanhoId: number;
+  tamanho: string;
   qtdFatias: number;
 }

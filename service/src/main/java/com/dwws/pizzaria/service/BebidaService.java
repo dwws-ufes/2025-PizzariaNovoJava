@@ -1,6 +1,8 @@
 package com.dwws.pizzaria.service;
 
 import com.dwws.pizzaria.domain.Bebida;
+import com.dwws.pizzaria.domain.enums.TipoBebida;
+import com.dwws.pizzaria.domain.enums.TipoProduto;
 import com.dwws.pizzaria.repository.BebidaRepository;
 import com.dwws.pizzaria.service.dto.BebidaDTO;
 import com.dwws.pizzaria.service.dto.BebidaListDTO;
@@ -12,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -26,13 +30,25 @@ public class BebidaService {
     }
 
     public BebidaDTO findByID(Long id) {
-        return mapper.toDto(findEntity(id));
+        Bebida bebida = findEntity(id);
+
+        BebidaDTO bebidaDTO = mapper.toDto(bebida);
+        bebidaDTO.setTipoBebidaId(bebida.getTipoBebida().getId());
+        bebidaDTO.setTipoProdutoId(TipoProduto.BEBIDA.getId());
+
+        return bebidaDTO;
     }
 
     public BebidaDTO save(BebidaDTO bebidaDTO) {
         Bebida bebida = mapper.toEntity(bebidaDTO);
-        bebida = repository.save(bebida);
-        return mapper.toDto(bebida);
+
+        if (Objects.nonNull(bebidaDTO.getTipoBebidaId())) {
+            bebida.setTipoBebida(TipoBebida.fromId(bebidaDTO.getTipoBebidaId()));
+        }
+
+        bebida.setTipoProduto(TipoProduto.BEBIDA);
+
+        return mapper.toDto(repository.save(bebida));
     }
 
     public Page<BebidaListDTO> findAll(Pageable pageable) {
