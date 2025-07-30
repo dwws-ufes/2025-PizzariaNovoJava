@@ -24,7 +24,14 @@
   <div class="corpo-aplicacao">
     <div class="conteudo-principal">
       <div class="container list col-12" *ngIf="role === 'Garçom'">
+        <p-tabView>
+          <p-tabPanel header="Fazer Pedidos">
+            <app-painel-garcom></app-painel-garcom>
+          </p-tabPanel>
+          <p-tabPanel header="Lista de pedidos">
 
+          </p-tabPanel>
+        </p-tabView>
       </div>
       <div class="container list col-12" *ngIf="role === 'Caixa'">
       </div>

@@ -1,6 +1,7 @@
 package com.dwws.pizzaria.service;
 
 import com.dwws.pizzaria.domain.Cliente;
+import com.dwws.pizzaria.domain.ItemPedido;
 import com.dwws.pizzaria.domain.Pedido;
 import com.dwws.pizzaria.domain.Usuario;
 import com.dwws.pizzaria.domain.enums.StatusPedido;
@@ -8,6 +9,7 @@ import com.dwws.pizzaria.repository.PedidoRepository;
 import com.dwws.pizzaria.service.dto.ClienteDTO;
 import com.dwws.pizzaria.service.dto.PedidoDTO;
 import com.dwws.pizzaria.service.dto.PedidoListDTO;
+import com.dwws.pizzaria.service.dto.PedidoPreparoDTO;
 import com.dwws.pizzaria.service.dto.UsuarioDTO;
 import com.dwws.pizzaria.service.exception.BusinessRuleException;
 import com.dwws.pizzaria.service.exception.EntityNotFoundException;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -48,21 +51,21 @@ public class PedidoService {
         return repository.listAll(pageable);
     }
 
+    public List<PedidoPreparoDTO> listarPedidosEmPreparo(Long idAtendete) {return repository.listarPedidosEmPreparo(idAtendete);}
 
     public PedidoDTO save(PedidoDTO pedidoDTO) {
         log.debug("Request to save Pedido : {}", pedidoDTO);
 
-        // Validar cliente
         ClienteDTO cliente = clienteService.findByID(pedidoDTO.getClienteId());
 
-        // Validar atendente (se informado)
         UsuarioDTO atendente = null;
-        if (Objects.nonNull(pedidoDTO.getAtendenteId())) {
+        if (pedidoDTO.getAtendenteId() != null) {
             atendente = usuarioService.findByID(pedidoDTO.getAtendenteId());
         }
 
         Pedido pedido = pedidoMapper.toEntity(pedidoDTO);
         pedido.setCliente(new Cliente(cliente.getId()));
+        pedido.setAtivo(true);
 
         if (atendente != null) {
             pedido.setAtendente(new Usuario(atendente.getId()));
@@ -72,13 +75,25 @@ public class PedidoService {
             pedido.setDataHora(LocalDateTime.now());
         }
 
+        // Associa os itens bidirecionalmente
+
+        if (pedido.getItens() != null) {
+            for (ItemPedido item : pedido.getItens()) {
+                item.setPedido(pedido);
+                item.setAtivo(true);
+            }
+        }
+
+        // Salva pedido e itens juntos com cascade
         pedido = repository.save(pedido);
 
-        // Criar notificações baseadas nos produtos do pedido
         notificacaoService.criarNotificacoesPorTipoProduto(pedido);
 
         return pedidoMapper.toDto(pedido);
     }
+
+
+
 
     public PedidoDTO update(PedidoDTO pedidoDTO) {
         log.debug("Request to update Pedido : {}", pedidoDTO);

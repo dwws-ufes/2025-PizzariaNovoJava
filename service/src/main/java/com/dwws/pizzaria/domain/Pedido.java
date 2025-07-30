@@ -61,6 +61,9 @@ public class Pedido implements Serializable {
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemPedido> itens = new ArrayList<>();
 
+    @Column(name = "ativo", nullable = false)
+    private Boolean ativo;
+
     public Pedido(Long id) {
         this.id = id;
     }
