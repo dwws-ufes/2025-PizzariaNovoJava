@@ -3,6 +3,7 @@ package com.dwws.pizzaria.controller;
 import com.dwws.pizzaria.service.PedidoService;
 import com.dwws.pizzaria.service.dto.PedidoDTO;
 import com.dwws.pizzaria.service.dto.PedidoListDTO;
+import com.dwws.pizzaria.service.dto.PedidoPreparoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/pedido")
@@ -43,5 +46,10 @@ public class PedidoController {
     public ResponseEntity<Void> delete(@PathVariable("idPedido") Long idPedido) {
         service.delete(idPedido);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/lista-pedido/{idatendente}")
+    public ResponseEntity<List<PedidoPreparoDTO>> listarPedidosEmPreparo(@PathVariable("idatendente") Long idatendente) {
+        return new ResponseEntity<>(service.listarPedidosEmPreparo(idatendente), HttpStatus.OK);
     }
 }

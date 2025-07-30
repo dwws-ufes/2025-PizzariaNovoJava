@@ -1,9 +1,9 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {PainelClienteModule} from "./painel-cliente.module";
+import {PainelGarcomComponent} from "./painel-garcom/painel-garcom.component";
 
 const routes: Routes = [
-  {path: '', component: PainelClienteModule}
+  {path: '', component: PainelGarcomComponent}
 ];
 
 @NgModule({

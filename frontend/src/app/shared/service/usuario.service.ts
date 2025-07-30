@@ -36,4 +36,8 @@ export class UsuarioService {
     return this.http.put(this.resourceUrl + '/updtSenha', entity);
   }
 
+  findByLogin(login: string | null): Observable<UsuarioModel> {
+    return this.http.get<UsuarioModel>(this.resourceUrl + '/login/' + login);
+  }
+
 }

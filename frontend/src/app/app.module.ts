@@ -15,6 +15,7 @@ import ptBr from '@angular/common/locales/pt';
 import {registerLocaleData} from "@angular/common";
 import {CozinhaModule} from "./modules/cozinha/cozinha.module";
 import {BarModule} from "./modules/bar/bar.module";
+import {PainelClienteModule} from "./modules/painel-cliente/painel-cliente.module"
 
 registerLocaleData(ptBr);
 
@@ -32,6 +33,7 @@ registerLocaleData(ptBr);
     BrowserAnimationsModule,
     CozinhaModule,
     BarModule,
+    PainelClienteModule,
   ],
   providers: [
     MessageService, ConfirmationService, MensagensConfirmacao, AuthService, {provide: LOCALE_ID, useValue: 'pt'}

@@ -52,4 +52,9 @@ public class UsuarioController {
         service.updtPassword(userPasswordChangeDTO);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/login/{login}")
+    public ResponseEntity<UsuarioDTO> findByLogin(@PathVariable("login") String login) {
+        return new ResponseEntity<>(service.findByLogin(login), HttpStatus.OK);
+    }
 }

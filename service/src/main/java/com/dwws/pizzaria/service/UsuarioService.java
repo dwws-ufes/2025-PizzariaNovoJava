@@ -56,4 +56,10 @@ public class UsuarioService {
         user.setSenha(passwordEncoder.encode(userPasswordChangeDTO.getSenha()));
         repository.save(user);
     }
+
+    public UsuarioDTO findByLogin(String login) {
+        return repository.findByLogin(login)
+                .map(mapper::toDto)
+                .orElseThrow( () -> new EntityNotFoundException(MensagemUsuarioUtil.ENTITY_NOT_FOUND));
+    }
 }

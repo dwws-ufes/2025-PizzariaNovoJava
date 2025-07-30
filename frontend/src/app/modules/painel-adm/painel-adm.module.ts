@@ -14,7 +14,6 @@ import {SharedModule} from "../../shared/shared.module";
     CommonModule,
     PainelAdmRoutingModule,
     SharedModule,
-    SharedModule
   ]
 })
 export class PainelAdmModule {

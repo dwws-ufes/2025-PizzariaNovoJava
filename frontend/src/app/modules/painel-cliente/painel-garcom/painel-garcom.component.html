@@ -24,7 +24,7 @@
     <!-- Aba de Bebidas -->
     <p-tabPanel header="Bebidas">
       <div class="grid">
-        <div class="col-12 md:col-6 lg:col-4 xl:col-3" *ngFor="let bebida of bebidas">
+        <div class="col-12 md:col-6 lg:col-4 xl:col-6" *ngFor="let bebida of bebidas">
           <p-card [header]="bebida.nome" [subheader]="'R$ ' + bebida.precoVenda.toFixed(2)">
             <p>{{ bebida.descricao }}</p>
             <p>{{ bebida.volume }}ml - {{ bebida.fabricante }}</p>
