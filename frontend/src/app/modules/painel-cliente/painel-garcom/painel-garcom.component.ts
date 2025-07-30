@@ -134,6 +134,9 @@ export class PainelGarcomComponent implements OnInit {
       next: () => {
         this.messageService.add({severity: 'success', summary: 'Sucesso', detail: 'Pedido criado com sucesso'});
         this.limparPedido();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       },
       error: (err) => {
         this.messageService.add({severity: 'error', summary: 'Erro', detail: 'Falha ao criar pedido'});

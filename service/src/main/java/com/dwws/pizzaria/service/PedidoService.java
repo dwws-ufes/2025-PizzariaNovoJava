@@ -145,4 +145,29 @@ public class PedidoService {
         // Desativar notificações relacionadas
         notificacaoService.desativarNotificacoesPedido(pedido);
     }
+
+    public void alteraStatusPedido(Long id, StatusPedido statusPedido) {
+            Pedido pedido = findEntity(id);
+            switch (statusPedido) {
+                case PENDENTE:
+                    pedido.setStatus(StatusPedido.PENDENTE);
+                    break;
+                case EM_PREPARO:
+                    pedido.setStatus(StatusPedido.EM_PREPARO);
+                    break;
+                case PRONTO:
+                    pedido.setStatus(StatusPedido.PRONTO);
+                    break;
+                case ENTREGUE:
+                    pedido.setStatus(StatusPedido.ENTREGUE);
+                    break;
+                case CANCELADO:
+                    pedido.setStatus(StatusPedido.CANCELADO);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Status desconhecido: " + statusPedido);
+            }
+
+            repository.save(pedido);
+    }
 }

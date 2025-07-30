@@ -20,7 +20,7 @@ public class PedidoPreparoDTO {
     String clienteNome;
     String atendenteNome;
     String observacoes;
-    String produtos; // nomes agregados
+    String produtos;
     Long totalItens;
     Double valorTotalPedido;
 }

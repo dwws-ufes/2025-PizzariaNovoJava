@@ -1,0 +1,75 @@
+<div *ngIf="!pedidos || pedidos.length === 0" class="flex justify-content-center align-items-center p-6" style="min-height: 200px;">
+  <div class="text-center">
+    <h2 class="text-2xl font-bold text-gray-600">Nenhum pedido feito</h2>
+    <p class="text-gray-500">Aguardando novos pedidos...</p>
+  </div>
+</div>
+
+<div class="p-4" *ngIf="pedidos.length > 0">
+  <!-- Cabeçalho -->
+  <div class="mb-4 flex flex-column md:flex-row justify-content-between align-items-center gap-3">
+    <div>
+      <h2 class="text-2xl font-bold">Painel do Garçom</h2>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="mb-4 flex flex-column md:flex-row gap-3">
+    <span class="p-input-icon-left w-full md:w-6">
+      <input pInputText type="text" [(ngModel)]="busca" placeholder="Buscar por cliente ou atendente..." class="w-full" />
+    </span>
+  </div>
+
+  <!-- Lista de pedidos -->
+  <div class="grid gap-4">
+    <p-card *ngFor="let pedido of getPedidosFiltrados()" header="Pedido #{{ pedido.id }}">
+      <div class="flex flex-column sm:flex-row justify-content-between align-items-center mb-3">
+        <p-badge
+          [value]="getStatusText()"
+          [styleClass]="getStatusClass() + ' border-round'"
+        >Em preparo</p-badge>
+        <small class="text-gray-500">{{ pedido.dataPedido }}</small>
+      </div>
+
+      <div class="grid grid-nogutter md:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
+        <div>
+          <b>Cliente:</b> {{ pedido.clienteNome }}
+        </div>
+        <div>
+          <b>Atendente:</b> {{ pedido.atendenteNome }}
+        </div>
+        <div>
+          <b>Itens Pedido:</b> ({{ pedido.totalItens }} itens)
+        </div>
+        <div>
+          <b>Valor Total:</b> R$ {{ pedido.valorTotalPedido.toFixed(2).replace('.', ',') }}
+        </div>
+      </div>
+
+      <div *ngIf="pedido.observacoes" class="mt-3">
+        <p class="text-gray-600 mb-1"><b>Observações:</b></p>
+        <div class="bg-gray-100 p-2 border-round">{{ pedido.observacoes }}</div>
+      </div>
+
+      <div class="mt-3 flex flex-wrap gap-2">
+        <button pButton label="Ver Detalhes" class="p-button-outlined p-button-sm" (click)="verDetalhes(pedido)"></button>
+        <button pButton label="Marcar como Entregue" class="p-button-success"></button>
+        <button pButton label="Cancelar" class="p-button-danger mr-2"></button>
+      </div>
+    </p-card>
+  </div>
+
+  <!-- Modal de Detalhes -->
+  <p-dialog header="Detalhes do Pedido" [(visible)]="mostrarModalDetalhes" [modal]="true" [style]="{ width: '450px' }" [closable]="true">
+    <ng-container *ngIf="pedidoSelecionado">
+      <div class="mb-2"><b>Cliente:</b> {{ pedidoSelecionado.clienteNome }}</div>
+      <div class="mb-2"><b>Atendente:</b> {{ pedidoSelecionado.atendenteNome }}</div>
+      <div class="mb-2"><b>Produtos:</b> {{ pedidoSelecionado.produtos }}</div>
+      <div class="mb-2"><b>Valor Total:</b> R$ {{ pedidoSelecionado.valorTotalPedido.toFixed(2).replace('.', ',') }}</div>
+      <div class="mb-2"><b>Data do Pedido:</b> {{ pedidoSelecionado.dataPedido }}</div>
+      <div class="mb-2" *ngIf="pedidoSelecionado.observacoes">
+        <b>Observações:</b> {{ pedidoSelecionado.observacoes }}
+      </div>
+    </ng-container>
+  </p-dialog>
+</div>

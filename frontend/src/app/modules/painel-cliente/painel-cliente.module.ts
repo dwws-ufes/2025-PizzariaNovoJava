@@ -14,7 +14,7 @@ import {SharedModule} from "../../shared/shared.module";
     PainelGarcomComponent,
     PizzaPainelComponent,
     BebidaPainelComponent,
-    SobremesaPainelComponent
+    SobremesaPainelComponent,
   ],
   exports: [
     PainelGarcomComponent
