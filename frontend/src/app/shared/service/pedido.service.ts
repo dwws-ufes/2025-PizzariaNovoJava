@@ -27,4 +27,7 @@ export class PedidoService {
   alteraStatusPedido(status: UptadeStatusPedidoModel): Observable<void> {
     return this.http.post<void>(this.resourceUrl + '/altera-status-pedido', status);
   }
+  findById(id: number): Observable<PedidoPreparodoModel> {
+    return this.http.get<PedidoPreparodoModel>(this.resourceUrl + id);
+  }
 }
