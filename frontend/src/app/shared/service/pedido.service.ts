@@ -6,6 +6,7 @@ import {Page} from "../util/page-util";
 import {PedidoListModel} from "../../model/list/pedido-list.model";
 import {PedidoModel} from "../../model/pedido.model";
 import {PedidoPreparodoModel} from "../../model/pedido-preparodo.model";
+import {UptadeStatusPedidoModel} from "../../model/uptade-status-pedido.model";
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,7 @@ export class PedidoService {
   findByIdAtendente(id: number): Observable<PedidoPreparodoModel[]> {
     return this.http.get<PedidoPreparodoModel[]>(this.resourceUrl + '/lista-pedido/' + id);
   }
-
-
+  alteraStatusPedido(status: UptadeStatusPedidoModel): Observable<void> {
+    return this.http.post<void>(this.resourceUrl + '/altera-status-pedido', status);
+  }
 }

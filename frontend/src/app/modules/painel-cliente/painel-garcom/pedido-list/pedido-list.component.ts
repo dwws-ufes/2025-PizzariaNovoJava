@@ -4,6 +4,8 @@ import {UsuarioService} from "../../../../shared/service/usuario.service";
 import {PedidoService} from "../../../../shared/service/pedido.service";
 import {MessageService} from "primeng/api";
 import {UsuarioModel} from "../../../../model/usuario.model";
+import {UptadeStatusPedidoModel} from "../../../../model/uptade-status-pedido.model";
+import {StatusPedido} from "../../../../shared/util/enum/status-pedido-enum";
 
 
 @Component({
@@ -18,6 +20,7 @@ export class PedidoListComponent implements OnInit{
   mostrarModalDetalhes: boolean = false;
   atendente: UsuarioModel;
   pedidos: PedidoPreparodoModel[] = [];
+  StatusPedido = StatusPedido;
 
   constructor(
     private usuarioService: UsuarioService,
@@ -65,9 +68,29 @@ export class PedidoListComponent implements OnInit{
     });
   }
 
-  verDetalhes(pedido: PedidoPreparodoModel) {
+  verDetalhes(pedido: PedidoPreparodoModel): void {
     this.pedidoSelecionado = pedido;
     this.mostrarModalDetalhes = true;
   }
+
+  cancelarPedido(pedido: PedidoPreparodoModel): void {
+    if(pedido.id){
+      const statusCancelado = StatusPedido.obterPorIndex(4);
+      const statusPedido: UptadeStatusPedidoModel = {
+        idPedido: pedido.id,
+        statusPedido: statusCancelado.index
+      };
+      console.log("Status Pedido", statusPedido)
+      this.pedidoService.alteraStatusPedido(statusPedido).subscribe({
+        next: () => {
+          this.carregarPedidos();
+        },
+        error: (err) => {
+          console.error("Erro ao alterar status:", err);
+        }
+      });
+    }
+  }
+
 
 }

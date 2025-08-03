@@ -4,6 +4,7 @@ import com.dwws.pizzaria.service.PedidoService;
 import com.dwws.pizzaria.service.dto.PedidoDTO;
 import com.dwws.pizzaria.service.dto.PedidoListDTO;
 import com.dwws.pizzaria.service.dto.PedidoPreparoDTO;
+import com.dwws.pizzaria.service.dto.UpdateStatusPedidoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -51,5 +52,10 @@ public class PedidoController {
     @GetMapping("/lista-pedido/{idatendente}")
     public ResponseEntity<List<PedidoPreparoDTO>> listarPedidosEmPreparo(@PathVariable("idatendente") Long idatendente) {
         return new ResponseEntity<>(service.listarPedidosEmPreparo(idatendente), HttpStatus.OK);
+    }
+
+    @PostMapping("/altera-status-pedido")
+    public ResponseEntity<PedidoDTO> alteraStatusPedido(@RequestBody UpdateStatusPedidoDTO dto) {
+        return new ResponseEntity<>(service.alteraStatusPedido(dto), HttpStatus.OK);
     }
 }

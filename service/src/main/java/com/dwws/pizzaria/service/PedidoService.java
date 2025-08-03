@@ -10,6 +10,7 @@ import com.dwws.pizzaria.service.dto.ClienteDTO;
 import com.dwws.pizzaria.service.dto.PedidoDTO;
 import com.dwws.pizzaria.service.dto.PedidoListDTO;
 import com.dwws.pizzaria.service.dto.PedidoPreparoDTO;
+import com.dwws.pizzaria.service.dto.UpdateStatusPedidoDTO;
 import com.dwws.pizzaria.service.dto.UsuarioDTO;
 import com.dwws.pizzaria.service.exception.BusinessRuleException;
 import com.dwws.pizzaria.service.exception.EntityNotFoundException;
@@ -146,9 +147,9 @@ public class PedidoService {
         notificacaoService.desativarNotificacoesPedido(pedido);
     }
 
-    public void alteraStatusPedido(Long id, StatusPedido statusPedido) {
-            Pedido pedido = findEntity(id);
-            switch (statusPedido) {
+    public PedidoDTO alteraStatusPedido(UpdateStatusPedidoDTO dto) {
+            Pedido pedido = findEntity(dto.getIdPedido());
+            switch (dto.getStatusPedido()) {
                 case PENDENTE:
                     pedido.setStatus(StatusPedido.PENDENTE);
                     break;
@@ -165,9 +166,9 @@ public class PedidoService {
                     pedido.setStatus(StatusPedido.CANCELADO);
                     break;
                 default:
-                    throw new IllegalArgumentException("Status desconhecido: " + statusPedido);
+                    throw new IllegalArgumentException("Status desconhecido: " + dto.getStatusPedido());
             }
-
             repository.save(pedido);
+            return pedidoMapper.toDto(pedido);
     }
 }
