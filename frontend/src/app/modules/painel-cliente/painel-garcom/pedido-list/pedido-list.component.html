@@ -53,7 +53,7 @@
 
       <div class="mt-3 flex flex-wrap gap-2">
         <button pButton label="Ver Detalhes" class="p-button-outlined p-button-sm" (click)="verDetalhes(pedido)"></button>
-        <button pButton label="Marcar como Entregue" class="p-button-success"></button>
+        <button pButton label="Marcar como Entregue" class="p-button-success" (click)="entregarPedido(pedido)"></button>
         <button pButton label="Cancelar" class="p-button-danger mr-2" (click)="cancelarPedido(pedido)"></button>
       </div>
     </p-card>
@@ -66,9 +66,11 @@
       <div class="mb-2"><b>Atendente:</b> {{ pedidoSelecionado.atendenteNome }}</div>
       <div class="mb-2"><b>Produtos:</b> {{ pedidoSelecionado.produtos }}</div>
       <div class="mb-2"><b>Valor Total:</b> R$ {{ pedidoSelecionado.valorTotalPedido.toFixed(2).replace('.', ',') }}</div>
-      <div class="mb-2"><b>Data do Pedido:</b> {{ pedidoSelecionado.dataPedido }}</div>
       <div class="mb-2" *ngIf="pedidoSelecionado.observacoes">
         <b>Observações:</b> {{ pedidoSelecionado.observacoes }}
+      </div>
+      <div class="mt-3 flex flex-wrap gap-2">
+        <button pButton label="Editar" class="p-button-outlined p-button-sm"></button>
       </div>
     </ng-container>
   </p-dialog>

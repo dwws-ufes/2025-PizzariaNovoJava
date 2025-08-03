@@ -76,20 +76,35 @@ export class PedidoListComponent implements OnInit{
   cancelarPedido(pedido: PedidoPreparodoModel): void {
     if(pedido.id){
       const statusCancelado = StatusPedido.obterPorIndex(4);
-      const statusPedido: UptadeStatusPedidoModel = {
+      const cancelarPedido: UptadeStatusPedidoModel = {
         idPedido: pedido.id,
         statusPedido: statusCancelado.index
       };
-      console.log("Status Pedido", statusPedido)
-      this.pedidoService.alteraStatusPedido(statusPedido).subscribe({
-        next: () => {
-          this.carregarPedidos();
-        },
-        error: (err) => {
-          console.error("Erro ao alterar status:", err);
-        }
-      });
+      this.alteraStatusPedido(cancelarPedido);
     }
+  }
+
+  entregarPedido(pedido: PedidoPreparodoModel): void{
+    if(pedido.id){
+      const statusEntrgue = StatusPedido.obterPorIndex(3);
+      const entreguarPedido: UptadeStatusPedidoModel = {
+        idPedido: pedido.id,
+        statusPedido: statusEntrgue.index
+      };
+      this.alteraStatusPedido(entreguarPedido);
+    }
+  }
+
+  alteraStatusPedido(status: UptadeStatusPedidoModel): void{
+    this.pedidoService.alteraStatusPedido(status).subscribe({
+      next: () => {
+        this.carregarPedidos();
+      },
+      error: (err) => {
+        console.error("Erro ao alterar status:", err);
+      }
+    });
+
   }
 
 
