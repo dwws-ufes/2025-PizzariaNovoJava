@@ -1,6 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {SidemenuModel} from "./shared/models/sidemenu.model";
 import {AuthService} from "./modules/login/auth.service";
+import {ClienteFormComponent} from "./modules/cliente/cliente-form/cliente-form.component";
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ export class AppComponent {
 
   role: string | null = localStorage.getItem('roleDescription')
   public configuracaoMenuLateral: SidemenuModel = new SidemenuModel();
+  @ViewChild(ClienteFormComponent) customerFormComponent: ClienteFormComponent;
 
   constructor(private authService: AuthService) {
 
@@ -25,5 +27,14 @@ export class AppComponent {
       mostrar => this.mostrarMenu = mostrar
     );
     console.log(this.impBarCode)
+  }
+
+  onSave(): void {
+    this.customerFormComponent.saveForm();
+    this.onClose();
+  }
+
+  onClose(): void {
+    this.customerFormComponent.formGroup.reset();
   }
 }

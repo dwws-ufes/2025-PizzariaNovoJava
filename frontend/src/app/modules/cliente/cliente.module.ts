@@ -16,6 +16,9 @@ import {SharedModule} from "../../shared/shared.module";
     CommonModule,
     ClienteRoutingModule,
     SharedModule
+  ],
+  exports: [ // <- aqui é a chave!
+    ClienteFormComponent
   ]
 })
 export class ClienteModule { }

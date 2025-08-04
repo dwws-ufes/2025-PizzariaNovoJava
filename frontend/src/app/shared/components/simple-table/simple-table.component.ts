@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ColumnUtil} from "../../util/columnUtil";
+import {ColumnUtil} from "../../util/column-util";
+
 
 @Component({
     selector: 'simple-table',

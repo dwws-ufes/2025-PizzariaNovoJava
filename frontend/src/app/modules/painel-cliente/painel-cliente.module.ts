@@ -6,7 +6,9 @@ import {PainelGarcomComponent} from './painel-garcom/painel-garcom.component';
 import {PizzaPainelComponent} from './pizza-painel/pizza-painel.component';
 import {BebidaPainelComponent} from './bebida-painel/bebida-painel.component';
 import {SobremesaPainelComponent} from './sobremesa-painel/sobremesa-painel.component';
+import {PedidoListComponent} from './painel-garcom/pedido-list/pedido-list.component'
 import {SharedModule} from "../../shared/shared.module";
+import { BadgeModule } from 'primeng/badge';
 
 
 @NgModule({
@@ -15,14 +17,17 @@ import {SharedModule} from "../../shared/shared.module";
     PizzaPainelComponent,
     BebidaPainelComponent,
     SobremesaPainelComponent,
+    PedidoListComponent,
   ],
   exports: [
-    PainelGarcomComponent
+    PainelGarcomComponent,
+    PedidoListComponent
   ],
   imports: [
     CommonModule,
     PainelClienteRoutingModule,
-    SharedModule
+    SharedModule,
+    BadgeModule
   ]
 })
 export class PainelClienteModule {
