@@ -7,6 +7,7 @@ import { CustomTableComponent } from "./custom-table/custom-table.component";
 import { CPFPipe } from "../util/pipes/cpf.pipe";
 import { ValidationMessageComponent } from './validation-message/validation-message.component';
 import {CpfPrivadoPipe} from "../util/pipes/cpf-privado.pipe";
+import {SimpleTableComponent} from "./simple-table/simple-table.component";
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import {CpfPrivadoPipe} from "../util/pipes/cpf-privado.pipe";
     CPFPipe,
     CpfPrivadoPipe,
     ValidationMessageComponent,
+    SimpleTableComponent
   ],
   imports: [
     CommonModule,
@@ -27,6 +29,7 @@ import {CpfPrivadoPipe} from "../util/pipes/cpf-privado.pipe";
     CustomTableComponent,
     CPFPipe,
     CpfPrivadoPipe,
+    SimpleTableComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA] // ✅ Only needed if using custom elements (e.g., Web Components)
 })

@@ -1,0 +1,62 @@
+<div class="form p-fluid p-grid container">
+  <div class="item-pagina text-center col-12">
+    <span class="titulo">Caixa - Pagamento</span>
+  </div>
+  <form [formGroup]="formGroup">
+    <section>
+      <div class="item-form pb-3 pt-3">
+        <label class="font-bold" for="cliente">Cliente</label>
+        <div class="p-inputgroup">
+          <input pInputText autofocus type="text" placeholder="Buscar cliente..." id="cliente"
+                 formControlName="cliente" (keyup)="buscarCliente($event)"/>
+          <button pButton type="button" icon="pi pi-search" class="p-button-secondary"></button>
+        </div>
+      </div>
+
+      <div *ngIf="cliente" class="cliente-info p-3 mb-3">
+        <h4>Cliente: {{ cliente.nome }}</h4>
+        <p>CPF: {{ cliente.cpf | cpfPrivado }}</p>
+        <p *ngIf="cliente.telefone">Telefone: {{ cliente.telefone }}</p>
+      </div>
+    </section>
+
+    <div id="pedido" class="mt-3">
+      <h4>Itens do Pedido:</h4>
+      <simple-table [colunas]="columns"
+                    [dados]="itensPedido"
+                    [paginator]="false"
+                    [rows]="50">
+      </simple-table>
+
+      <div class="resumo-pedido mt-3">
+        <p>Total Itens: {{ itensPedido?.length || 0 }}</p>
+        <p>Valor Total: {{ valorTotal | currency : 'BRL' }}</p>
+
+        <div class="item-form pb-3 pt-3">
+          <label class="font-bold" for="desconto">Desconto</label>
+          <input pInputText type="number" placeholder="0.00" id="desconto"
+                 formControlName="desconto" (change)="calcularValorFinal()"/>
+        </div>
+
+        <div class="item-form pb-3 pt-3">
+          <label class="font-bold" for="formaPagamento">Forma de Pagamento</label>
+          <p-dropdown [options]="formasPagamento" id="formaPagamento"
+                      formControlName="formaPagamento" placeholder="Selecione..."></p-dropdown>
+        </div>
+
+        <h3 class="valor-final">Valor Final: {{ valorFinal | currency : 'BRL' }}</h3>
+      </div>
+    </div>
+
+    <div class="flex justify-content-end mt-3">
+      <button pButton type="button"
+              class="button-action"
+              iconPos="left"
+              icon="pi pi-check"
+              label="Confirmar Pagamento"
+              [disabled]="!formGroup.valid || !cliente || !itensPedido?.length"
+              (click)="confirmarPagamento()">
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,52 @@
+<div class="item-pagina tabela">
+    <p-table [columns]="colunas"
+             [value]="dados"
+             [paginator]="paginator"
+             [rows]="rows"
+             [responsive]="true"
+             sortMode="multiple">
+        <ng-template pTemplate="header" let-colunas>
+            <tr>
+                <th id="titulo-colunas" *ngFor="let col of colunas" [pSortableColumn]="col.field"
+                    [style]="'width:'+ col.columnWidth">
+                    {{col.header}}
+                    <ng-container>
+                        <p-sortIcon [field]="col.field"></p-sortIcon>
+                    </ng-container>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr *ngIf="!chope">
+            <td *ngFor="let col of columns">
+              {{col.field != 'valor' ? rowData[col.field] : rowData[col.field] | currency : 'BRL'}}
+            </td>
+          </tr>
+          <tr *ngIf="chope">
+            <td *ngFor="let col of columns">
+              <ng-container *ngIf="col.field !== 'qtdeEstoque'">
+                <div class="flex icone w100">
+                  {{rowData[col.field]}}
+                </div>
+              </ng-container>
+              <ng-container *ngIf="col.field === 'qtdeEstoque'">
+                <div class="flex icone w100" *ngIf="rowData.qtde == 1">
+                  {{rowData[col.field]}} Barril
+                </div>
+                <div class="flex icone w100">
+                  {{rowData[col.field]}} Barris
+                </div>
+              </ng-container>
+            </td>
+
+          </tr>
+        </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td *ngIf="!dados">
+            Nenhum dado encontrado.
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+</div>

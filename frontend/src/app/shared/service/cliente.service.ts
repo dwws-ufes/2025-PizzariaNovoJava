@@ -35,4 +35,8 @@ export class ClienteService {
     delete(id: number): Observable<ClienteModel> {
         return this.http.delete<ClienteModel>(this.resourceUrl + '/' + id);
     }
+
+  buscarPorTermo(term: string): Observable<ClienteListModel[]> {
+    return this.http.get<ClienteListModel[]>(`${this.resourceUrl}/buscar?termo=${term}`);
+  }
 }
