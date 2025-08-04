@@ -37,6 +37,6 @@ export class ClienteService {
     }
 
   buscarPorTermo(term: string): Observable<ClienteListModel[]> {
-    return this.http.get<ClienteListModel[]>(`${this.resourceUrl}/buscar?termo=${term}`);
+    return this.http.get<ClienteListModel[]>(`${this.resourceUrl}/buscar-por-termo/${term}`);
   }
 }

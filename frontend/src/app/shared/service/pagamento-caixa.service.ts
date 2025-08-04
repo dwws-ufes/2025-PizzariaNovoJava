@@ -17,4 +17,5 @@ export class PagamentoCaixaService {
   findAllClientes(): Observable<DropdownModel[]> {
     return this.http.get<DropdownModel[]>(this.resourceUrl + '/clientes');
   }
+
 }

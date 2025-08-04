@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/cliente")
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -43,5 +45,10 @@ public class ClienteController {
     public ResponseEntity<Void> delete(@PathVariable("idCliente") Long idCliente) {
         service.delete(idCliente);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/buscar-por-termo/{termo}")
+    public ResponseEntity<List<ClienteDTO>> buscarPorTermo(@PathVariable("termo") String termo) {
+        return new ResponseEntity<>(service.burcarPorTermo(termo), HttpStatus.OK);
     }
 }

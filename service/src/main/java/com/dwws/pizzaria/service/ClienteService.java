@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -69,6 +70,10 @@ public class ClienteService {
                 Objects.nonNull(clienteDTO.getId()) ? clienteDTO.getId() : 0L)) {
             throw new BusinessRuleException("Email já cadastrado para outro cliente");
         }
+    }
+    public List<ClienteDTO> burcarPorTermo(String termo) {
+        List<Cliente> cliente = repository.findByNomeAndAtivoTrue(termo);
+        return mapper.toDto(cliente);
     }
 }
 

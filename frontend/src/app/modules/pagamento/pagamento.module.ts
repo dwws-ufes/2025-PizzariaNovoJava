@@ -14,6 +14,9 @@ import {SharedModule} from "../../shared/shared.module";
     CommonModule,
     PagamentoRoutingModule,
     SharedModule
+  ],
+  exports: [
+    CaixaPagamentoComponent
   ]
 })
 export class PagamentoModule { }

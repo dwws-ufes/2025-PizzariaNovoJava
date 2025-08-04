@@ -29,7 +29,7 @@
       </simple-table>
 
       <div class="resumo-pedido mt-3">
-        <p>Total Itens: {{ itensPedido?.length || 0 }}</p>
+        <p>Total Itens: {{ itensPedido.length || 0 }}</p>
         <p>Valor Total: {{ valorTotal | currency : 'BRL' }}</p>
 
         <div class="item-form pb-3 pt-3">
@@ -54,7 +54,7 @@
               iconPos="left"
               icon="pi pi-check"
               label="Confirmar Pagamento"
-              [disabled]="!formGroup.valid || !cliente || !itensPedido?.length"
+              [disabled]="!formGroup.valid || !cliente || !itensPedido.length"
               (click)="confirmarPagamento()">
       </button>
     </div>
