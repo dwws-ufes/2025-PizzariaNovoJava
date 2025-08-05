@@ -3,96 +3,56 @@
     <span class="titulo">Cozinha - Pedidos</span>
   </div>
 
-  <div class="tabs">
-    <p-tabView>
-      <p-tabPanel header="Pizzas">
-        <div class="list-card">
-          <div *ngFor="let item of pizzasList">
-            <div class="item">
-              <div class="body-card">
-                <div class="info-pedido">
-                  <span class="pedido-numero">Pedido #{{ item.pedidoId }}</span>
-                  <span class="cliente-nome">{{ item.nomeCliente }}</span>
-                </div>
-                <div class="info-prato">
-                  <span>{{ item.nomePizza }} ({{ item.tamanho }} - {{ item.qtdFatias }} fatias)</span>
-                  <span class="observacao" *ngIf="item.observacao">Obs: {{ item.observacao }}</span>
-                </div>
-                <span class="status" [ngClass]="{
-                    'status-pendente': item.statusPratoId === StatusPedido.PENDENTE.index,
-                    'status-preparando': item.statusPratoId === StatusPedido.EM_PREPARO.index,
-                    'status-pronto': item.statusPratoId === StatusPedido.PRONTO.index,
-                    'status-entregue': item.statusPratoId === StatusPedido.ENTREGUE.index,
-                    'status-cancelado': item.statusPratoId === StatusPedido.CANCELADO.index
-                  }">
-                  {{ getStatusDescricao(item.statusPratoId) }}
-                </span>
-              </div>
-              <div class="card-footer">
-                <button pButton type="button"
-                        class="button-action ui-button-primary"
-                        icon="pi pi-cog"
-                        label="Alterar Status"
-                        (click)="abrirModalStatus(item, 'PIZZA')">
-                </button>
-              </div>
-            </div>
-          </div>
-          <div *ngIf="pizzasList.length == 0" class="msg">
-            <span>Nenhuma pizza pendente</span>
-          </div>
-        </div>
-      </p-tabPanel>
+  <div class="list-card">
+    <p-card *ngFor="let item of pizzasList" header="Pedido #{{ item.pedidoId }}">
+      <div class="flex flex-column sm:flex-row justify-content-between align-items-center mb-3">
+        <p-badge
+          [value]="getStatusText(item.statusPratoId)"
+          [styleClass]="getStatusClass(item.statusPratoId) + ' border-round'"
+        >{{ getStatusDescricao(item.statusPratoId) }}</p-badge>
+        <small class="text-gray-500">{{ item.dataHora }}</small>
+      </div>
 
-      <p-tabPanel header="Sobremesas">
-        <div class="list-card">
-          <div *ngFor="let item of sobremesasList">
-            <div class="item">
-              <div class="body-card">
-                <div class="info-pedido">
-                  <span class="pedido-numero">Pedido #{{ item.pedidoId }}</span>
-                  <span class="cliente-nome">{{ item.nomeCliente }}</span>
-                </div>
-                <div class="info-prato">
-                  <span>{{ item.nomeSobremesa }}</span>
-                </div>
-                <span class="status" [ngClass]="{
-                    'status-pendente': item.statusPratoId === StatusPedido.PENDENTE.index,
-                    'status-preparando': item.statusPratoId === StatusPedido.EM_PREPARO.index,
-                    'status-pronto': item.statusPratoId === StatusPedido.PRONTO.index,
-                    'status-entregue': item.statusPratoId === StatusPedido.ENTREGUE.index,
-                    'status-cancelado': item.statusPratoId === StatusPedido.CANCELADO.index
-                  }">
-                  {{ getStatusDescricao(item.statusPratoId) }}
-                </span>
-              </div>
-              <div class="card-footer">
-                <button pButton type="button"
-                        class="button-action ui-button-primary"
-                        icon="pi pi-cog"
-                        label="Alterar Status"
-                        (click)="abrirModalStatus(item, 'SOBREMESA')">
-                </button>
-              </div>
-            </div>
-          </div>
-          <div *ngIf="sobremesasList.length == 0" class="msg">
-            <span>Nenhuma sobremesa pendente</span>
-          </div>
+      <div class="grid grid-nogutter md:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
+        <div>
+          <b>Cliente:</b> {{ item.nomeCliente }}
         </div>
-      </p-tabPanel>
-    </p-tabView>
+        <div>
+          <b>Bebida:</b> {{ item.nomePizza }}
+        </div>
+        <div>
+          <b>Quantidade:</b> ({{ item.quantidade }})
+        </div>
+      </div>
+
+      <div *ngIf="item.observacao" class="mt-3">
+        <p class="text-gray-600 mb-1"><b>Observações:</b></p>
+        <div class="bg-gray-100 p-2 border-round">{{ item.observacao }}</div>
+      </div>
+
+      <div class="mt-3 flex flex-wrap gap-2">
+        <button pButton label="Alterar Status" class="p-button-outlined p-button-sm" (click)="abrirModalStatus(item)"></button>
+      </div>
+    </p-card>
+    <div *ngIf="pizzasList.length == 0" class="msg">
+      <span>Nenhuma bebida pendente</span>
+    </div>
   </div>
 </div>
 
 <!-- Modal de Status -->
 <p-dialog header="Alterar Status do Pedido" [(visible)]="displayModalStatus"
-          [style]="{width: '450px'}" [modal]="true" [draggable]="false" [resizable]="false">
+          [style]="{ width: '550px', height: '396px' }" [modal]="true" [draggable]="false" [resizable]="false">
   <div class="p-fluid">
     <div class="p-field">
-      <label for="status">Novo Status</label>
-      <p-dropdown [options]="opcoesStatus" [(ngModel)]="statusSelecionado" optionLabel="label"
-                  optionValue="value" [style]="{width: '100%'}"></p-dropdown>
+      <label>Novo Status</label>
+      <p-dropdown
+        [options]="opcoesStatus"
+        [(ngModel)]="statusSelecionado"
+        optionLabel="titulo"
+        optionValue="index"
+        [style]="{width: '100%'}">
+      </p-dropdown>
     </div>
   </div>
   <ng-template pTemplate="footer">

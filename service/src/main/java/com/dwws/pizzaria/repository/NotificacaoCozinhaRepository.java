@@ -45,7 +45,7 @@ public interface NotificacaoCozinhaRepository extends JpaRepository<NotificacaoC
             "       p.observacoes    AS observacao," +
             "       CAST(p.status AS integer) AS statusPratoId," +
             "       ip.quantidade    AS quantidade" +
-            " FROM notificacao_cozinha nc" +
+            " FROM notificacao_bar nc" +
             "         JOIN pedido p on p.id = nc.pedido_id" +
             "         join item_pedido ip on ip.pedido_id = p.id" +
             "         join produto prod on ip.produto_id = prod.id" +

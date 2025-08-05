@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { CozinhaRoutingModule } from './cozinha-routing.module';
 import { CozinhaComponent } from './cozinha/cozinha.component';
 import {SharedModule} from "../../shared/shared.module";
+import {BadgeModule} from "primeng/badge";
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import {SharedModule} from "../../shared/shared.module";
     imports: [
         CommonModule,
         CozinhaRoutingModule,
-        SharedModule
+        SharedModule,
+        BadgeModule
     ]
 })
 export class CozinhaModule { }

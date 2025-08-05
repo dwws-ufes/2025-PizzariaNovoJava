@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { BarRoutingModule } from './bar-routing.module';
 import { BarComponent } from './bar/bar.component';
 import {SharedModule} from "../../shared/shared.module";
+import {BadgeModule} from "primeng/badge";
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import {SharedModule} from "../../shared/shared.module";
     imports: [
         CommonModule,
         BarRoutingModule,
-        SharedModule
+        SharedModule,
+        BadgeModule
     ]
 })
 export class BarModule { }

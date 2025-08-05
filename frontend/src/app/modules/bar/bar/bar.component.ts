@@ -3,6 +3,14 @@ import {BlockUI, NgBlockUI} from "ng-block-ui";
 import {BebidaPedidoViewModel} from "../../../model/list/bebida-pedido-view.model";
 import {MensagensConfirmacao} from "../../../shared/util/msg-confirmacao-dialog-util";
 import {StatusPedido} from "../../../shared/util/enum/status-pedido-enum";
+import {NotificacaoService} from "../../../shared/service/notificacao.service";
+import {finalize} from "rxjs";
+import {MensagensBarUtil} from "../util/mensagens-bar-util";
+import {MensagensProntasUtil} from "../../../shared/util/messages/MensagensProntas.util";
+import {UptadeStatusPedidoModel} from "../../../model/uptade-status-pedido.model";
+import {PedidoService} from "../../../shared/service/pedido.service";
+import {PizzaPedidoViewModel} from "../../../model/list/pizza-pedido-view.model";
+import {SobremesaPedidoViewModel} from "../../../model/list/sobremesa-pedido-view.model";
 
 @Component({
   selector: 'app-bar',
@@ -20,8 +28,10 @@ export class BarComponent implements OnInit {
   opcoesStatus: StatusPedido[] = StatusPedido.values;
 
   constructor(
-    // private barService: BarService,
-    private message: MensagensConfirmacao
+    private barService: NotificacaoService,
+    private message: MensagensConfirmacao,
+    private pedidoService: PedidoService,
+
   ) {
   }
 
@@ -34,17 +44,17 @@ export class BarComponent implements OnInit {
   }
 
   carregarBebidasPedidas(): void {
-    // this.blockUI.start();
-    // this.barService.getBebidasPedidas()
-    //   .pipe(finalize(() => this.blockUI.stop()))
-    //   .subscribe({
-    //     next: (result) => {
-    //       this.bebidasList = result || [];
-    //     },
-    //     error: () => {
-    //       this.message.showInfo(MensagensBarUtil.ERROS_LIST_ALL, MensagensProntasUtil.ERROR);
-    //     }
-    //   });
+    this.blockUI.start();
+    this.barService.findAllBar()
+      .pipe(finalize(() => this.blockUI.stop()))
+      .subscribe({
+        next: (result) => {
+          this.bebidasList = result || [];
+        },
+        error: () => {
+          this.message.showInfo(MensagensBarUtil.ERROS_LIST_ALL, MensagensProntasUtil.ERROR);
+        }
+      });
   }
 
   abrirModalStatus(item: BebidaPedidoViewModel): void {
@@ -72,25 +82,47 @@ export class BarComponent implements OnInit {
     );
   }
 
-  atualizarStatus(item: BebidaPedidoViewModel | null, novoStatus: number | null): void {
-    //   if (!item || novoStatus === null) {
-    //     return;
-    //   }
-    //
-    //   this.blockUI.start();
-    //   this.barService.atualizarStatusBebida(item.pedidoId, novoStatus)
-    //     .pipe(finalize(() => {
-    //       this.blockUI.stop();
-    //       this.fecharModalStatus();
-    //     }))
-    //     .subscribe({
-    //       next: () => {
-    //         this.message.showSuccess(MensagensBarUtil.UPDATE_SUCCESSFUL_BEBIDA);
-    //         this.carregarBebidasPedidas();
-    //       },
-    //       error: () => {
-    //         this.message.showError(MensagensBarUtil.ERROR_UPDATE, MensagensProntasUtil.ERROR);
-    //       }
-    //     });
+  atualizarStatus(item: BebidaPedidoViewModel | null | SobremesaPedidoViewModel, novoStatus: number | null): void{
+    if (!item || novoStatus === null) {
+      console.warn("Item ou status inválido");
+      return;
+    }
+    const status: UptadeStatusPedidoModel = {
+      idPedido: item.pedidoId,
+      statusPedido: novoStatus
+    };
+    this.pedidoService.alteraStatusPedido(status).subscribe({
+      next: () => {
+        this.message.showInfo('Status do pedido alterado com sucesso', 'Fechar');
+        this.fecharModalStatus();
+        this.carregarBebidasPedidas();
+      },
+      error: (err) => {
+        console.error("Erro ao alterar status:", err);
+        this.message.showInfo('Erro ao alterar status do pedido', 'Fechar')
+      }
+    });
+  }
+
+  getStatusText(status: number): string {
+    switch (status) {
+      case 0: return 'Pendente';
+      case 1: return 'Em Preparo';
+      case 2: return 'Pronto';
+      case 3: return 'Entregue';
+      case 4: return 'Cancelado';
+      default: return 'Indefinido';
+    }
+  }
+
+  getStatusClass(status: number): string {
+    switch (status) {
+      case 0: return 'bg-amber-100 text-amber-800';
+      case 1: return 'bg-blue-100 text-blue-800';
+      case 2: return 'bg-green-100 text-green-800';
+      case 3: return 'bg-gray-200 text-gray-800';
+      case 4: return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
   }
 }
