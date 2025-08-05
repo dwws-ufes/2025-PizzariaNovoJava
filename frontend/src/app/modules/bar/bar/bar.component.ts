@@ -93,13 +93,13 @@ export class BarComponent implements OnInit {
     };
     this.pedidoService.alteraStatusPedido(status).subscribe({
       next: () => {
-        this.message.showInfo('Status do pedido alterado com sucesso', 'Fechar');
+        this.message.showSuccess('Status do pedido alterado com sucesso');
         this.fecharModalStatus();
         this.carregarBebidasPedidas();
       },
       error: (err) => {
         console.error("Erro ao alterar status:", err);
-        this.message.showInfo('Erro ao alterar status do pedido', 'Fechar')
+        this.message.showError('Erro ao alterar status do pedido', 'ERRO')
       }
     });
   }
