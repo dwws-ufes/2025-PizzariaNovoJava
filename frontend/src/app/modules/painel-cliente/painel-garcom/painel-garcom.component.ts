@@ -130,6 +130,8 @@ export class PainelGarcomComponent implements OnInit {
       itens: this.itensPedido
     };
 
+    console.log(pedido);
+
     this.pedidoService.criarPedido(pedido).subscribe({
       next: () => {
         this.messageService.add({severity: 'success', summary: 'Sucesso', detail: 'Pedido criado com sucesso'});

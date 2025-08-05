@@ -3,12 +3,11 @@ package com.dwws.pizzaria.controller;
 import com.dwws.pizzaria.domain.Pedido;
 import com.dwws.pizzaria.service.NotificacaoService;
 import com.dwws.pizzaria.service.dto.NotificacaoBarDTO;
+import com.dwws.pizzaria.service.dto.NotificacaoBarPainelListDTO;
 import com.dwws.pizzaria.service.dto.NotificacaoCozinhaDTO;
-import com.dwws.pizzaria.service.dto.NotificacaoBarListDTO;
-import com.dwws.pizzaria.service.dto.NotificacaoCozinhaListDTO;
+import com.dwws.pizzaria.service.dto.NotificacaoPizzaPainelListDTO;
+import com.dwws.pizzaria.service.dto.NotificacaoSobremesaPainelListDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,21 +19,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("api/notoficacao")
+@RequestMapping("api/notificacao")
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequiredArgsConstructor
 
 public class NotificacaoController {
     private final NotificacaoService service;
 
-    @GetMapping("/listar/notificacaobar")
-    public ResponseEntity<Page<NotificacaoCozinhaListDTO>> findAllCozinha(Pageable pageable) {
-        return new ResponseEntity<>(service.findAllCozinha(pageable), HttpStatus.OK);
+    @GetMapping("/listar/pizza")
+    public ResponseEntity<List<NotificacaoPizzaPainelListDTO>> findAllCozinha() {
+        return new ResponseEntity<>(service.findAllPizza(), HttpStatus.OK);
     }
-    @GetMapping("/listar/notificacaocozinha")
-    public ResponseEntity<Page<NotificacaoBarListDTO>> findAllBar(Pageable pageable) {
-        return new ResponseEntity<>(service.findAllBar(pageable), HttpStatus.OK);
+
+    @GetMapping("/listar/sobremesa")
+    public ResponseEntity<List<NotificacaoSobremesaPainelListDTO>> findAllSobremesa() {
+        return new ResponseEntity<>(service.findAllSobremesa(), HttpStatus.OK);
+    }
+
+    @GetMapping("/listar/bar")
+    public ResponseEntity<List<NotificacaoBarPainelListDTO>> findAllBar() {
+        return new ResponseEntity<>(service.listAllBebidas(), HttpStatus.OK);
     }
 
     @GetMapping("/notificacaobar/{idNotificacao}")
@@ -94,11 +101,11 @@ public class NotificacaoController {
         service.atualizarNotificacoesPorStatus(pedido);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
     @PostMapping("/desativarNotificacoesPedido")
     public ResponseEntity<Void> desativarNotificacoesPedido(@RequestBody Pedido pedido) {
         service.desativarNotificacoesPedido(pedido);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 
 }

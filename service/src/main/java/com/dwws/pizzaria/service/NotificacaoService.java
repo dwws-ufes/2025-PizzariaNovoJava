@@ -1,20 +1,22 @@
 package com.dwws.pizzaria.service;
 
-import com.dwws.pizzaria.domain.Bebida;
 import com.dwws.pizzaria.domain.ItemPedido;
 import com.dwws.pizzaria.domain.NotificacaoBar;
 import com.dwws.pizzaria.domain.NotificacaoCozinha;
 import com.dwws.pizzaria.domain.Pedido;
-import com.dwws.pizzaria.domain.Pizza;
 import com.dwws.pizzaria.domain.Produto;
 import com.dwws.pizzaria.domain.enums.StatusPedido;
+import com.dwws.pizzaria.domain.enums.TipoProduto;
 import com.dwws.pizzaria.repository.NotificacaoBarRepository;
 import com.dwws.pizzaria.repository.NotificacaoCozinhaRepository;
 import com.dwws.pizzaria.repository.PedidoRepository;
 import com.dwws.pizzaria.service.dto.NotificacaoBarDTO;
 import com.dwws.pizzaria.service.dto.NotificacaoBarListDTO;
+import com.dwws.pizzaria.service.dto.NotificacaoBarPainelListDTO;
 import com.dwws.pizzaria.service.dto.NotificacaoCozinhaDTO;
 import com.dwws.pizzaria.service.dto.NotificacaoCozinhaListDTO;
+import com.dwws.pizzaria.service.dto.NotificacaoPizzaPainelListDTO;
+import com.dwws.pizzaria.service.dto.NotificacaoSobremesaPainelListDTO;
 import com.dwws.pizzaria.service.exception.BusinessRuleException;
 import com.dwws.pizzaria.service.exception.EntityNotFoundException;
 import com.dwws.pizzaria.service.mapper.NotificacaoBarMapper;
@@ -28,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -40,6 +43,7 @@ public class NotificacaoService {
     private final NotificacaoBarRepository notificacaoBarRepository;
     private final NotificacaoBarMapper notificacaoBarMapper;
     private final PedidoRepository pedidoRepository; // Usar repository diretamente
+    private final ProdutoService produtoService;
 
     // ==================== MÉTODOS PARA COZINHA ====================
     private NotificacaoCozinha findEntityCozinha(Long id) {
@@ -88,10 +92,17 @@ public class NotificacaoService {
         return notificacaoCozinhaMapper.toDto(notificacaoCozinha);
     }
 
-    public Page<NotificacaoCozinhaListDTO> findAllCozinha(Pageable pageable) {
-        return notificacaoCozinhaRepository.listAll(pageable);
+    public List<NotificacaoPizzaPainelListDTO> findAllPizza() {
+        return notificacaoCozinhaRepository.listAllPizza();
     }
 
+    public List<NotificacaoSobremesaPainelListDTO> findAllSobremesa() {
+        return notificacaoCozinhaRepository.listAllSobremesa();
+    }
+
+    public List<NotificacaoBarPainelListDTO> listAllBebidas() {
+        return notificacaoCozinhaRepository.listAllBebidas();
+    }
 
     public Page<NotificacaoCozinhaListDTO> findCozinhaByStatus(StatusPedido status, Pageable pageable) {
         log.debug("Request to get NotificacoesCozinha by status : {}", status);
@@ -263,11 +274,11 @@ public class NotificacaoService {
 
         // Verificar tipos de produtos no pedido
         for (ItemPedido item : pedido.getItens()) {
-            Produto produto = item.getProduto();
+            Produto produto = produtoService.findEntity(item.getProduto().getId());
 
-            if (produto instanceof Pizza) {
+            if (Objects.equals(produto.getTipoProduto(), TipoProduto.PIZZA)) {
                 temPizza = true;
-            } else if (produto instanceof Bebida) {
+            } else if (Objects.equals(produto.getTipoProduto(), TipoProduto.BEBIDA)) {
                 temBebida = true;
             } else {
                 // Assumindo que outros produtos são sobremesas
@@ -275,6 +286,12 @@ public class NotificacaoService {
             }
         }
 
+        criarNotificacaoCozinha(pedido, temPizza, temSobremesa);
+
+        criarNotificacaoBar(pedido, temBebida);
+    }
+
+    private void criarNotificacaoCozinha(Pedido pedido, boolean temPizza, boolean temSobremesa) {
         // Criar notificação para cozinha (Pizza e Sobremesa)
         if (temPizza || temSobremesa) {
             try {
@@ -291,7 +308,9 @@ public class NotificacaoService {
                 log.error(MensagemNotificacaoUtil.LOG_ERRO_CRIAR_NOTIFICACAO, pedido.getId(), e);
             }
         }
+    }
 
+    private void criarNotificacaoBar(Pedido pedido, boolean temBebida) {
         // Criar notificação para bar (Bebida)
         if (temBebida) {
             try {

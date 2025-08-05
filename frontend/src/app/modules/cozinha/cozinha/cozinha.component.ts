@@ -4,10 +4,10 @@ import {PizzaPedidoViewModel} from '../../../model/list/pizza-pedido-view.model'
 import {SobremesaPedidoViewModel} from '../../../model/list/sobremesa-pedido-view.model';
 import {MensagensConfirmacao} from '../../../shared/util/msg-confirmacao-dialog-util';
 import {StatusPedido} from '../../../shared/util/enum/status-pedido-enum';
-import {MensagensCozinhaUtil} from "../util/mensagens-cozinha-util";
+import {NotificacaoService} from "../../../shared/service/notificacao.service";
 import {finalize} from "rxjs";
+import {MensagensCozinhaUtil} from "../util/mensagens-cozinha-util";
 import {MensagensProntasUtil} from "../../../shared/util/messages/MensagensProntas.util";
-import {BebidaPedidoViewModel} from "../../../model/list/bebida-pedido-view.model";
 
 @Component({
   selector: 'app-cozinha',
@@ -28,32 +28,46 @@ export class CozinhaComponent implements OnInit {
   opcoesStatus: StatusPedido[] = StatusPedido.values;
 
   constructor(
-    // private cozinhaService: CozinhaService,
+    private cozinhaService: NotificacaoService,
     private message: MensagensConfirmacao
   ) {
   }
 
   ngOnInit(): void {
-    this.carregarPedidosCozinha();
+    this.carregarPedidosPizza();
+    this.carregarPedidosSobremesas();
   }
 
   getStatusDescricao(statusId: number): string {
     return StatusPedido.obterPorIndex(statusId).descricao;
   }
 
-  carregarPedidosCozinha(): void {
-    // this.blockUI.start();
-    // this.cozinhaService.getPedidosCozinha()
-    //   .pipe(finalize(() => this.blockUI.stop()))
-    //   .subscribe({
-    //     next: (result) => {
-    //       this.pizzasList = result.pizzas || [];
-    //       this.sobremesasList = result.sobremesas || [];
-    //     },
-    //     error: () => {
-    //       this.message.showError(MensagensCozinhaUtil.ERROS_LIST_ALL, MensagensProntasUtil.ERROR);
-    //     }
-    //   });
+  carregarPedidosPizza(): void {
+    this.blockUI.start();
+    this.cozinhaService.findAllCozinha()
+      .pipe(finalize(() => this.blockUI.stop()))
+      .subscribe({
+        next: (result) => {
+          this.pizzasList = result;
+        },
+        error: () => {
+          this.message.showError(MensagensCozinhaUtil.ERROS_LIST_ALL, MensagensProntasUtil.ERROR);
+        }
+      });
+  }
+
+  carregarPedidosSobremesas(): void {
+    this.blockUI.start();
+    this.cozinhaService.findAllSobremesa()
+      .pipe(finalize(() => this.blockUI.stop()))
+      .subscribe({
+        next: (result) => {
+          this.sobremesasList = result || [];
+        },
+        error: () => {
+          this.message.showError(MensagensCozinhaUtil.ERROS_LIST_ALL, MensagensProntasUtil.ERROR);
+        }
+      });
   }
 
   abrirModalStatus(item: any, tipoPrato: string): void {

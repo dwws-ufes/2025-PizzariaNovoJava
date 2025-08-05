@@ -1,6 +1,6 @@
 <div class="pagina flex flex-column col-12">
   <div class="item-pagina col-12">
-    <span class="titulo">Painel do Garçom</span>
+    <span class="titulo">Painel do Garçom - Produtos</span>
   </div>
 
   <!-- Abas de Produtos -->
@@ -106,10 +106,10 @@
     <div class="p-fluid">
       <div class="p-field">
         <label for="cliente">Cliente</label>
-        <p-dropdown [options]="clientes" formControlName="clienteId" optionLabel="nome"
-                    optionValue="id" [style]="{width: '100%'}" [showClear]="true"></p-dropdown>
+        <p-dropdown [options]="clientes" [filter]="true" formControlName="clienteId" optionLabel="nome"
+                    appendTo="body" optionValue="id" [style]="{width: '100%'}" [showClear]="true"></p-dropdown>
       </div>
-      <div class="p-field">
+      <div class="p-field pt-5">
         <label for="observacoes">Observações</label>
         <textarea id="observacoes" pInputTextarea formControlName="observacoes" rows="3"></textarea>
       </div>
@@ -119,7 +119,7 @@
     <button pButton type="button" label="Cancelar" icon="pi pi-times"
             class="p-button-text" (click)="displayModalPedido = false"></button>
     <button pButton type="button" label="Confirmar" icon="pi pi-check"
-            class="p-button-success" (click)="finalizarPedido()"
+            class="finalizar" (click)="finalizarPedido()"
             [disabled]="pedidoForm.invalid"></button>
   </ng-template>
 </p-dialog>

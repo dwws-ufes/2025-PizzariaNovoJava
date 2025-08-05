@@ -53,7 +53,9 @@ public class PedidoService {
         return repository.listAll(pageable);
     }
 
-    public List<PedidoPreparoDTO> listarPedidosEmPreparo(Long idAtendete) {return repository.listarPedidosEmPreparo(idAtendete);}
+    public List<PedidoPreparoDTO> listarPedidosEmPreparo(Long idAtendete) {
+        return repository.listarPedidosEmPreparo(idAtendete);
+    }
 
     public PedidoDTO save(PedidoDTO pedidoDTO) {
         log.debug("Request to save Pedido : {}", pedidoDTO);
@@ -61,30 +63,27 @@ public class PedidoService {
         ClienteDTO cliente = clienteService.findByID(pedidoDTO.getClienteId());
 
         UsuarioDTO atendente = null;
-        if (pedidoDTO.getAtendenteId() != null) {
+        if (Objects.nonNull(pedidoDTO.getAtendenteId())) {
             atendente = usuarioService.findByID(pedidoDTO.getAtendenteId());
         }
 
         Pedido pedido = pedidoMapper.toEntity(pedidoDTO);
         pedido.setCliente(new Cliente(cliente.getId()));
-        pedido.setAtivo(true);
+        pedido.setAtivo(Boolean.TRUE);
 
-        if (atendente != null) {
+        if (Objects.nonNull(atendente)) {
             pedido.setAtendente(new Usuario(atendente.getId()));
         }
 
-        if (pedido.getDataHora() == null) {
-            pedido.setDataHora(LocalDateTime.now());
-        }
-
         // Associa os itens bidirecionalmente
-
-        if (pedido.getItens() != null) {
+        if (Objects.nonNull(pedido.getItens())) {
             for (ItemPedido item : pedido.getItens()) {
                 item.setPedido(pedido);
-                item.setAtivo(true);
+                item.setAtivo(Boolean.TRUE);
             }
         }
+
+        pedido.setDataHora(LocalDateTime.now());
 
         // Salva pedido e itens juntos com cascade
         pedido = repository.save(pedido);
@@ -93,9 +92,6 @@ public class PedidoService {
 
         return pedidoMapper.toDto(pedido);
     }
-
-
-
 
     public PedidoDTO update(PedidoDTO pedidoDTO) {
         log.debug("Request to update Pedido : {}", pedidoDTO);
@@ -149,28 +145,28 @@ public class PedidoService {
     }
 
     public PedidoDTO alteraStatusPedido(UpdateStatusPedidoDTO dto) {
-            Pedido pedido = findEntity(dto.getIdPedido());
-            switch (dto.getStatusPedido()) {
-                case PENDENTE:
-                    pedido.setStatus(StatusPedido.PENDENTE);
-                    break;
-                case EM_PREPARO:
-                    pedido.setStatus(StatusPedido.EM_PREPARO);
-                    break;
-                case PRONTO:
-                    pedido.setStatus(StatusPedido.PRONTO);
-                    break;
-                case ENTREGUE:
-                    pedido.setStatus(StatusPedido.ENTREGUE);
-                    break;
-                case CANCELADO:
-                    pedido.setStatus(StatusPedido.CANCELADO);
-                    break;
-                default:
-                    throw new IllegalArgumentException("Status desconhecido: " + dto.getStatusPedido());
-            }
-            repository.save(pedido);
-            return pedidoMapper.toDto(pedido);
+        Pedido pedido = findEntity(dto.getIdPedido());
+        switch (dto.getStatusPedido()) {
+            case PENDENTE:
+                pedido.setStatus(StatusPedido.PENDENTE);
+                break;
+            case EM_PREPARO:
+                pedido.setStatus(StatusPedido.EM_PREPARO);
+                break;
+            case PRONTO:
+                pedido.setStatus(StatusPedido.PRONTO);
+                break;
+            case ENTREGUE:
+                pedido.setStatus(StatusPedido.ENTREGUE);
+                break;
+            case CANCELADO:
+                pedido.setStatus(StatusPedido.CANCELADO);
+                break;
+            default:
+                throw new IllegalArgumentException("Status desconhecido: " + dto.getStatusPedido());
+        }
+        repository.save(pedido);
+        return pedidoMapper.toDto(pedido);
     }
 
     public List<PedidoDTO> buscarPedidoPorCliente(Long idCliente) {
