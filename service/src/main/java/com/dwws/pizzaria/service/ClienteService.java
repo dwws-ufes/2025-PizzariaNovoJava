@@ -4,6 +4,7 @@ import com.dwws.pizzaria.domain.Cliente;
 import com.dwws.pizzaria.repository.ClienteRepository;
 import com.dwws.pizzaria.service.dto.ClienteDTO;
 import com.dwws.pizzaria.service.dto.ClienteListDTO;
+import com.dwws.pizzaria.service.dto.DropDownProjection;
 import com.dwws.pizzaria.service.exception.BusinessRuleException;
 import com.dwws.pizzaria.service.exception.EntityNotFoundException;
 import com.dwws.pizzaria.service.mapper.ClienteMapper;
@@ -71,9 +72,9 @@ public class ClienteService {
             throw new BusinessRuleException("Email já cadastrado para outro cliente");
         }
     }
-    public List<ClienteDTO> burcarPorTermo(String termo) {
-        List<Cliente> cliente = repository.findByNomeAndAtivoTrue(termo);
-        return mapper.toDto(cliente);
+
+    public List<DropDownProjection> buscarPorPagamentoPendente() {
+        return repository.findClientesComPagamentoPendente();
     }
 }
 

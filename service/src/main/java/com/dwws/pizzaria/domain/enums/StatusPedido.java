@@ -10,7 +10,8 @@ public enum StatusPedido {
     EM_PREPARO(1, "Em Preparo"),
     PRONTO(2, "Pronto"),
     ENTREGUE(3, "Entregue"),
-    CANCELADO(4, "Cancelado");
+    CANCELADO(4, "Cancelado"),
+    PAGO(5, "Pago");
 
     private final Integer id;
     private final String value;

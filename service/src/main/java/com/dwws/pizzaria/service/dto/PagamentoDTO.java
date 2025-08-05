@@ -32,4 +32,7 @@ public class PagamentoDTO implements Serializable {
 
     @NotNull(message = MensagemPagamentoUtil.NULL_DATA_HORA)
     private LocalDateTime dataHora;
+
+    private Double desconto;
+
 }

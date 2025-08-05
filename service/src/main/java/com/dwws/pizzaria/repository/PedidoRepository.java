@@ -39,7 +39,7 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     JOIN item_pedido ip ON ip.pedido_id = p.id
     JOIN produto pr ON pr.id = ip.produto_id
     WHERE p.atendente_id = :atendenteId
-      AND p.status = 1
+      AND p.status IN (0,1,2)
       AND p.ativo = true
     GROUP BY p.id, p.data_hora, c.nome, u.nome, p.observacoes
     """, nativeQuery = true)

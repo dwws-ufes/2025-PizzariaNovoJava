@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MessageService} from 'primeng/api';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ClienteService} from "../../../shared/service/cliente.service";
-import {PizzaService} from"../../../shared/service/pizza.service";
-import {BebidaService} from"../../../shared/service/bebida.service";
-import {SobremesaService} from"../../../shared/service/sobremesa.service"
+import {PizzaService} from "../../../shared/service/pizza.service";
+import {BebidaService} from "../../../shared/service/bebida.service";
+import {SobremesaService} from "../../../shared/service/sobremesa.service"
 
 import {PizzaListModel} from "../../../model/list/pizza-list.model";
 import {BebidaListModel} from "../../../model/list/bebida-list.model";
@@ -39,11 +39,7 @@ export class PainelGarcomComponent implements OnInit {
   totalPedido = 0;
   status = StatusPedido.obterPorIndex(1);
 
-  // Status (similar ao que você já tem)
-  StatusPedido = {
-    PENDENTE: {index: 0, descricao: 'Pendente'},
-    // ... outros status
-  };
+  @Output() recarregarClientes = new EventEmitter<void>();
 
   constructor(
     private pizzaService: PizzaService,
@@ -74,23 +70,34 @@ export class PainelGarcomComponent implements OnInit {
   }
 
   carregarClientes(): void {
-    this.clienteService.findAll().subscribe(clientes => this.clientes = clientes.content);
+    this.clienteService.findAll().subscribe(clientes => {
+      this.clientes = clientes.content
+      this.recarregarClientes.emit();
+    });
   }
 
   adicionarItem(item: any, tipo: string): void {
-    const itemPedido: ItemPedidoModel = {
-      produtoId: item.id,
-      valorItem: item.precoVenda,
-      quantidade: 1,
-    };
+    const itemExistente = this.itensPedido.find(i => i.produtoId === item.id);
 
-    this.itensPedido.push(itemPedido);
+    if (itemExistente) {
+      itemExistente.quantidade += 1;
+    } else {
+      const itemPedido: ItemPedidoModel = {
+        produtoId: item.id,
+        nome: item.nome,
+        valorItem: item.precoVenda,
+        quantidade: 1,
+      };
+
+      this.itensPedido.push(itemPedido);
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Item adicionado',
+        detail: `${item.nome} foi adicionado ao pedido`
+      });
+    }
+
     this.calcularTotal();
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Item adicionado',
-      detail: `${item.nome} foi adicionado ao pedido`
-    });
   }
 
   removerItem(index: number): void {
@@ -152,7 +159,8 @@ export class PainelGarcomComponent implements OnInit {
     this.pedidoForm.reset();
     this.displayModalPedido = false;
   }
-  carregarDadosAtendente(): void{
+
+  carregarDadosAtendente(): void {
     const login = localStorage.getItem("userName");
     this.usuarioService.findByLogin(login).subscribe(usuario => this.atendente = usuario);
   }

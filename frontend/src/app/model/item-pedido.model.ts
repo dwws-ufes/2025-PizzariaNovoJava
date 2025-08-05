@@ -4,4 +4,5 @@ export class ItemPedidoModel {
   produtoId: number;
   quantidade: number;
   valorItem: number;
+  nome: string;
 }

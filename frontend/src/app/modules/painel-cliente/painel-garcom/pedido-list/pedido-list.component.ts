@@ -9,7 +9,7 @@ import {StatusPedido} from "../../../../shared/util/enum/status-pedido-enum";
 
 
 @Component({
-  selector: 'app-pizza-painel',
+  selector: 'app-pedido-liist',
   templateUrl: './pedido-list.component.html',
   styleUrls: ['./pedido-list.component.scss']
 })

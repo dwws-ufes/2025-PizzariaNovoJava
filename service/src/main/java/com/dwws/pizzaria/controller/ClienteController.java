@@ -3,6 +3,7 @@ package com.dwws.pizzaria.controller;
 import com.dwws.pizzaria.service.ClienteService;
 import com.dwws.pizzaria.service.dto.ClienteDTO;
 import com.dwws.pizzaria.service.dto.ClienteListDTO;
+import com.dwws.pizzaria.service.dto.DropDownProjection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,8 +48,8 @@ public class ClienteController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/buscar-por-termo/{termo}")
-    public ResponseEntity<List<ClienteDTO>> buscarPorTermo(@PathVariable("termo") String termo) {
-        return new ResponseEntity<>(service.burcarPorTermo(termo), HttpStatus.OK);
+    @GetMapping("/buscar-pagamento-pendente")
+    public ResponseEntity<List<DropDownProjection>> buscarPorPagamentoPendente() {
+        return new ResponseEntity<>(service.buscarPorPagamentoPendente(), HttpStatus.OK);
     }
 }

@@ -70,11 +70,12 @@
         <tr>
           <td>{{ item.nome }}</td>
           <td>
-            <p-inputNumber [(ngModel)]="item.quantidade" [min]="1" [max]="10"
-                           mode="decimal" (onChange)="calcularTotal()"></p-inputNumber>
+            <p-inputNumber [(ngModel)]="item.quantidade" [min]="1" [max]="10" [showButtons]="true"
+                           buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal"
+                           [step]="1" mode="decimal" (onInput)="calcularTotal()"></p-inputNumber>
           </td>
-          <td>{{ item.preco | currency:'BRL' }}</td>
-          <td>{{ (item.preco * item.quantidade) | currency:'BRL' }}</td>
+          <td>{{ item.valorItem | currency:'BRL' }}</td>
+          <td>{{ (item.valorItem * item.quantidade) | currency:'BRL' }}</td>
           <td>
             <button pButton type="button" icon="pi pi-trash" class="p-button-danger p-button-sm"
                     (click)="removerItem(rowIndex)"></button>
@@ -92,7 +93,7 @@
 
     <div class="flex justify-content-end mt-3">
       <button pButton type="button" label="Limpar Pedido" icon="pi pi-trash"
-              class="p-button-danger mr-2" (click)="itensPedido = []; totalPedido = 0;"></button>
+              class="p-button-danger mr-2" (click)="limparPedido()"></button>
       <button pButton type="button" label="Finalizar Pedido" icon="pi pi-check"
               class="p-button-success" (click)="abrirModalPedido()"
               [disabled]="itensPedido.length === 0"></button>

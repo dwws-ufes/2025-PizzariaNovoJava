@@ -2,6 +2,7 @@ package com.dwws.pizzaria.repository;
 
 import com.dwws.pizzaria.domain.Cliente;
 import com.dwws.pizzaria.service.dto.ClienteListDTO;
+import com.dwws.pizzaria.service.dto.DropDownProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -36,5 +37,12 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     boolean existsByEmailAndIdNotAndAtivoTrue(String email, Long id);
 
     List<Cliente> findByNomeAndAtivoTrue(String nome);
+
+    @Query(value = "select distinct c.nome as label, c.id as value" +
+            " from cliente c " +
+            " join pedido p on p.cliente_id = c.id " +
+            " where p.status != 5 and " +
+            " c.ativo = true AND p.ativo = true", nativeQuery = true)
+    List<DropDownProjection> findClientesComPagamentoPendente();
 }
 

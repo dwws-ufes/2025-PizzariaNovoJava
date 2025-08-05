@@ -2,6 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {SidemenuModel} from "./shared/models/sidemenu.model";
 import {AuthService} from "./modules/login/auth.service";
 import {ClienteFormComponent} from "./modules/cliente/cliente-form/cliente-form.component";
+import {PainelGarcomComponent} from "./modules/painel-cliente/painel-garcom/painel-garcom.component";
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ export class AppComponent {
   role: string | null = localStorage.getItem('roleDescription')
   public configuracaoMenuLateral: SidemenuModel = new SidemenuModel();
   @ViewChild(ClienteFormComponent) customerFormComponent: ClienteFormComponent;
+  @ViewChild(PainelGarcomComponent) painelGarcomComponent: PainelGarcomComponent;
 
   constructor(private authService: AuthService) {
 
@@ -36,5 +38,11 @@ export class AppComponent {
 
   onClose(): void {
     this.customerFormComponent.formGroup.reset();
+  }
+
+  onRecarregarClientes(): void {
+    if (this.painelGarcomComponent) {
+      this.painelGarcomComponent.carregarClientes();
+    }
   }
 }

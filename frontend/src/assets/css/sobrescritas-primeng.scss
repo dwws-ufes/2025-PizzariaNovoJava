@@ -104,3 +104,8 @@ div.buy-button > button {
 div.buy-button > button > span {
   font-size: 20pt;
 }
+
+p-inputnumber > span > button {
+  background-color: var(--cor-tema-2);
+  border: var(--cor-tema-2);
+}

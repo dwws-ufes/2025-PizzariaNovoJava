@@ -21,6 +21,7 @@ export class CaixaPagamentoComponent implements OnInit {
 
   columns: ColumnUtil[] = CaixaPagamentoConsumoTable.CONSUME_TABLE;
   cliente: ClienteModel;
+  clientes: SelectItem[];
   itensPedido: ItemPedidoListModel[] = [];
   valorTotal: number = 0;
   valorFinal: number = 0;
@@ -41,6 +42,7 @@ export class CaixaPagamentoComponent implements OnInit {
   ngOnInit(): void {
     this.newForm();
     this.initDropdown();
+    this.carregarClientes();
   }
 
   newForm(): void {
@@ -61,25 +63,15 @@ export class CaixaPagamentoComponent implements OnInit {
     }));
   }
 
-  buscarCliente(event: any): void {
-    const termo = event.target.value;
-    if (termo.length > 2) {
-      this.clienteService.buscarPorTermo(termo).subscribe(
-        clientes => {
-          // Lógica para selecionar/confirmar o cliente
-          if (clientes.length === 1) {
-            this.selecionarCliente(clientes[0]);
-          }
-        }
-      );
-    }
+  carregarClientes(): void {
+    this.clienteService.buscarPorPagamentoPendente().subscribe(clientes => {
+      console.log(clientes)
+      this.clientes = clientes
+    });
   }
 
-  selecionarCliente(cliente: ClienteModel): void {
-    this.cliente = cliente;
-    if (this.cliente.id != null) {
-      this.carregarPedidoDoCliente(this.cliente.id);
-    }
+  selecionarCliente(idCliente: number): void {
+    this.carregarPedidoDoCliente(idCliente);
   }
 
   carregarPedidoDoCliente(clienteId: number): void {
@@ -110,14 +102,24 @@ export class CaixaPagamentoComponent implements OnInit {
   confirmarPagamento(): void {
     if (this.formGroup.valid) {
       const pagamento = this.formGroup.value;
-      pagamento.dataHora = new Date();
-      console.log("pagemanto", pagamento )
+      pagamento.valorTotal = this.valorFinal;
 
       this.pagamentoService.realizarPagamento(pagamento).subscribe(
-        () => this.message.showSuccess('Pagamento realizado com sucesso!'),
+        () => {
+          this.message.showSuccess('Pagamento realizado com sucesso!')
+          this.finalizarPedido();
+        },
         error => this.message.showError('Erro ao realizar pagamento', error)
       );
     }
+  }
+
+  finalizarPedido(): void {
+    this.formGroup.reset();
+    this.itensPedido = [];
+    this.carregarClientes();
+    this.valorTotal = 0;
+    this.valorFinal = 0;
   }
 
 }

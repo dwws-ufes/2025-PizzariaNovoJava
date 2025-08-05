@@ -30,8 +30,9 @@
         <div class="bg-gray-100 p-2 border-round">{{ item.observacao }}</div>
       </div>
 
-      <div class="mt-3 flex flex-wrap gap-2">
-        <button pButton label="Alterar Status" class="p-button-outlined p-button-sm" (click)="abrirModalStatus(item)"></button>
+      <div class="mt-3 flex flex-wrap gap-2" >
+        <button pButton label="Alterar Status" class="p-button-outlined p-button-sm" (click)="abrirModalStatus(item)"
+                [disabled]="item.statusPratoId === 3"></button>
       </div>
     </p-card>
     <div *ngIf="pizzasList.length == 0" class="msg">
@@ -51,6 +52,7 @@
         [(ngModel)]="statusSelecionado"
         optionLabel="titulo"
         optionValue="index"
+        appendTo="body"
         [style]="{width: '100%'}">
       </p-dropdown>
     </div>

@@ -26,16 +26,16 @@
       <div class="container list col-12" *ngIf="role === 'Garçom'">
         <p-tabView>
           <p-tabPanel header="Fazer Pedidos">
-            <app-painel-garcom></app-painel-garcom>
+            <app-painel-garcom #painelGarcomComponent></app-painel-garcom>
           </p-tabPanel>
           <p-tabPanel header="Lista de pedidos">
-            <app-pizza-painel></app-pizza-painel>
+            <app-pedido-liist></app-pedido-liist>
           </p-tabPanel>
           <p-tabPanel header="Cadastro de cliente">
             <div class="item-pagina col-12">
               <span class="titulo">Painel do Garçom - Cadastrar Cliente</span>
             </div>
-              <app-cliente-form></app-cliente-form>
+              <app-cliente-form (list)="onRecarregarClientes()"></app-cliente-form>
             <div class="mt-3 flex flex-wrap gap-2 justify-center items-center">
               <button pButton label="Salvar" class="p-button-success" (click)="onSave()"></button>
               <button pButton label="Limpar" class="p-button-danger mr-2" (click)="onClose()"></button>

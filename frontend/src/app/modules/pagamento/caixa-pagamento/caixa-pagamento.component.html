@@ -6,12 +6,15 @@
     <section>
       <div class="item-form pb-3 pt-3">
         <label class="font-bold" for="cliente">Cliente</label>
-        <div class="p-inputgroup">
-          <input pInputText autofocus type="text" placeholder="Buscar cliente..." id="cliente"
-                 formControlName="cliente" (keyup)="buscarCliente($event)"/>
-          <button pButton type="button" icon="pi pi-search" class="p-button-secondary"></button>
+        <p-dropdown [options]="clientes" [filter]="true" formControlName="clienteId" optionLabel="label"
+                    appendTo="body" optionValue="value" [style]="{width: '100%'}" [showClear]="true"
+                    (onChange)="selecionarCliente($event.value)"></p-dropdown>
+<!--        <div class="p-inputgroup">-->
+<!--          <input pInputText autofocus type="text" placeholder="Buscar cliente..." id="cliente"-->
+<!--                 formControlName="cliente" (keyup)="buscarCliente($event)"/>-->
+<!--          <button pButton type="button" icon="pi pi-search" class="p-button-secondary"></button>-->
         </div>
-      </div>
+<!--      </div>-->
 
       <div *ngIf="cliente" class="cliente-info p-3 mb-3">
         <h4>Cliente: {{ cliente.nome }}</h4>
@@ -54,7 +57,7 @@
               iconPos="left"
               icon="pi pi-check"
               label="Confirmar Pagamento"
-              [disabled]="!formGroup.valid || !cliente || !itensPedido.length"
+              [disabled]="!formGroup.valid || !itensPedido.length"
               (click)="confirmarPagamento()">
       </button>
     </div>

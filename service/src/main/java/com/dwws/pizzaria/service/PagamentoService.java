@@ -3,6 +3,7 @@ package com.dwws.pizzaria.service;
 import com.dwws.pizzaria.domain.Pagamento;
 import com.dwws.pizzaria.domain.Pedido;
 import com.dwws.pizzaria.domain.enums.FormaPagamento;
+import com.dwws.pizzaria.domain.enums.StatusPedido;
 import com.dwws.pizzaria.repository.PagamentoRepository;
 import com.dwws.pizzaria.repository.PedidoRepository;
 import com.dwws.pizzaria.service.dto.PagamentoDTO;
@@ -56,17 +57,17 @@ public class PagamentoService {
         }
 
         Pagamento pagamento = mapper.toEntity(pagamentoDTO);
-        pagamento.setPedido(pedido);
+        pagamento.setPedido(new Pedido(pedido.getId()));
         pagamento.setValorFinal(pagamentoDTO.getValorTotal());
         pagamento.setAtivo(Boolean.TRUE);
-
-        if (pagamento.getDataHora() == null) {
-            pagamento.setDataHora(LocalDateTime.now());
-        }
+        pagamento.setDataHora(LocalDateTime.now());
 
         pagamento = repository.save(pagamento);
+
+        pedido.setStatus(StatusPedido.PAGO);
         pedido.setAtivo(Boolean.FALSE);
-        Pedido pedidoSalvo = pedidoRepository.save(pedido);
+        pedidoRepository.save(pedido);
+
         return mapper.toDto(pagamento);
     }
 
