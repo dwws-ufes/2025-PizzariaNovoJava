@@ -1,6 +1,7 @@
 package com.dwws.pizzaria.repository;
 
 import com.dwws.pizzaria.domain.Pedido;
+import com.dwws.pizzaria.service.dto.ItensCompraDTO;
 import com.dwws.pizzaria.service.dto.PedidoListDTO;
 import com.dwws.pizzaria.service.dto.PedidoPreparoDTO;
 import org.springframework.data.domain.Page;
@@ -44,4 +45,22 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     """, nativeQuery = true)
     List<PedidoPreparoDTO> listarPedidosEmPreparo(@Param("atendenteId") Long atendenteId);
 
+    List<Pedido> findAllByClienteId(Long idCliente);
+
+    @Query(value = """
+    SELECT
+        p.id AS id,
+        pr.nome AS nomeProduto,
+        CAST(ip.valor_item AS double precision) AS valorItem,
+        CAST(SUM(ip.quantidade) AS integer) AS quantidade
+    FROM pedido p
+    JOIN cliente c ON c.id = p.cliente_id
+    JOIN item_pedido ip ON ip.pedido_id = p.id
+    JOIN produto pr ON pr.id = ip.produto_id
+    WHERE p.cliente_id = :clienteId
+      AND p.ativo = true
+    GROUP BY p.id, pr.nome, ip.valor_item
+    ORDER BY pr.nome    
+    """, nativeQuery = true)
+    List<ItensCompraDTO> buscaritensPorCliente(@Param("clienteId") Long clienteId);
 }

@@ -5,11 +5,11 @@ export class CaixaPagamentoConsumoTable {
   static CONSUME_TABLE: ColumnUtil[] = [
     {
       header: 'Produto Consumido',
-      field: 'descricao',
+      field: 'nomeProduto',
     },
     {
       header: 'Valor Compra',
-      field: 'valor',
+      field: 'valorItem',
     }
   ];
 }

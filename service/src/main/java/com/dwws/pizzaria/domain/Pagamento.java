@@ -57,5 +57,5 @@ public class Pagamento implements Serializable {
     private LocalDateTime dataHora;
 
     @Column(name = "ativo", nullable = false)
-    private Boolean ativo;
+    private Boolean ativo = true;
 }

@@ -57,12 +57,16 @@ public class PagamentoService {
 
         Pagamento pagamento = mapper.toEntity(pagamentoDTO);
         pagamento.setPedido(pedido);
+        pagamento.setValorFinal(pagamentoDTO.getValorTotal());
+        pagamento.setAtivo(Boolean.TRUE);
 
         if (pagamento.getDataHora() == null) {
             pagamento.setDataHora(LocalDateTime.now());
         }
 
         pagamento = repository.save(pagamento);
+        pedido.setAtivo(Boolean.FALSE);
+        Pedido pedidoSalvo = pedidoRepository.save(pedido);
         return mapper.toDto(pagamento);
     }
 

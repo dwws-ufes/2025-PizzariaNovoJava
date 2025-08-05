@@ -7,6 +7,7 @@ import com.dwws.pizzaria.domain.Usuario;
 import com.dwws.pizzaria.domain.enums.StatusPedido;
 import com.dwws.pizzaria.repository.PedidoRepository;
 import com.dwws.pizzaria.service.dto.ClienteDTO;
+import com.dwws.pizzaria.service.dto.ItensCompraDTO;
 import com.dwws.pizzaria.service.dto.PedidoDTO;
 import com.dwws.pizzaria.service.dto.PedidoListDTO;
 import com.dwws.pizzaria.service.dto.PedidoPreparoDTO;
@@ -170,5 +171,14 @@ public class PedidoService {
             }
             repository.save(pedido);
             return pedidoMapper.toDto(pedido);
+    }
+
+    public List<PedidoDTO> buscarPedidoPorCliente(Long idCliente) {
+        List<Pedido> pedidos = repository.findAllByClienteId(idCliente);
+        return pedidoMapper.toDto(pedidos);
+    }
+
+    public List<ItensCompraDTO> buscaritensPorCliente(Long idCliente) {
+        return repository.buscaritensPorCliente(idCliente);
     }
 }

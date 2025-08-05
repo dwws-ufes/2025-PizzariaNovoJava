@@ -7,6 +7,7 @@ import {PedidoListModel} from "../../model/list/pedido-list.model";
 import {PedidoModel} from "../../model/pedido.model";
 import {PedidoPreparodoModel} from "../../model/pedido-preparodo.model";
 import {UptadeStatusPedidoModel} from "../../model/uptade-status-pedido.model";
+import {ItemPedidoListModel} from "../../model/list/item-pedido-list.model";
 
 @Injectable({
   providedIn: 'root'
@@ -30,4 +31,8 @@ export class PedidoService {
   findById(id: number): Observable<PedidoPreparodoModel> {
     return this.http.get<PedidoPreparodoModel>(this.resourceUrl + id);
   }
+  buscarItensPedidoPorCliente(id: number): Observable<ItemPedidoListModel[]> {
+    return this.http.get<ItemPedidoListModel[]>(this.resourceUrl + '/buscar-itens-por-cliente/'+ id);
+  }
+
 }

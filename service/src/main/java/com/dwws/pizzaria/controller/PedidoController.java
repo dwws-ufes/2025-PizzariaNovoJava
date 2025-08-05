@@ -1,6 +1,7 @@
 package com.dwws.pizzaria.controller;
 
 import com.dwws.pizzaria.service.PedidoService;
+import com.dwws.pizzaria.service.dto.ItensCompraDTO;
 import com.dwws.pizzaria.service.dto.PedidoDTO;
 import com.dwws.pizzaria.service.dto.PedidoListDTO;
 import com.dwws.pizzaria.service.dto.PedidoPreparoDTO;
@@ -57,5 +58,14 @@ public class PedidoController {
     @PostMapping("/altera-status-pedido")
     public ResponseEntity<PedidoDTO> alteraStatusPedido(@RequestBody UpdateStatusPedidoDTO dto) {
         return new ResponseEntity<>(service.alteraStatusPedido(dto), HttpStatus.OK);
+    }
+
+    @GetMapping("/buscar-pedido-por-cliente/{idCliente}")
+    public ResponseEntity<List<PedidoDTO>> buscarPedidoPorCliente(@PathVariable("idCliente") Long idCliente) {
+        return new ResponseEntity<>(service.buscarPedidoPorCliente(idCliente), HttpStatus.OK);
+    }
+    @GetMapping("/buscar-itens-por-cliente/{idCliente}")
+    public ResponseEntity<List<ItensCompraDTO>> buscaritensPorCliente(@PathVariable("idCliente") Long idCliente) {
+        return new ResponseEntity<>(service.buscaritensPorCliente(idCliente), HttpStatus.OK);
     }
 }

@@ -10,6 +10,7 @@ import {MensagensConfirmacao} from "../../../shared/util/msg-confirmacao-dialog-
 import {FormaPagamentoEnum} from "../../../shared/util/enum/forma-pagamento-enum";
 import {ItemPedidoListModel} from "../../../model/list/item-pedido-list.model";
 import {BlockUI, NgBlockUI} from "ng-block-ui";
+import {PedidoService} from "../../../shared/service/pedido.service";
 
 @Component({
   selector: 'app-caixa-pagamento',
@@ -32,6 +33,7 @@ export class CaixaPagamentoComponent implements OnInit {
   constructor(private builder: FormBuilder,
               private clienteService: ClienteService,
               private pagamentoService: PagamentoCaixaService,
+              private pedidoService: PedidoService,
               private message: MensagensConfirmacao,
   ) {
   }
@@ -44,9 +46,9 @@ export class CaixaPagamentoComponent implements OnInit {
   newForm(): void {
     this.formGroup = this.builder.group({
       id: [null],
-      idPedido: [null],
+      pedidoId: [null],
       desconto: [null],
-      valorFinal: [null],
+      valorTotal: [null],
       formaPagamento: [null],
       dataHora: [null],
     })
@@ -82,16 +84,15 @@ export class CaixaPagamentoComponent implements OnInit {
 
   carregarPedidoDoCliente(clienteId: number): void {
     // Chame seu serviço para buscar o pedido do cliente
-    // this.pagamentoService.buscarPedidoPorCliente(clienteId).subscribe(
-    //   pedido => {
-    //     this.itensPedido = pedido.itens;
-    //     this.calcularValorTotal();
-    //     this.formGroup.patchValue({
-    //       idPedido: pedido.id,
-    //       valorFinal: pedido.valorTotal
-    //     });
-    //   }
-    // );
+    this.pedidoService.buscarItensPedidoPorCliente(clienteId).subscribe(
+      pedido => {
+        this.itensPedido = pedido;
+        this.formGroup.patchValue({
+          pedidoId: pedido[0].id,
+        });
+        this.calcularValorTotal();
+      }
+    );
   }
 
   calcularValorTotal(): void {
@@ -103,18 +104,19 @@ export class CaixaPagamentoComponent implements OnInit {
   calcularValorFinal(): void {
     const desconto = this.formGroup.get('desconto')?.value || 0;
     this.valorFinal = this.valorTotal - desconto;
-    this.formGroup.patchValue({valorFinal: this.valorFinal});
+    this.formGroup.patchValue({valorTotal: this.valorFinal});
   }
 
   confirmarPagamento(): void {
     if (this.formGroup.valid) {
       const pagamento = this.formGroup.value;
       pagamento.dataHora = new Date();
+      console.log("pagemanto", pagamento )
 
-      // this.pagamentoService.realizarPagamento(pagamento).subscribe(
-      //   () => this.message.showSuccess('Pagamento realizado com sucesso!'),
-      //   error => this.message.showError('Erro ao realizar pagamento')
-      // );
+      this.pagamentoService.realizarPagamento(pagamento).subscribe(
+        () => this.message.showSuccess('Pagamento realizado com sucesso!'),
+        error => this.message.showError('Erro ao realizar pagamento', error)
+      );
     }
   }
 
