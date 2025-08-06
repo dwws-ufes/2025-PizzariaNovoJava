@@ -46,13 +46,13 @@ public interface NotificacaoCozinhaRepository extends JpaRepository<NotificacaoC
             "       CAST(p.status AS integer) AS statusPratoId," +
             "       ip.quantidade    AS quantidade" +
             " FROM notificacao_bar nc" +
-            "         JOIN pedido p on p.id = nc.pedido_id" +
-            "         join item_pedido ip on ip.pedido_id = p.id" +
-            "         join produto prod on ip.produto_id = prod.id" +
-            "         join pizza on pizza.id = prod.id" +
-            "         JOIN cliente c on c.id = p.cliente_id" +
+            "         LEFT JOIN  pedido p on p.id = nc.pedido_id" +
+            "         LEFT JOIN item_pedido ip on ip.pedido_id = p.id" +
+            "         LEFT JOIN produto prod on ip.produto_id = prod.id" +
+            "         LEFT JOIN pizza on pizza.id = prod.id" +
+            "         LEFT JOIN cliente c on c.id = p.cliente_id" +
             " WHERE nc.ativo = true" +
-            "  and prod.tipo_produto = 0" +
+            "  and prod.tipo_produto = 1" +
             " ORDER BY nc.data_hora DESC", nativeQuery = true)
     List<NotificacaoBarPainelListDTO> listAllBebidas();
 
