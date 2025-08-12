@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -44,5 +45,19 @@ public class PizzaController {
     public ResponseEntity<Void> delete(@PathVariable("idPizza") Long idPizza) {
         service.delete(idPizza);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/description/{name}")
+    public ResponseEntity<String> getPizzaDescription(@PathVariable("name")  String name) {
+        try {
+            String desc = service.getDescription(name);
+            if (desc == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(desc);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro ao buscar descrição: " + e.getMessage());
+        }
     }
 }
