@@ -35,4 +35,10 @@ export class PizzaService {
   delete(id: number): Observable<PizzaModel> {
     return this.http.delete<PizzaModel>(this.resourceUrl + '/' + id);
   }
+
+  discricaoIngrediente(ingrediente: string): Observable<string> {
+    return this.http.get(this.resourceUrl + '/description/' + ingrediente, {
+      responseType: 'text'
+    });
+  }
 }

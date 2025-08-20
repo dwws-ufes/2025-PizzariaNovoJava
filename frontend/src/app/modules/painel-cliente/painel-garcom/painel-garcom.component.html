@@ -13,8 +13,17 @@
             <p>{{ pizza.descricao }}</p>
             <p>Tamanho: {{ pizza.tamanho }} ({{ pizza.qtdFatias }} fatias)</p>
             <ng-template pTemplate="footer">
-              <button pButton type="button" icon="pi pi-plus" label="Adicionar"
-                      class="p-button-sm" (click)="adicionarItem(pizza, 'PIZZA')"></button>
+              <div class="flex gap-2">
+                <button pButton type="button" icon="pi pi-plus" label="Adicionar"
+                        class="p-button-sm"
+                        (click)="adicionarItem(pizza, 'PIZZA')">
+                </button>
+
+                <button pButton type="button" icon="pi pi-search" label="Ingredientes"
+                        class="p-button-sm p-button-secondary"
+                        (click)="abrirModalIngredientes()">
+                </button>
+              </div>
             </ng-template>
           </p-card>
         </div>
@@ -125,4 +134,41 @@
   </ng-template>
 </p-dialog>
 
-<p-toast></p-toast>
+
+<!-- Modal de Ingredientes -->
+<p-dialog header="Buscar Ingredientes"
+          [(visible)]="modalIngredientesVisivel"
+          [modal]="true"
+          [style]="{width: '30vw'}"
+          (onHide)="limparBusca()">
+
+  <div class="p-fluid">
+    <div class="field">
+      <label for="ingrediente">Nome do Ingrediente</label>
+      <input id="ingrediente" type="text" pInputText [(ngModel)]="ingredienteBusca"
+             placeholder="Digite o ingrediente...">
+    </div>
+
+    <div class="field">
+      <button pButton type="button" label="Pesquisar" icon="pi pi-search"
+              class="p-button-sm p-button-primary"
+              (click)="buscarIngredientes()">
+      </button>
+    </div>
+
+    <div *ngIf="descricaoIngrediente">
+    <strong>Descrição:</strong>
+    <p class="text-justify">
+      {{ descricaoIngrediente }}
+    </p>
+  </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <button pButton label="Fechar" icon="pi pi-times" (click)="modalIngredientesVisivel=false"></button>
+  </ng-template>
+</p-dialog>
+
+
+
+

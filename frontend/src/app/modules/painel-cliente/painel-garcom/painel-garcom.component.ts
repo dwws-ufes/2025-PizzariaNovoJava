@@ -38,6 +38,9 @@ export class PainelGarcomComponent implements OnInit {
   displayModalPedido = false;
   totalPedido = 0;
   status = StatusPedido.obterPorIndex(1);
+  modalIngredientesVisivel: boolean = false;
+  ingredienteBusca: string = '';
+  descricaoIngrediente: string | null = null;
 
   @Output() recarregarClientes = new EventEmitter<void>();
 
@@ -164,4 +167,22 @@ export class PainelGarcomComponent implements OnInit {
     const login = localStorage.getItem("userName");
     this.usuarioService.findByLogin(login).subscribe(usuario => this.atendente = usuario);
   }
+
+  abrirModalIngredientes() {
+    this.modalIngredientesVisivel = true;
+  }
+
+  buscarIngredientes() {
+    this.pizzaService.discricaoIngrediente(this.ingredienteBusca)
+      .subscribe(descricao => {
+        this.descricaoIngrediente = descricao;
+        console.log("Descrição recebida:", descricao);
+      });
+  }
+
+  limparBusca() {
+    this.ingredienteBusca = '';
+    this.descricaoIngrediente = null;
+  }
+
 }

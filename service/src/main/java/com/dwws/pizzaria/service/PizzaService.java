@@ -79,7 +79,7 @@ public class PizzaService {
     PREFIX dbr: <http://dbpedia.org/resource/>
     SELECT ?abstract WHERE {
       dbr:%s dbo:abstract ?abstract .
-      FILTER (lang(?abstract) = "pt")
+      FILTER (lang(?abstract) = "en")
     } LIMIT 1
     """, entity.replace(" ", "_"));  // troca espaço por underline
 
