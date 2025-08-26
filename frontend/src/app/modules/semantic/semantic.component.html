@@ -25,15 +25,15 @@
     <h3>🔍 Consultas Pré-definidas</h3>
 
     <div class="query-buttons">
-      <button class="btn btn-primary" (click)="executarConsultaPizzas()">
+      <button class="btn btn-primary" (click)="executarConsultaPizzas()" [disabled]="loading">
         🍕 Todas as Pizzas (RDF)
       </button>
 
-      <button class="btn btn-secondary" (click)="executarConsultaPedidos()">
+      <button class="btn btn-secondary" (click)="executarConsultaPedidos()" [disabled]="loading">
         📋 Pedidos Semânticos
       </button>
 
-      <button class="btn btn-info" (click)="executarEstatisticas()">
+      <button class="btn btn-info" (click)="executarEstatisticas()" [disabled]="loading">
         📈 Estatísticas do Sistema
       </button>
     </div>
@@ -46,8 +46,9 @@
           [(ngModel)]="termoBusca"
           placeholder="Digite o nome da pizza (ex: margherita, calabresa)"
           class="form-control"
+          [disabled]="loading"
         />
-        <button class="btn btn-success" (click)="buscarPizza()">Buscar</button>
+        <button class="btn btn-success" (click)="buscarPizza()" [disabled]="loading">Buscar</button>
       </div>
     </div>
   </div>
@@ -59,13 +60,26 @@
       placeholder="Digite sua consulta SPARQL aqui..."
       class="sparql-textarea"
       rows="8"
+      [disabled]="loading"
     ></textarea>
-    <button class="btn btn-warning" (click)="executarConsultaPersonalizada()">
+    <button class="btn btn-warning" (click)="executarConsultaPersonalizada()" [disabled]="loading">
       Executar Consulta
     </button>
   </div>
 
-  <div class="results-section" *ngIf="resultados">
+  <!-- Indicador de carregamento -->
+  <div class="loading-section" *ngIf="loading">
+    <div class="loading-spinner"></div>
+    <p>Executando consulta...</p>
+  </div>
+
+  <!-- Mensagem de erro -->
+  <div class="error-section" *ngIf="erro">
+    <h3>❌ Erro</h3>
+    <p>{{ erro }}</p>
+  </div>
+
+  <div class="results-section" *ngIf="resultados && !loading">
     <h3>📋 Resultados</h3>
     <div class="results-container">
       <pre>{{ resultados | json }}</pre>

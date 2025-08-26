@@ -1,0 +1,28 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix ex:   <http://example.org/pizza#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+
+# Classe Pizza
+ex:Pizza a rdfs:Class ;
+         rdfs:label "Pizza"@pt ;
+         rdfs:comment "Uma pizza, que pode ter nome e descrição."@pt ;
+         rdfs:subClassOf schema:Food ;
+         owl:equivalentClass schema:Pizza .
+
+# Propriedade nome da pizza
+ex:nome a rdf:Property ;
+        rdfs:label "Nome da pizza"@pt ;
+        rdfs:comment "Nome da pizza, ex: Mussarela, Calabresa."@pt ;
+        rdfs:domain ex:Pizza ;
+        rdfs:range rdfs:Literal ;
+        owl:equivalentProperty schema:name .
+
+# Propriedade descrição da pizza
+ex:descricao a rdf:Property ;
+             rdfs:label "Descrição da pizza"@pt ;
+             rdfs:comment "Descrição detalhada da pizza."@pt ;
+             rdfs:domain ex:Pizza ;
+             rdfs:range rdfs:Literal ;
+             owl:equivalentProperty schema:description .

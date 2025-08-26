@@ -1,0 +1,12 @@
+services:
+  ontop:
+    build: .
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./mapping.ttl:/opt/ontop/mapping.ttl
+      - ./ontology.properties:/opt/ontop/ontology.properties
+      - ./pmxnet.db:/opt/ontop/pmxnet.db
+    environment:
+      ONTOP_MAPPING_FILE: /opt/ontop/mapping.ttl
+      ONTOP_PROPERTIES_FILE: /opt/ontop/ontology.properties

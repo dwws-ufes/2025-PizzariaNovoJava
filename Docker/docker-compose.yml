@@ -5,20 +5,3 @@ services:
       file: postgresql.yml
       service: dwss-postgresql
     container_name: dwss-postgresql
-
-  ontop-pizzaria:
-    image: ontop/ontop-endpoint:5.1.2
-    container_name: ontop-pizzaria
-    ports:
-      - "8081:8080"
-    volumes:
-      - ../semantic_backend/mapping.ttl:/opt/ontop/input/mapping.ttl:ro
-      - ../semantic_backend/ontology.properties:/opt/ontop/input/ontology.properties:ro
-      - ../semantic_backend/ontology.owl:/opt/ontop/input/ontology.owl:ro
-    depends_on:
-      - dwss-postgresql
-    environment:
-      - ONTOP_ONTOLOGY_FILE=/opt/ontop/input/ontology.owl
-      - ONTOP_MAPPING_FILE=/opt/ontop/input/mapping.ttl
-      - ONTOP_PROPERTIES_FILE=/opt/ontop/input/ontology.properties
-    restart: unless-stopped

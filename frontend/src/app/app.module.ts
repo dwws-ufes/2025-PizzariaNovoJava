@@ -18,7 +18,7 @@ import {BarModule} from "./modules/bar/bar.module";
 import {PainelClienteModule} from "./modules/painel-cliente/painel-cliente.module";
 import {ClienteModule} from "./modules/cliente/cliente.module";
 import {PagamentoModule} from "./modules/pagamento/pagamento.module";
-import { SemanticComponent } from './modules/semantic/semantic.component'
+import {SemanticModule} from "./modules/semantic/semantic.module";
 
 registerLocaleData(ptBr);
 
@@ -28,7 +28,6 @@ registerLocaleData(ptBr);
     TopbarComponent,
     SidemenuComponent,
     LoginViewComponent,
-    SemanticComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,6 +39,7 @@ registerLocaleData(ptBr);
     PainelClienteModule,
     ClienteModule,
     PagamentoModule,
+    SemanticModule
   ],
   providers: [
     MessageService, ConfirmationService, MensagensConfirmacao, AuthService, {provide: LOCALE_ID, useValue: 'pt'}
