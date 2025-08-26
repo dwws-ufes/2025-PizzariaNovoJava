@@ -17,7 +17,8 @@ import {CozinhaModule} from "./modules/cozinha/cozinha.module";
 import {BarModule} from "./modules/bar/bar.module";
 import {PainelClienteModule} from "./modules/painel-cliente/painel-cliente.module";
 import {ClienteModule} from "./modules/cliente/cliente.module";
-import {PagamentoModule} from "./modules/pagamento/pagamento.module"
+import {PagamentoModule} from "./modules/pagamento/pagamento.module";
+import { SemanticComponent } from './modules/semantic/semantic.component'
 
 registerLocaleData(ptBr);
 
@@ -27,6 +28,7 @@ registerLocaleData(ptBr);
     TopbarComponent,
     SidemenuComponent,
     LoginViewComponent,
+    SemanticComponent,
   ],
   imports: [
     BrowserModule,

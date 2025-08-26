@@ -1,0 +1,104 @@
+<div class="semantic-container">
+  <div class="header-section">
+    <h2>🔗 Backend Semântico - Pizzaria</h2>
+    <p>Consultas SPARQL e dados em RDF usando Ontop</p>
+  </div>
+
+  <div class="info-section">
+    <div class="info-card">
+      <h3>📊 Endpoint SPARQL</h3>
+      <p><strong>URL:</strong> <a href="http://localhost:8081/sparql" target="_blank">http://localhost:8081/sparql</a></p>
+      <p><strong>Status:</strong> <span class="status-active">Ativo</span></p>
+    </div>
+
+    <div class="info-card">
+      <h3>🎯 Vocabulários Utilizados</h3>
+      <ul>
+        <li><strong>Schema.org:</strong> Estruturas padrão (Product, Order, Person)</li>
+        <li><strong>DBpedia:</strong> Links para dados externos de pizzas</li>
+        <li><strong>Pizzaria:</strong> Propriedades específicas do domínio</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="queries-section">
+    <h3>🔍 Consultas Pré-definidas</h3>
+
+    <div class="query-buttons">
+      <button class="btn btn-primary" (click)="executarConsultaPizzas()">
+        🍕 Todas as Pizzas (RDF)
+      </button>
+
+      <button class="btn btn-secondary" (click)="executarConsultaPedidos()">
+        📋 Pedidos Semânticos
+      </button>
+
+      <button class="btn btn-info" (click)="executarEstatisticas()">
+        📈 Estatísticas do Sistema
+      </button>
+    </div>
+
+    <div class="search-section">
+      <h4>🔎 Busca Semântica por Pizza</h4>
+      <div class="search-form">
+        <input
+          type="text"
+          [(ngModel)]="termoBusca"
+          placeholder="Digite o nome da pizza (ex: margherita, calabresa)"
+          class="form-control"
+        />
+        <button class="btn btn-success" (click)="buscarPizza()">Buscar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="custom-query-section">
+    <h3>⚡ Consulta SPARQL Personalizada</h3>
+    <textarea
+      [(ngModel)]="consultaPersonalizada"
+      placeholder="Digite sua consulta SPARQL aqui..."
+      class="sparql-textarea"
+      rows="8"
+    ></textarea>
+    <button class="btn btn-warning" (click)="executarConsultaPersonalizada()">
+      Executar Consulta
+    </button>
+  </div>
+
+  <div class="results-section" *ngIf="resultados">
+    <h3>📋 Resultados</h3>
+    <div class="results-container">
+      <pre>{{ resultados | json }}</pre>
+    </div>
+  </div>
+
+  <div class="examples-section">
+    <h3>💡 Exemplos de Consultas SPARQL</h3>
+
+    <div class="example-query">
+      <h4>Todas as pizzas com links para DBpedia:</h4>
+      <pre><code>PREFIX schema: &lt;http://schema.org/&gt;
+PREFIX pizzaria: &lt;http://localhost:8081/pizzaria/&gt;
+
+SELECT ?pizza ?nome ?preco ?dbpedia WHERE {
+        ?pizza a pizzaria:Pizza ;
+               schema:name ?nome ;
+               schema:price ?preco .
+        OPTIONAL { ?pizza schema:sameAs ?dbpedia }
+}</code></pre>
+    </div>
+
+    <div class="example-query">
+      <h4>Pedidos com detalhes do cliente:</h4>
+      <pre><code>PREFIX schema: &lt;http://schema.org/&gt;
+PREFIX pizzaria: &lt;http://localhost:8081/pizzaria/&gt;
+
+SELECT ?pedido ?clienteNome ?dataHora WHERE {
+        ?pedido a pizzaria:Pedido ;
+                schema:customer ?cliente ;
+                schema:orderDate ?dataHora .
+        ?cliente schema:name ?clienteNome .
+}</code></pre>
+    </div>
+  </div>
+</div>

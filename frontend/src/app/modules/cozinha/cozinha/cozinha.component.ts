@@ -73,7 +73,7 @@ export class CozinhaComponent implements OnInit {
         }
       });
   }
-  abrirModalStatus(item: PizzaPedidoViewModel): void {
+  abrirModalStatus(item: any): void {
     this.pedidoSelecionado = item;
     this.statusSelecionado = item.statusPratoId;
     this.displayModalStatus = true;

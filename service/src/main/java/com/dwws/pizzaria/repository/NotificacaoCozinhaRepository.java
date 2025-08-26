@@ -65,12 +65,12 @@ public interface NotificacaoCozinhaRepository extends JpaRepository<NotificacaoC
             "       ip.quantidade    AS quantidade " +
             "FROM notificacao_cozinha nc " +
             "         JOIN public.pedido p on p.id = nc.pedido_id " +
-            "         join item_pedido ip on ip.pedido_id = p.id " +
-            "         join produto prod on ip.produto_id = prod.id " +
-            "         join bebida on bebida.id = prod.id " +
-            "         JOIN cliente c on c.id = p.cliente_id " +
+            "         left join item_pedido ip on ip.pedido_id = p.id " +
+            "         left join produto prod on ip.produto_id = prod.id " +
+            "         left join bebida on bebida.id = prod.id " +
+            "         left JOIN cliente c on c.id = p.cliente_id " +
             "WHERE nc.ativo = true " +
-            "  and prod.tipo_produto = 1 " +
+            "  and prod.tipo_produto = 2 " +
             "ORDER BY nc.data_hora DESC;", nativeQuery = true)
     List<NotificacaoSobremesaPainelListDTO> listAllSobremesa();
 

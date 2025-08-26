@@ -21,6 +21,7 @@ div.list-card {
   display: flex;
   flex-wrap: wrap;
   gap: 5rem;
+  height: 100%;
   justify-content: center;
 
   .item {
@@ -157,4 +158,84 @@ div.list-card {
     background-color: #F44336;
     color: #FFF;
   }
+}
+
+/* Estilos base */
+.pagina {
+  padding: 1rem;
+}
+
+.item-pagina-list {
+  justify-content: center;
+  display: flex;
+  padding: 1rem 3rem !important;
+}
+
+.list-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 0 3rem;
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: flex-start; /* ou center, dependendo do seu gosto */
+}
+
+/* Estilos para igualar altura dos cards */
+.card-item {
+  flex: 1 1 350px; /* Cresce, encolhe, base de 350px */
+  max-width: 400px; /* Opcional: define um máximo */
+  min-width: 300px; /* Opcional: define um mínimo */
+  display: flex;
+  flex-direction: column;
+}
+
+::ng-deep .card-item .p-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+::ng-deep .card-item .p-card .p-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+::ng-deep .card-item .p-card .p-card-content {
+  flex: 1;
+}
+
+/* Mantenha os outros estilos existentes */
+.msg {
+  color: var(--cor-tema-5);
+  font-weight: 500;
+  font-family: 'Kreon', Verdana, sans-serif;
+  width: 100%;
+  text-align: center;
+}
+
+/* Estilos para badges de status */
+.status-badge {
+  padding: 0.3rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+
+  &.status-pendente {
+    background-color: #FFA500;
+    color: #000;
+  }
+
+  &.status-preparando {
+    background-color: #2196F3;
+    color: #FFF;
+  }
+
+  &.status-pronto {
+    background-color: #4CAF50;
+    color: #FFF;
+  }
+
+  /* Adicione outros status conforme necessário */
 }
