@@ -1,6 +1,8 @@
-FROM ontop/ontop-endpoint:latest
+FROM ontop/ontop-endpoint:4.2.2
 
-# Copie o driver SQLite
-ADD sqlite-jdbc-3.50.2.0.jar /opt/ontop/jdbc/sqlite-jdbc.jar
+# Download and install PostgreSQL JDBC driver
+RUN mkdir -p /opt/ontop/jdbc
+RUN wget -O /opt/ontop/jdbc/postgresql.jar https://jdbc.postgresql.org/download/postgresql-42.7.3.jar
 
-# A imagem Ontop já carrega tudo da pasta lib
+# Set classpath to include the PostgreSQL driver
+ENV ONTOP_EXTRA_CLASSPATH=/opt/ontop/jdbc/postgresql.jar

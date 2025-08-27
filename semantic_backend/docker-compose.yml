@@ -6,7 +6,9 @@ services:
     volumes:
       - ./mapping.ttl:/opt/ontop/mapping.ttl
       - ./ontology.properties:/opt/ontop/ontology.properties
-      - ./pmxnet.db:/opt/ontop/pmxnet.db
     environment:
       ONTOP_MAPPING_FILE: /opt/ontop/mapping.ttl
       ONTOP_PROPERTIES_FILE: /opt/ontop/ontology.properties
+      ONTOP_EXTRA_CLASSPATH: /opt/ontop/jdbc/postgresql.jar
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
