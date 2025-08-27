@@ -7,7 +7,8 @@
   <div class="info-section">
     <div class="info-card">
       <h3>📊 Endpoint SPARQL</h3>
-      <p><strong>URL:</strong> <a href="http://localhost:8081/sparql" target="_blank">http://localhost:8081/sparql</a></p>
+      <p><strong>URL:</strong> <a href="http://localhost:8081/sparql" target="_blank">http://localhost:8081/sparql</a>
+      </p>
       <p><strong>Status:</strong> <span class="status-active">Ativo</span></p>
     </div>
 
@@ -25,30 +26,46 @@
     <h3>🔍 Consultas Pré-definidas</h3>
 
     <div class="query-buttons">
-      <button class="btn btn-primary" (click)="executarConsultaPizzas()" [disabled]="loading">
-        🍕 Todas as Pizzas (RDF)
+      <button class="btn btn-primary" (click)="executarConsultaProdutos()">
+        🛒 Todos os Produtos
       </button>
 
-      <button class="btn btn-secondary" (click)="executarConsultaPedidos()" [disabled]="loading">
-        📋 Pedidos Semânticos
+      <button class="btn btn-secondary" (click)="consultarPorTipo(0)">
+        🍕 Apenas Pizzas
       </button>
 
-      <button class="btn btn-info" (click)="executarEstatisticas()" [disabled]="loading">
-        📈 Estatísticas do Sistema
+      <button class="btn btn-info" (click)="consultarPorTipo(1)">
+        🥤 Apenas Bebidas
+      </button>
+
+      <button class="btn btn-warning" (click)="consultarPorTipo(2)">
+        🍰 Apenas Sobremesas
+      </button>
+
+      <button class="btn btn-success" (click)="listarTipos()">
+        📊 Tipos de Produtos
+      </button>
+
+      <button class="btn btn-info" (click)="executarEstatisticas()">
+        📈 Estatísticas
+      </button>
+
+      <button class="btn btn-secondary" (click)="getInfo()">
+        ℹ️ Informações
       </button>
     </div>
 
     <div class="search-section">
-      <h4>🔎 Busca Semântica por Pizza</h4>
+      <h4>🔎 Busca Semântica por Produto</h4>
       <div class="search-form">
         <input
           type="text"
           [(ngModel)]="termoBusca"
-          placeholder="Digite o nome da pizza (ex: margherita, calabresa)"
+          placeholder="Digite o nome do produto (ex: margherita, coca, brownie)"
           class="form-control"
           [disabled]="loading"
         />
-        <button class="btn btn-success" (click)="buscarPizza()" [disabled]="loading">Buscar</button>
+        <button class="btn btn-success" (click)="buscarProduto()" [disabled]="loading">Buscar</button>
       </div>
     </div>
   </div>
@@ -90,29 +107,47 @@
     <h3>💡 Exemplos de Consultas SPARQL</h3>
 
     <div class="example-query">
-      <h4>Todas as pizzas com links para DBpedia:</h4>
+      <h4>Todos os produtos:</h4>
       <pre><code>PREFIX schema: &lt;http://schema.org/&gt;
-PREFIX pizzaria: &lt;http://localhost:8081/pizzaria/&gt;
 
-SELECT ?pizza ?nome ?preco ?dbpedia WHERE {
-        ?pizza a pizzaria:Pizza ;
+SELECT ?produto ?nome ?descricao ?preco ?tipo WHERE {{ "{" }}
+        ?produto a schema:Product ;
                schema:name ?nome ;
-               schema:price ?preco .
-        OPTIONAL { ?pizza schema:sameAs ?dbpedia }
-}</code></pre>
+               schema:description ?descricao ;
+               schema:price ?preco ;
+               schema:category ?tipo .
+        {{ "}" }}
+        ORDER BY ?tipo ?nome</code></pre>
     </div>
 
     <div class="example-query">
-      <h4>Pedidos com detalhes do cliente:</h4>
+      <h4>Produtos por tipo:</h4>
       <pre><code>PREFIX schema: &lt;http://schema.org/&gt;
-PREFIX pizzaria: &lt;http://localhost:8081/pizzaria/&gt;
 
-SELECT ?pedido ?clienteNome ?dataHora WHERE {
-        ?pedido a pizzaria:Pedido ;
-                schema:customer ?cliente ;
-                schema:orderDate ?dataHora .
-        ?cliente schema:name ?clienteNome .
-}</code></pre>
+SELECT ?produto ?nome ?descricao ?preco WHERE {{ "{" }}
+        ?produto a schema:Product ;
+               schema:name ?nome ;
+               schema:description ?descricao ;
+               schema:price ?preco ;
+               schema:category "0" .
+        {{ "}" }}
+        ORDER BY ?nome</code></pre>
+    </div>
+
+    <div class="example-query">
+      <h4>Busca por nome:</h4>
+      <pre><code>PREFIX schema: &lt;http://schema.org/&gt;
+
+SELECT ?produto ?nome ?descricao ?preco ?tipo WHERE {{ "{" }}
+        ?produto a schema:Product ;
+               schema:name ?nome ;
+               schema:description ?descricao ;
+               schema:price ?preco ;
+               schema:category ?tipo .
+        FILTER(CONTAINS(LCASE(?nome), LCASE("margherita")) ||
+               CONTAINS(LCASE(?descricao), LCASE("margherita")))
+        {{ "}" }}
+        ORDER BY ?tipo ?nome</code></pre>
     </div>
   </div>
 </div>

@@ -18,7 +18,7 @@ import {BarModule} from "./modules/bar/bar.module";
 import {PainelClienteModule} from "./modules/painel-cliente/painel-cliente.module";
 import {ClienteModule} from "./modules/cliente/cliente.module";
 import {PagamentoModule} from "./modules/pagamento/pagamento.module";
-import {SemanticModule} from "./modules/semantic/semantic.module";
+import { ProdutoOntoModule } from "./modules/produto-onto/produto-onto.module";
 
 registerLocaleData(ptBr);
 
@@ -39,7 +39,7 @@ registerLocaleData(ptBr);
     PainelClienteModule,
     ClienteModule,
     PagamentoModule,
-    SemanticModule
+    ProdutoOntoModule,
   ],
   providers: [
     MessageService, ConfirmationService, MensagensConfirmacao, AuthService, {provide: LOCALE_ID, useValue: 'pt'}

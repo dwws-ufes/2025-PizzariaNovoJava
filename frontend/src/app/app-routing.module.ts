@@ -11,7 +11,7 @@ const routes: Routes = [
   {path: 'login', loadChildren: () => import('./modules/login/login.module').then(m => m.LoginModule)},
   {path: 'pedidos', loadChildren: () => import('./modules/pedido/pedido.module').then(m => m.PedidoModule)},
   {path: 'painel', loadChildren: () => import('./modules/painel-cliente/painel-cliente.module').then(m => m.PainelClienteModule)},
-  {path: 'semantic', loadChildren: () => import('./modules/semantic/semantic.module').then(m => m.SemanticModule)},
+  {path: 'semantic', loadChildren: () => import('./modules/produto-onto/produto-onto.module').then(m => m.ProdutoOntoModule)},
 ];
 
 @NgModule({
