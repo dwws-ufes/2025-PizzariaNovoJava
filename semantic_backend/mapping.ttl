@@ -5,7 +5,7 @@
 <#ProdutoMapping>
     a                     rr:TriplesMap ;
     rr:logicalTable       [ rr:tableName "produto" ] ;
-    rr:subjectMap         [ rr:template "http://example.org/produto/{id}" ;
+    rr:subjectMap         [ rr:template "http://localhost:8080/api/produto/{id}" ;
                             rr:class    schema:Product ; ] ;
     rr:predicateObjectMap [ rr:predicate schema:name ;
                             rr:objectMap [ rr:column "nome" ] ] ;
